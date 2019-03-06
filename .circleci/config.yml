@@ -1,0 +1,59 @@
+# Golang CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-go/ for more details
+version: 2
+jobs:
+  test:
+    docker:
+      # specify the version
+      - image: circleci/golang:1.11
+        environment:
+          PGUSER: circleci
+          PGDATABASE: circleci
+          PGHOST: 127.0.0.1
+      - image: circleci/postgres:10.7-alpine
+        environment:
+          POSTGRES_USER: circleci
+          POSTGRES_DB: circleci
+    working_directory: /go/src/github.com/smithoss/gonymizer
+    steps:
+      - checkout
+      - run: go get -v -t -d ./...
+      - run: whoami
+      - run:
+          name: Install PSQL client
+          command: sudo apt install -y postgresql-client curl || true
+      - run:
+          name: Waiting for Postgres to be ready
+          command: |
+            for i in `seq 1 10`;
+            do
+              nc -z localhost 5432 && echo Success && exit 0
+              echo -n .
+              sleep 1
+            done
+            echo Failed waiting for Postgres && exit 1
+      - run:
+          name: Run TestStart Golang tests
+          command: |
+            go test -v -covermode=atomic -coverprofile=profile.out \
+            -run TestStart && \
+            /bin/bash <(curl -s https://codecov.io/bash) -f profile.out
+            returnVal=$?; if [[ $returnVal -ne 0 ]]; then cat db_test_err.log; exit $returnVal; fi
+  build:
+    machine:
+      enabled: true
+    steps:
+      - checkout
+      - type: shell
+        name: docker build
+        shell: /bin/bash
+        command: |
+          docker build --build-arg hash=${CIRCLE_SHA1} \
+          --build-arg version=${CIRCLE_BUILD_NUM}
+workflows:
+  version: 2
+  basic-commits:
+    jobs:
+      - test
+      - build
