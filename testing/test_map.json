@@ -1,0 +1,405 @@
+{
+    "DBName": "pii_localtest",
+    "Seed": 1542749714,
+    "ColumnMaps": [
+        {
+            "TableSchema": "public",
+            "TableName": "authors",
+            "ShardName": "",
+            "ColumnName": "id",
+            "DataType": "uuid",
+            "OrdinalPosition": 1,
+            "IsNullable": false,
+            "Processors": [
+                {
+                    "Name": "RandomUUID",
+                    "Max": 0,
+                    "Min": 0,
+                    "Variance": 0,
+                    "Comment": ""
+                }
+            ],
+            "Comment": ""
+        },
+        {
+            "TableSchema": "public",
+            "TableName": "authors",
+            "ShardName": "",
+            "ColumnName": "created_at",
+            "DataType": "timestamp with time zone",
+            "OrdinalPosition": 2,
+            "IsNullable": false,
+            "Processors": [
+                {
+                    "Name": "Identity",
+                    "Max": 0,
+                    "Min": 0,
+                    "Variance": 0,
+                    "Comment": ""
+                }
+            ],
+            "Comment": ""
+        },
+        {
+            "TableSchema": "public",
+            "TableName": "authors",
+            "ShardName": "",
+            "ColumnName": "updated_at",
+            "DataType": "timestamp with time zone",
+            "OrdinalPosition": 3,
+            "IsNullable": false,
+            "Processors": [
+                {
+                    "Name": "Identity",
+                    "Max": 0,
+                    "Min": 0,
+                    "Variance": 0,
+                    "Comment": ""
+                }
+            ],
+            "Comment": ""
+        },
+        {
+            "TableSchema": "public",
+            "TableName": "authors",
+            "ShardName": "",
+            "ColumnName": "name",
+            "DataType": "text",
+            "OrdinalPosition": 4,
+            "IsNullable": false,
+            "Processors": [
+                {
+                    "Name": "AlphaNumericScrambler",
+                    "Max": 0,
+                    "Min": 0,
+                    "Variance": 0,
+                    "Comment": ""
+                }
+            ],
+            "Comment": ""
+        },
+        {
+            "TableSchema": "public",
+            "TableName": "authors",
+            "ShardName": "",
+            "ColumnName": "birthdate",
+            "DataType": "date",
+            "OrdinalPosition": 5,
+            "IsNullable": false,
+            "Processors": [
+                {
+                    "Name": "RandomDate",
+                    "Max": 0,
+                    "Min": 0,
+                    "Variance": 0,
+                    "Comment": ""
+                }
+            ],
+            "Comment": ""
+        },
+        {
+            "TableSchema": "public",
+            "TableName": "books",
+            "ShardName": "",
+            "ColumnName": "id",
+            "DataType": "uuid",
+            "OrdinalPosition": 1,
+            "IsNullable": false,
+            "Processors": [
+                {
+                    "Name": "RandomUUID",
+                    "Max": 0,
+                    "Min": 0,
+                    "Variance": 0,
+                    "Comment": ""
+                }
+            ],
+            "Comment": ""
+        },
+        {
+            "TableSchema": "public",
+            "TableName": "books",
+            "ShardName": "",
+            "ColumnName": "created_at",
+            "DataType": "timestamp with time zone",
+            "OrdinalPosition": 2,
+            "IsNullable": false,
+            "Processors": [
+                {
+                    "Name": "Identity",
+                    "Max": 0,
+                    "Min": 0,
+                    "Variance": 0,
+                    "Comment": ""
+                }
+            ],
+            "Comment": ""
+        },
+        {
+            "TableSchema": "public",
+            "TableName": "books",
+            "ShardName": "",
+            "ColumnName": "updated_at",
+            "DataType": "timestamp with time zone",
+            "OrdinalPosition": 3,
+            "IsNullable": false,
+            "Processors": [
+                {
+                    "Name": "Identity",
+                    "Max": 0,
+                    "Min": 0,
+                    "Variance": 0,
+                    "Comment": ""
+                }
+            ],
+            "Comment": ""
+        },
+        {
+            "TableSchema": "public",
+            "TableName": "books",
+            "ShardName": "",
+            "ColumnName": "title",
+            "DataType": "text",
+            "OrdinalPosition": 4,
+            "IsNullable": false,
+            "Processors": [
+                {
+                    "Name": "AlphaNumericScrambler",
+                    "Max": 0,
+                    "Min": 0,
+                    "Variance": 0,
+                    "Comment": ""
+                }
+            ],
+            "Comment": ""
+        },
+        {
+            "TableSchema": "public",
+            "TableName": "books",
+            "ShardName": "",
+            "ColumnName": "isbn",
+            "DataType": "text",
+            "OrdinalPosition": 5,
+            "IsNullable": false,
+            "Processors": [
+                {
+                    "Name": "AlphaNumericScrambler",
+                    "Max": 0,
+                    "Min": 0,
+                    "Variance": 0,
+                    "Comment": ""
+                }
+            ],
+            "Comment": ""
+        },
+        {
+            "TableSchema": "public",
+            "TableName": "books",
+            "ShardName": "",
+            "ColumnName": "publisher",
+            "DataType": "text",
+            "OrdinalPosition": 6,
+            "IsNullable": false,
+            "Processors": [
+                {
+                    "Name": "ScrubString",
+                    "Max": 0,
+                    "Min": 0,
+                    "Variance": 0,
+                    "Comment": ""
+                }
+            ],
+            "Comment": ""
+        },
+        {
+            "TableSchema": "public",
+            "TableName": "books",
+            "ShardName": "",
+            "ColumnName": "author_id",
+            "DataType": "uuid",
+            "OrdinalPosition": 7,
+            "IsNullable": false,
+            "Processors": [
+                {
+                    "Name": "RandomUUID",
+                    "Max": 0,
+                    "Min": 0,
+                    "Variance": 0,
+                    "Comment": ""
+                }
+            ],
+            "Comment": ""
+        },
+        {
+            "TableSchema": "public",
+            "TableName": "books",
+            "ShardName": "",
+            "ColumnName": "uuid_test",
+            "DataType": "uuid",
+            "OrdinalPosition": 8,
+            "IsNullable": false,
+            "Processors": [
+                {
+                    "Name": "RandomUUID",
+                    "Max": 0,
+                    "Min": 0,
+                    "Variance": 0,
+                    "Comment": ""
+                }
+            ],
+            "Comment": ""
+        },
+        {
+            "TableSchema": "public",
+            "TableName": "distributors",
+            "ShardName": "",
+            "ColumnName": "id",
+            "DataType": "integer",
+            "OrdinalPosition": 1,
+            "IsNullable": false,
+            "Processors": [
+                {
+                    "Name": "Identity",
+                    "Max": 0,
+                    "Min": 0,
+                    "Variance": 0,
+                    "Comment": ""
+                }
+            ],
+            "Comment": ""
+        },
+        {
+            "TableSchema": "public",
+            "TableName": "distributors",
+            "ShardName": "",
+            "ColumnName": "company_name",
+            "DataType": "character varying",
+            "OrdinalPosition": 2,
+            "IsNullable": false,
+            "Processors": [
+                {
+                    "Name": "Identity",
+                    "Max": 0,
+                    "Min": 0,
+                    "Variance": 0,
+                    "Comment": ""
+                }
+            ],
+            "Comment": ""
+        },
+        {
+            "TableSchema": "public",
+            "TableName": "distributors",
+            "ShardName": "",
+            "ColumnName": "email",
+            "DataType": "character varying",
+            "OrdinalPosition": 3,
+            "IsNullable": false,
+            "Processors": [
+                {
+                    "Name": "Identity",
+                    "Max": 0,
+                    "Min": 0,
+                    "Variance": 0,
+                    "Comment": ""
+                }
+            ],
+            "Comment": ""
+        },
+        {
+            "TableSchema": "public",
+            "TableName": "distributors",
+            "ShardName": "",
+            "ColumnName": "last_shipment",
+            "DataType": "timestamp without time zone",
+            "OrdinalPosition": 4,
+            "IsNullable": false,
+            "Processors": [
+                {
+                    "Name": "Identity",
+                    "Max": 0,
+                    "Min": 0,
+                    "Variance": 0,
+                    "Comment": ""
+                }
+            ],
+            "Comment": ""
+        },
+        {
+            "TableSchema": "public",
+            "TableName": "purchasers",
+            "ShardName": "",
+            "ColumnName": "id",
+            "DataType": "integer",
+            "OrdinalPosition": 1,
+            "IsNullable": false,
+            "Processors": [
+                {
+                    "Name": "Identity",
+                    "Max": 0,
+                    "Min": 0,
+                    "Variance": 0,
+                    "Comment": ""
+                }
+            ],
+            "Comment": ""
+        },
+        {
+            "TableSchema": "public",
+            "TableName": "purchasers",
+            "ShardName": "",
+            "ColumnName": "first_name",
+            "DataType": "character varying",
+            "OrdinalPosition": 2,
+            "IsNullable": false,
+            "Processors": [
+                {
+                    "Name": "Identity",
+                    "Max": 0,
+                    "Min": 0,
+                    "Variance": 0,
+                    "Comment": ""
+                }
+            ],
+            "Comment": ""
+        },
+        {
+            "TableSchema": "public",
+            "TableName": "purchasers",
+            "ShardName": "",
+            "ColumnName": "last_name",
+            "DataType": "character varying",
+            "OrdinalPosition": 3,
+            "IsNullable": false,
+            "Processors": [
+                {
+                    "Name": "Identity",
+                    "Max": 0,
+                    "Min": 0,
+                    "Variance": 0,
+                    "Comment": ""
+                }
+            ],
+            "Comment": ""
+        },
+        {
+            "TableSchema": "public",
+            "TableName": "purchasers",
+            "ShardName": "",
+            "ColumnName": "email",
+            "DataType": "character varying",
+            "OrdinalPosition": 4,
+            "IsNullable": false,
+            "Processors": [
+                {
+                    "Name": "Identity",
+                    "Max": 0,
+                    "Min": 0,
+                    "Variance": 0,
+                    "Comment": ""
+                }
+            ],
+            "Comment": ""
+        }
+    ]
+}

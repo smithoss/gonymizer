@@ -1,0 +1,13 @@
+# Binaries
+gonymizer
+gonymizer_*
+gonymizer-*
+bin/
+
+export_*
+
+# Test files
+db_test_*.log
+
+# IntelliJ Idea
+.idea
