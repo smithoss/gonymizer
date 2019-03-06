@@ -40,20 +40,8 @@ jobs:
             -run TestStart && \
             /bin/bash <(curl -s https://codecov.io/bash) -f profile.out
             returnVal=$?; if [[ $returnVal -ne 0 ]]; then cat db_test_err.log; exit $returnVal; fi
-  build:
-    machine:
-      enabled: true
-    steps:
-      - checkout
-      - type: shell
-        name: docker build
-        shell: /bin/bash
-        command: |
-          docker build --build-arg hash=${CIRCLE_SHA1} \
-          --build-arg version=${CIRCLE_BUILD_NUM} -t ${CIRCLE_BUILD_NUM}
 workflows:
   version: 2
   basic-commits:
     jobs:
       - test
-      - build
