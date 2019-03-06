@@ -50,7 +50,7 @@ jobs:
         shell: /bin/bash
         command: |
           docker build --build-arg hash=${CIRCLE_SHA1} \
-          --build-arg version=${CIRCLE_BUILD_NUM}
+          --build-arg version=${CIRCLE_BUILD_NUM -t ${CIRCLE_BUILD_NUM}
 workflows:
   version: 2
   basic-commits:
