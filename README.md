@@ -3,9 +3,6 @@
 
 -----        
 
-[![CircleCI](https://circleci.com/gh/SmithHealth/gonymizer.svg?style=svg&circle-token=c125624b6024aa4bcc977f53560d9ac064b76af0)](https://circleci.com/gh/SmithHealth/gonymizer)[![codecov](https://codecov.io/gh/SmithHealth/Anonymizer/branch/master/graph/badge.svg?token=uI3KwgF5wk)](https://codecov.io/gh/SmithHealth/Anonymizer)
-
-
 ## Weird name, what does it do?
 The Gonymizer project is a project that was completed at [SmithRx](https://www.smithrx.com) in hope to simplify the QA process. Gonymizer is 
 written in Go lang and is meant to help database administrators and infrastructure folks easily anonymize production
