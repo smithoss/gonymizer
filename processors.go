@@ -50,11 +50,9 @@ var ProcessorCatalog map[string]ProcessorFunc
 // track of these changes so if we run across the same SSN again we can scramble it to what we already have.
 var AlphaNumericMap = map[string]map[string]string{}
 
-
 // Global UUID map for all UUIDs. Similar to AlphaNumericMap this map contains all UUIDs and what they are changed to.
 // Some tables use UUIDs as the primary key and this allows us to keep consistency in the data set when anonymizing it.
 var UUIDMap = map[uuid.UUID]uuid.UUID{}
-
 
 // init initializes the ProcessorCatalog map for all processors. A processor must be listed here to be accessible.
 func init() {
@@ -82,7 +80,7 @@ func init() {
 type ProcessorFunc func(*ColumnMapper, string) (string, error)
 
 // fakeFuncPtr is a simple function prototype for function pointers to the Fake package's fake functions.
-type fakeFuncPtr func() (string)
+type fakeFuncPtr func() string
 
 func jaroWinkler(input string, faker fakeFuncPtr) (output string, err error) {
 	var counter = 0

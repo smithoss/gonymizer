@@ -12,7 +12,6 @@ import (
 	"strings"
 )
 
-
 // DropDatabase will drop the database that is supplied in the PGConfig.
 func DropDatabase(conf PGConfig) error {
 	origName := conf.DefaultDBName

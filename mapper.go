@@ -11,7 +11,6 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-
 // ProcessorDefinition is the processor data structure used to map database columns to their specified column processor.
 type ProcessorDefinition struct {
 	Name string
@@ -163,7 +162,6 @@ func LoadConfigSkeleton(givenPathToFile string) (*DBMapper, error) {
 
 	return dbmap, nil
 }
-
 
 // findColumn searches the in-memory loaded column map using the specified parameters.
 func findColumn(columns []ColumnMapper, columnName, tableName, schemaPrefix, schema, dataType string,
@@ -323,4 +321,3 @@ func mapColumns(db *sql.DB, columns []ColumnMapper, schemaPrefix, schema string,
 
 	return columns, err
 }
-

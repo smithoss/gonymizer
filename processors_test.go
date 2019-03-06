@@ -7,36 +7,34 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-
 var proc = []ProcessorDefinition{
 	{
-		Name: "",
-		Max: 0,
-		Min: 0,
+		Name:     "",
+		Max:      0,
+		Min:      0,
 		Variance: 0,
-		Comment: "",
+		Comment:  "",
 	},
 }
 
 var cMap = ColumnMapper{
-TableSchema:      "",
-TableName:        "",
-ColumnName:       "",
-DataType:         "",
-ParentSchema:     "",
-ParentTable:      "",
-ParentColumn:     "",
-OrdinalPosition:  4,
-IsNullable:       false,
-Processors:       proc,
-Comment:          "",
+	TableSchema:     "",
+	TableName:       "",
+	ColumnName:      "",
+	DataType:        "",
+	ParentSchema:    "",
+	ParentTable:     "",
+	ParentColumn:    "",
+	OrdinalPosition: 4,
+	IsNullable:      false,
+	Processors:      proc,
+	Comment:         "",
 }
 
-
-func TestProcessorFunc(t *testing.T){
+func TestProcessorFunc(t *testing.T) {
 }
 
-func TestProcessorAlphaNumericScrambler(t *testing.T){
+func TestProcessorAlphaNumericScrambler(t *testing.T) {
 	var alphaTest ColumnMapper
 
 	output, err := ProcessorAlphaNumericScrambler(&cMap, "AsDfG10*&")
@@ -60,8 +58,7 @@ func TestProcessorAlphaNumericScrambler(t *testing.T){
 	assert.Equal(t, output_a, output_c)
 }
 
-
-func TestProcessorAddress(t *testing.T){
+func TestProcessorAddress(t *testing.T) {
 	output, err := ProcessorAddress(&cMap, "1234 Testing Lane")
 	assert.Nil(t, err)
 	assert.NotEqual(t, output, "1234 Testing Lane")
@@ -72,8 +69,7 @@ func TestProcessorAddress(t *testing.T){
 	assert.NotEqual(t, output, "")
 }
 
-
-func TestProcessorCity(t *testing.T){
+func TestProcessorCity(t *testing.T) {
 	output, err := ProcessorCity(&cMap, "Rick and Morty Ville")
 	assert.Nil(t, err)
 	assert.NotEqual(t, output, "Rick and Morty Ville")
@@ -84,8 +80,7 @@ func TestProcessorCity(t *testing.T){
 	assert.NotEqual(t, output, "")
 }
 
-
-func TestProcessorEmailAddress(t *testing.T){
+func TestProcessorEmailAddress(t *testing.T) {
 	output, err := ProcessorEmailAddress(&cMap, "rick@morty.example.com")
 	assert.Nil(t, err)
 	assert.NotEqual(t, output, "rick@morty.example.com")
@@ -96,8 +91,7 @@ func TestProcessorEmailAddress(t *testing.T){
 	assert.NotEqual(t, output, "")
 }
 
-
-func TestProcessorFirstName(t *testing.T){
+func TestProcessorFirstName(t *testing.T) {
 	output, err := ProcessorFirstName(&cMap, "RickMortyRick")
 	assert.Nil(t, err)
 	assert.NotEqual(t, output, "RickMortyRick")
@@ -108,8 +102,7 @@ func TestProcessorFirstName(t *testing.T){
 	assert.NotEqual(t, output, "")
 }
 
-
-func TestProcessorFullName(t *testing.T){
+func TestProcessorFullName(t *testing.T) {
 	output, err := ProcessorFullName(&cMap, "Morty & Rick")
 	assert.Nil(t, err)
 	assert.NotEqual(t, output, "Morty & Rick")
@@ -120,8 +113,7 @@ func TestProcessorFullName(t *testing.T){
 	assert.NotEqual(t, output, "")
 }
 
-
-func TestProcessorIdentity(t *testing.T){
+func TestProcessorIdentity(t *testing.T) {
 	output, err := ProcessorIdentity(&cMap, "Hi Rick!")
 	assert.Nil(t, err)
 	assert.Equal(t, output, "Hi Rick!")
@@ -131,8 +123,7 @@ func TestProcessorIdentity(t *testing.T){
 	assert.Equal(t, output, "")
 }
 
-
-func TestProcessorLastName(t *testing.T){
+func TestProcessorLastName(t *testing.T) {
 	output, err := ProcessorLastName(&cMap, "Bye Rick!")
 	assert.Nil(t, err)
 	assert.NotEqual(t, output, "Bye Rick!")
@@ -143,8 +134,7 @@ func TestProcessorLastName(t *testing.T){
 	assert.NotEqual(t, output, "")
 }
 
-
-func TestProcessorPhoneNumber(t *testing.T){
+func TestProcessorPhoneNumber(t *testing.T) {
 	output, err := ProcessorPhoneNumber(&cMap, "+18885551212")
 	assert.Nil(t, err)
 	assert.NotEqual(t, output, "+18885551212")
@@ -155,8 +145,7 @@ func TestProcessorPhoneNumber(t *testing.T){
 	assert.NotEqual(t, output, "")
 }
 
-
-func TestProcessorState(t *testing.T){
+func TestProcessorState(t *testing.T) {
 	output, err := ProcessorState(&cMap, "Antarctica")
 	assert.Nil(t, err)
 	assert.NotEqual(t, output, "Antarctica")
@@ -167,8 +156,7 @@ func TestProcessorState(t *testing.T){
 	assert.NotEqual(t, output, "")
 }
 
-
-func TestProcessorUserName(t *testing.T){
+func TestProcessorUserName(t *testing.T) {
 	output, err := ProcessorUserName(&cMap, "Ricky and Julian")
 	assert.Nil(t, err)
 	assert.NotEqual(t, output, "Ricky and Julian")
@@ -179,8 +167,7 @@ func TestProcessorUserName(t *testing.T){
 	assert.NotEqual(t, output, "")
 }
 
-
-func TestProcessorZip(t *testing.T){
+func TestProcessorZip(t *testing.T) {
 	output, err := ProcessorZip(&cMap, "00000-00")
 	assert.Nil(t, err)
 	assert.NotEqual(t, output, "00000-00")
@@ -191,14 +178,13 @@ func TestProcessorZip(t *testing.T){
 	assert.NotEqual(t, output, "")
 }
 
-
-func TestProcessorRandomDate(t *testing.T){
+func TestProcessorRandomDate(t *testing.T) {
 	var failBoats = []string{
-		 "I AM THE FAIL BOAT!",
-		 "01.01.1970",
-		 "01/01/1970",
-		 "1970.01.01",
-		 "1970/01/01",
+		"I AM THE FAIL BOAT!",
+		"01.01.1970",
+		"01/01/1970",
+		"1970.01.01",
+		"1970/01/01",
 	}
 
 	output, err := ProcessorRandomDate(&cMap, "1970-01-01")
@@ -212,8 +198,7 @@ func TestProcessorRandomDate(t *testing.T){
 	}
 }
 
-
-func TestProcessorRandomUUID(t *testing.T){
+func TestProcessorRandomUUID(t *testing.T) {
 	var testUUID uuid.UUID
 
 	testUUID, err := uuid.NewUUID()
@@ -235,8 +220,7 @@ func TestProcessorRandomUUID(t *testing.T){
 	assert.Equal(t, output, "")
 }
 
-
-func TestProcessorScrubString(t *testing.T){
+func TestProcessorScrubString(t *testing.T) {
 	output, err := ProcessorScrubString(&cMap, "Ricky and Julian")
 	assert.Nil(t, err)
 	assert.NotEqual(t, output, "Ricky and Julian")
@@ -246,8 +230,7 @@ func TestProcessorScrubString(t *testing.T){
 	assert.Equal(t, output, "")
 }
 
-
-func TestRandomizeUUID(t *testing.T){
+func TestRandomizeUUID(t *testing.T) {
 	temp_uuid := uuid.New().String()
 	output, err := ProcessorRandomUUID(&cMap, temp_uuid)
 	assert.Nil(t, err)
@@ -256,4 +239,3 @@ func TestRandomizeUUID(t *testing.T){
 	output, err = ProcessorRandomUUID(&cMap, "")
 	assert.Equal(t, output, "")
 }
-

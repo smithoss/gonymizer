@@ -91,10 +91,10 @@ func TestGenerateSchemaSql(t *testing.T) {
 func TestClear(t *testing.T) {
 	var line LineState
 
-	line.IsRow        = true
-	line.SchemaName   = "TestSchema"
-	line.TableName    = "TestTable"
-	line.ColumnNames  = []string{"TestColumnOne", "TestColumnTwo"}
+	line.IsRow = true
+	line.SchemaName = "TestSchema"
+	line.TableName = "TestTable"
+	line.ColumnNames = []string{"TestColumnOne", "TestColumnTwo"}
 
 	if line.IsRow == true || len(line.SchemaName) > 0 || len(line.TableName) > 0 || len(line.ColumnNames) > 0 {
 		assert.Error(t, errors.New("LineState.Clear() did not clear the object!"))
@@ -122,4 +122,4 @@ func TestPostProcess(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Nil(t, inFile.Close())
 	assert.Nil(t, VerifyFileSize(t, TestPreProcessFile, testFileSize))
-	}
+}

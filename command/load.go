@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
-	"github.com/smithoss/gonymizer"
 	"github.com/logrusorgru/aurora"
 	log "github.com/sirupsen/logrus"
+	"github.com/smithoss/gonymizer"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"os"
@@ -176,7 +176,7 @@ func load(conf gonymizer.PGConfig, loadFile, s3FilePath string) (err error) {
 // correct.
 func downloadRowCountFile(dbConf gonymizer.PGConfig, path string) (err error) {
 	// S3 Storage
-	if strings.HasPrefix(strings.ToLower(path), "s3://"){
+	if strings.HasPrefix(strings.ToLower(path), "s3://") {
 		var s3File gonymizer.S3File
 		if err = s3File.ParseS3Url(path); err != nil {
 			return err
@@ -191,7 +191,7 @@ func downloadRowCountFile(dbConf gonymizer.PGConfig, path string) (err error) {
 		}
 		err = gonymizer.VerifyRowCount(dbConf, tempFile)
 
-	// Local file storage
+		// Local file storage
 	} else {
 		err = gonymizer.VerifyRowCount(dbConf, path)
 	}

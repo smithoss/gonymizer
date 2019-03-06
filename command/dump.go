@@ -4,11 +4,11 @@ import (
 	"encoding/csv"
 	"errors"
 	"fmt"
-	"github.com/smithoss/gonymizer"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/logrusorgru/aurora"
 	log "github.com/sirupsen/logrus"
+	"github.com/smithoss/gonymizer"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"os"
@@ -186,7 +186,6 @@ func cliCommandDump(cmd *cobra.Command, args []string) {
 		viper.SetDefault("dump.password", GetPassword())
 	}
 
-
 	dbConf, _ := GetDb(
 		viper.GetString("dump.host"),
 		viper.GetString("dump.username"),
@@ -276,7 +275,7 @@ func storeRowCountFile(dbConf gonymizer.PGConfig, schemaPrefix, path string, exc
 	}
 
 	// S3 Storage
-	if strings.HasPrefix(strings.ToLower(path), "s3://"){
+	if strings.HasPrefix(strings.ToLower(path), "s3://") {
 		var s3file gonymizer.S3File
 		log.Debug("S3 path detected for row-count-file")
 		if err := s3file.ParseS3Url(path); err != nil {
@@ -287,13 +286,13 @@ func storeRowCountFile(dbConf gonymizer.PGConfig, schemaPrefix, path string, exc
 		// Use /tmp/filePath_EPOCH_TIME to store the file before copying to S3
 		tempFile := "/tmp/" + strconv.FormatInt(time.Now().Unix(), 10) + "_" + s3file.FilePath
 		log.Debug("Creating temp file: ", tempFile)
-		f, err := os.OpenFile(tempFile, os.O_RDWR | os.O_CREATE, 0644)
+		f, err := os.OpenFile(tempFile, os.O_RDWR|os.O_CREATE, 0644)
 
 		if err != nil {
 			return err
 		}
 		defer f.Close()
-		if err = saveToCsv(f, rowCounts); err != nil{
+		if err = saveToCsv(f, rowCounts); err != nil {
 			return err
 		}
 
@@ -308,17 +307,17 @@ func storeRowCountFile(dbConf gonymizer.PGConfig, schemaPrefix, path string, exc
 			return err
 		}
 
-	// Local Storage
+		// Local Storage
 	} else {
 		log.Debug("Saving row-count-file to local disk: ", path)
-		f, err := os.OpenFile(path, os.O_RDWR | os.O_CREATE, 0644)
+		f, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE, 0644)
 
 		if err != nil {
 			return err
 		}
 		defer f.Close()
 
-		if err = saveToCsv(f, rowCounts); err != nil{
+		if err = saveToCsv(f, rowCounts); err != nil {
 			return err
 		}
 	}

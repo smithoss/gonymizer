@@ -24,6 +24,7 @@ const TestPostProcessFile = "testing/test_post_process.sql"
 const TestRowCountFile = "testing/test_row_counts.csv"
 const TestRowCountIncorrectRowCountsFile = "testing/test_row_counts_incorrect_row_counts.csv"
 const TestRowCountsIncorrectNumberColumnsFile = "testing/test_row_counts_incorrect_number_columns.csv"
+
 // Output test files
 const TestCreateFile = "testing/output.TestCreateFile.sql"
 const TestDumpFile = "testing/output.TestDumpFile.sql"
@@ -34,7 +35,6 @@ const TestProcessDumpfile = "testing/output.TestProcessDumpFile.sql"
 
 // Test schemaPrefix
 const TestSchemaPrefix = ""
-
 
 // Test tables, exclude tables, and schemas
 var (
@@ -192,7 +192,6 @@ func seqUnitTests(t *testing.T) {
 
 }
 
-
 // removeTestFiles removes temporary test files that may be hanging around from the testing directory before
 // running another round. Because of the appending nature of some tests this could cause false positives when
 // running integration tests.
@@ -207,12 +206,11 @@ func removeTestFiles(t *testing.T) {
 		}
 	)
 	for _, f := range filesToDelete {
-    fi, err := os.Stat(f)
-		if os.IsNotExist(err) || ! fi.IsDir() {
+		fi, err := os.Stat(f)
+		if os.IsNotExist(err) || !fi.IsDir() {
 			continue
 		} else {
 			assert.Nil(t, os.Remove(f))
 		}
 	}
 }
-

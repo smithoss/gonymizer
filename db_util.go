@@ -11,7 +11,6 @@ import (
 	"github.com/spf13/viper"
 )
 
-
 // PGConfig is the main configuration structure for different PostgreSQL server configurations.
 type PGConfig struct {
 	Username string

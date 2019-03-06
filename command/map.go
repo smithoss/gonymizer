@@ -6,8 +6,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/smithoss/gonymizer"
 	"github.com/logrusorgru/aurora"
+	"github.com/smithoss/gonymizer"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -148,12 +148,10 @@ func cliCommandMap(cmd *cobra.Command, args []string) {
 		}
 	}
 
-
 	if len(viper.GetString("map.password")) < 1 {
 		log.Debug("Password is empty. Asking user for password")
 		viper.SetDefault("map.password", GetPassword())
 	}
-
 
 	dbConf, _ := GetDb(
 		viper.GetString("map.host"),

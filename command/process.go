@@ -9,8 +9,8 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
-	"github.com/smithoss/gonymizer"
 	"github.com/logrusorgru/aurora"
+	"github.com/smithoss/gonymizer"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -152,4 +152,3 @@ func process(dumpFile, mapFile, processedDumpFile string, generateSeed bool, s3f
 	}
 	return nil
 }
-

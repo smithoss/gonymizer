@@ -23,7 +23,6 @@ type S3File struct {
 	Url      *url.URL
 }
 
-
 // ParseS3Url will parse the supplied S3 uri and load it into a S3File structure
 func (this *S3File) ParseS3Url(s3url string) (err error) {
 	// Parse S3 URL into Bucket, Region, and path

@@ -13,7 +13,7 @@ func TestLoaderTempDbCreation(t *testing.T) {
 	assert.Nil(t, DropDatabase(conf))
 }
 
-func TestLoadFile(t *testing.T){
+func TestLoadFile(t *testing.T) {
 	_ = CloseTestDb(TestLoadFileDb)
 	conf := GetTestDbConf(TestLoadFileDb)
 	assert.Nil(t, CreateDatabase(conf))
@@ -21,7 +21,7 @@ func TestLoadFile(t *testing.T){
 	assert.Nil(t, LoadFile(conf, TestProcessDumpfile))
 }
 
-func TestVerifyRowCount(t *testing.T){
+func TestVerifyRowCount(t *testing.T) {
 	conf := GetTestDbConf(TestDb)
 	assert.Nil(t, VerifyRowCount(conf, TestRowCountFile))
 	assert.Nil(t, VerifyRowCount(conf, TestRowCountIncorrectRowCountsFile)) // Should return Nil and print a warning

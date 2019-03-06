@@ -40,6 +40,7 @@ func (this *LineState) Clear() {
 	this.TableName = ""
 	this.ColumnNames = nil
 }
+
 // CreateDumpFile will create a PostgreSQL dump file from the specified PGConfig to the location, and with
 // restrictions, that are provided by the inputs to the function.
 func CreateDumpFile(

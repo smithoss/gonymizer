@@ -59,4 +59,3 @@ func VerifyFileSize(t *testing.T, filePath string, size int64) error {
 	assert.Nil(t, fp.Close())
 	return err
 }
-

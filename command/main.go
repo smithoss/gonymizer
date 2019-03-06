@@ -10,8 +10,8 @@ import (
 	"strings"
 	"syscall"
 
-	"github.com/smithoss/gonymizer"
 	"github.com/logrusorgru/aurora"
+	"github.com/smithoss/gonymizer"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -197,7 +197,6 @@ func initConfig() {
 	}
 }
 
-
 // preRun sets up default logging as well as printing the build number and date to the screen for debug purposes.
 func preRun(cmd *cobra.Command, args []string) {
 	setLoggingLevel()
@@ -246,5 +245,3 @@ func setLoggingLevel() {
 		log.Debugf("🐍 %s ☝️", aurora.Bold(aurora.Green(fmt.Sprintf(" configuration "))))
 	}
 }
-
-

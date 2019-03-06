@@ -162,7 +162,9 @@ func GetSchemasInDatabase(conf PGConfig, excludeSchemas []string) ([]string, err
 			found := false
 			_ = rows.Scan(&schema)
 			for _, ecs := range excludeSchemas {
-				if ecs == schema { found = true }
+				if ecs == schema {
+					found = true
+				}
 			}
 			if !found {
 				includedSchemas = append(includedSchemas, schema)
