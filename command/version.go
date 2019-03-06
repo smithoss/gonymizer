@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/SmithHealth/gonymizer"
+	"github.com/smithoss/gonymizer"
 	"github.com/spf13/cobra"
 	"os"
 	"runtime"

@@ -1,5 +1,5 @@
 # Gonymizer
-![GonymizerLogo.png](https://github.com/SmithHealth/gonymizer/blob/master/docs/images/gonymize_small.png?raw=true)
+![GonymizerLogo.png](https://github.com/smithoss/gonymizer/blob/master/docs/images/gonymize_small.png?raw=true)
 
 -----        
 
@@ -54,7 +54,7 @@ export GO111MODULE=on
 It is recommended to put all Go source code under ~/go. Once this is complete we can attempt to build the application:
 
 ```
-cd ~/go/src/github.com/SmithHealth/gonymizer/scripts
+cd ~/go/src/github.com/smithoss/gonymizer/scripts
 ./build.sh
 ```
 
@@ -84,9 +84,9 @@ export GO111MODULE=on
 
 3. Git checkout
 ```
-mkdir -p ~/go/src/github.com/SmithHealth/
-cd ~/go/src/github.com/SmithHealth/
-git clone https://github.com/SmithHealth/Gonymizer.git gonymizer
+mkdir -p ~/go/src/github.com/smithoss/
+cd ~/go/src/github.com/smithoss/
+git clone https://github.com/smithoss/Gonymizer.git gonymizer
 ```
 
 4. Build the project

@@ -1,4 +1,4 @@
-module github.com/SmithHealth/gonymizer
+module github.com/smithoss/gonymizer
 
 require (
 	github.com/BurntSushi/toml v0.3.1 // indirect

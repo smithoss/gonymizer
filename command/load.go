@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/SmithHealth/gonymizer"
+	"github.com/smithoss/gonymizer"
 	"github.com/logrusorgru/aurora"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"

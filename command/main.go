@@ -10,7 +10,7 @@ import (
 	"strings"
 	"syscall"
 
-	"github.com/SmithHealth/gonymizer"
+	"github.com/smithoss/gonymizer"
 	"github.com/logrusorgru/aurora"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
