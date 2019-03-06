@@ -66,8 +66,8 @@ map file using our JSON configuration:
 ./gonymizer-darwin -c ~/conf/map-file.json map
 ```
 
-## Debian 9.x
-Use the following steps to get up and going using Debian 9.x (Ubuntu 18.3 is similar)
+## Debian 9.x / Ubuntu 18.04
+Use the following steps to get up and going. Commands should be similar for Debian 9.x and Ubuntu 18.04.
 1. Install Golang and Git
 ```
 sudo apt-get install go git
