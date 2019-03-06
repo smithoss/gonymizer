@@ -3,6 +3,8 @@
 
 -----        
 
+[![CircleCI](https://circleci.com/gh/smithoss/gonymizer.svg?style=svg)](https://circleci.com/gh/smithoss/gonymizer)
+
 ## Weird name, what does it do?
 The Gonymizer project is a project that was completed at [SmithRx](https://www.smithrx.com) in hope to simplify the QA process. Gonymizer is 
 written in Go lang and is meant to help database administrators and infrastructure folks easily anonymize production
