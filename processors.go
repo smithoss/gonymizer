@@ -82,22 +82,6 @@ type ProcessorFunc func(*ColumnMapper, string) (string, error)
 // fakeFuncPtr is a simple function prototype for function pointers to the Fake package's fake functions.
 type fakeFuncPtr func() string
 
-func jaroWinkler(input string, faker fakeFuncPtr) (output string, err error) {
-	var counter = 0
-	for {
-		output = faker()
-		if jw := matchr.JaroWinkler(input, output, true); jw >= 0.5 {
-			break
-		} else if counter >= jaroWinklerAttempts {
-			errorMsg := fmt.Sprintf("Jaro-Winkler: %e < 0.5 for %d attempts. Input: %s, Output: %s",
-				jw, counter, input, output)
-			err = errors.New(errorMsg)
-			break
-		}
-		counter += 1
-	}
-	return output, err
-}
 
 // ProcessorAlphaNumericScrambler will receive the column metadata via ColumnMap and the column's actual data via the
 // input string. The processor will scramble all alphanumeric digits and characters, but it will leave all
@@ -138,27 +122,27 @@ func ProcessorAlphaNumericScrambler(cmap *ColumnMapper, input string) (string, e
 
 // ProcessorAddress will return a fake address string that is compiled from the fake library
 func ProcessorAddress(cmap *ColumnMapper, input string) (string, error) {
-	return jaroWinkler(input, fake.StreetAddress)
+	return jaroWinkler(input, 0.5, fake.StreetAddress)
 }
 
 // ProcessorCity will return a real city name that is >= 0.5 Jaro-Winkler similar than the input.
 func ProcessorCity(cmap *ColumnMapper, input string) (string, error) {
-	return jaroWinkler(input, fake.City)
+	return jaroWinkler(input, 0.5, fake.City)
 }
 
 // ProcessorEmailAddress will return an e-mail address that is >= 0.5 Jaro-Winkler similar than the input.
 func ProcessorEmailAddress(cmap *ColumnMapper, input string) (string, error) {
-	return jaroWinkler(input, fake.EmailAddress)
+	return jaroWinkler(input, 0.5, fake.EmailAddress)
 }
 
 // ProcessorFirstName will return a first name that is >= 0.5 Jaro-Winkler similar than the input.
 func ProcessorFirstName(cmap *ColumnMapper, input string) (string, error) {
-	return jaroWinkler(input, fake.FirstName)
+	return jaroWinkler(input, 0.4, fake.FirstName)
 }
 
 // ProcessorFullName will return a full name that is >= 0.5 Jaro-Winkler similar than the input.
 func ProcessorFullName(cmap *ColumnMapper, input string) (string, error) {
-	return jaroWinkler(input, fake.FullName)
+	return jaroWinkler(input, 0.5, fake.FullName)
 }
 
 // ProcessorIdentity will skip anonymization and leave output === input.
@@ -168,27 +152,27 @@ func ProcessorIdentity(cmap *ColumnMapper, input string) (string, error) {
 
 // ProcessorLastName will return a last name that is >= 0.5 Jaro-Winkler similar than the input.
 func ProcessorLastName(cmap *ColumnMapper, input string) (string, error) {
-	return jaroWinkler(input, fake.LastName)
+	return jaroWinkler(input, 0.4, fake.LastName)
 }
 
 // ProcessorPhoneNumber will return a phone number that is >= 0.5 Jaro-Winkler similar than the input.
 func ProcessorPhoneNumber(cmap *ColumnMapper, input string) (string, error) {
-	return jaroWinkler(input, fake.Phone)
+	return jaroWinkler(input, 0.5, fake.Phone)
 }
 
 // ProcessorState will return a state that is >= 0.5 Jaro-Winkler similar than the input.
 func ProcessorState(cmap *ColumnMapper, input string) (string, error) {
-	return jaroWinkler(input, fake.State)
+	return jaroWinkler(input, 0.4, fake.State)
 }
 
 // ProcessorUserName will return a username that is >= 0.5 Jaro-Winkler similar than the input.
 func ProcessorUserName(cmap *ColumnMapper, input string) (string, error) {
-	return jaroWinkler(input, fake.UserName)
+	return jaroWinkler(input, 0.4, fake.UserName)
 }
 
 // ProcessorZip will return a zip code that is >= 0.5 Jaro-Winkler similar than the input.
 func ProcessorZip(cmap *ColumnMapper, input string) (string, error) {
-	return jaroWinkler(input, fake.Zip)
+	return jaroWinkler(input, 0.5, fake.Zip)
 }
 
 // ProcessorRandomDate will return a random day and month, but keep year the same (See: HIPAA rules)
@@ -231,6 +215,23 @@ func ProcessorRandomUUID(cmap *ColumnMapper, input string) (string, error) {
 // ProcessorScrubString will replace the input string with asterisks (*). Useful for blanking out password fields.
 func ProcessorScrubString(cmap *ColumnMapper, input string) (string, error) {
 	return scrubString(input), nil
+}
+
+func jaroWinkler(input string, jwDistance float64, faker fakeFuncPtr) (output string, err error) {
+	var counter = 0
+	for {
+		output = faker()
+		if jw := matchr.JaroWinkler(input, output, true); jw >= jwDistance {
+			break
+		} else if counter >= jaroWinklerAttempts {
+			errorMsg := fmt.Sprintf("Jaro-Winkler: %e < %e for %d attempts. Input: %s, Output: %s",
+				jw, jwDistance, counter, input, output)
+			err = errors.New(errorMsg)
+			break
+		}
+		counter += 1
+	}
+	return output, err
 }
 
 // randomizeUUID creates a random UUID and adds it to the map of input->output. If input already exists it returns
