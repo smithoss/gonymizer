@@ -1,6 +1,9 @@
 # Gonymizer
 ![GonymizerLogo.png](https://github.com/smithoss/gonymizer/blob/master/docs/images/gonymize_small.png?raw=true)
 
+
+
+
 -----        
 
 [![CircleCI](https://circleci.com/gh/smithoss/gonymizer.svg?style=svg)](https://circleci.com/gh/smithoss/gonymizer)[![codecov](https://codecov.io/gh/smithoss/gonymizer/branch/master/graph/badge.svg)](https://codecov.io/gh/smithoss/gonymizer)[![Go Report Card](https://goreportcard.com/badge/github.com/smithoss/gonymizer)](https://goreportcard.com/report/github.com/smithoss/gonymizer)[![GoDoc](https://godoc.org/github.com/smithoss/gonymizer?status.svg)](https://godoc.org/github.com/smithoss/gonymizer)
@@ -406,3 +409,8 @@ application is indeed HIPAA/PCI/PHI/PII compliant.
 **THERE IS ABSOLUTELY NO GUARANTEE THAT USING THIS SOFTWARE WILL COMPLETE A CORRECT ANONYMIZATION OF YOUR DATA SET
 FOR COMPLIANCE PURPOSES. PLEASE SEE LICENSE.txt FOR MORE INFORMATION.**
 
+### Go Logo and Graphics
+All graphics used in this project are released under the [Create Common License 3.0](https://creativecommons.org/licenses/by/3.0/us/)
+The Go gopher was designed by [Renee French] (http://reneefrench.blogspot.com/)
+The Go gopher PNG the Gonymizer logo was created from is [Takuya Ueda](https://twitter.com/tenntenn)
+The Gonymizer gophers logo was created by [Levi Junkert](https://github.com/junkert)
