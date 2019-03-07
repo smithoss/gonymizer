@@ -3,7 +3,7 @@
 
 -----        
 
-[![CircleCI](https://circleci.com/gh/smithoss/gonymizer.svg?style=svg)](https://circleci.com/gh/smithoss/gonymizer)[![codecov](https://codecov.io/gh/smithoss/gonymizer/branch/master/graph/badge.svg)](https://codecov.io/gh/smithoss/gonymizer)[![GoDoc](https://godoc.org/github.com/smithoss/gonymizer?status.svg)](https://godoc.org/github.com/smithoss/gonymizer)
+[![CircleCI](https://circleci.com/gh/smithoss/gonymizer.svg?style=svg)](https://circleci.com/gh/smithoss/gonymizer)[![codecov](https://codecov.io/gh/smithoss/gonymizer/branch/master/graph/badge.svg)](https://codecov.io/gh/smithoss/gonymizer)[![Go Report Card](https://goreportcard.com/badge/github.com/smithoss/gonymizer)](https://goreportcard.com/report/github.com/smithoss/gonymizer)[![GoDoc](https://godoc.org/github.com/smithoss/gonymizer?status.svg)](https://godoc.org/github.com/smithoss/gonymizer)
 
 ## Weird name, what does it do?
 The Gonymizer project is a project that was completed at [SmithRx](https://www.smithrx.com) in hope to simplify the QA process. Gonymizer is 
