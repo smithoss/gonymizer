@@ -107,6 +107,7 @@ func (this *PGConfig) URI() string {
 	return this.DSN()
 }
 
+// BaseURI will return the BaseDSN for the supplied PGConfig.
 func (this *PGConfig) BaseURI() string {
 	return this.BaseDSN()
 }

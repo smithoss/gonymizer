@@ -9,6 +9,8 @@ import (
 	"strings"
 )
 
+
+// RowCounts is used to keep track of the number of rows for a given schema and table.
 type RowCounts struct {
 	SchemaName *string
 	TableName  *string
