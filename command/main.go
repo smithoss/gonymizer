@@ -39,6 +39,11 @@ gonymizer dump examples:
 gonymizer process examples:
 
     ./gonymizer -c config.yaml --dump-file=pii.sql --processed-dumpfile=anonymized.sql process
+
+
+License Information
+	https://raw.githubusercontent.com/smithoss/gonymizer/master/LICENSE.txt
+
 `
 
 var (
