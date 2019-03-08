@@ -231,7 +231,7 @@ func GetSchemaColumnsLike(db *sql.DB, schemaPrefix string) (*sql.Rows, error) {
 
 }
 
-// GetTableRowCountsInDb collects the number of rows for each table in the given supplied schema prefix and will not
+// GetTableRowCountsInDB collects the number of rows for each table in the given supplied schema prefix and will not
 // include any of the tables listed in the excludeTable list. Returns a list of tables the number of rows for each.
 func GetTableRowCountsInDB(conf PGConfig, schemaPrefix string, excludeTable []string) (*[]RowCounts, error) {
 	var (
