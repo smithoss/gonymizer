@@ -13,6 +13,7 @@ import (
 	"time"
 )
 
+// LoadCmd is the cobra.Command struct we use for "load" command.
 var (
 	LoadCmd = &cobra.Command{
 		Use:   "load",
@@ -167,9 +168,8 @@ func load(conf gonymizer.PGConfig, loadFile, s3FilePath string) (err error) {
 	log.Info("Loading data from file: ", loadFile)
 	if err = gonymizer.LoadFile(conf, loadFile); err != nil {
 		return err
-	} else {
-		return nil
 	}
+	return nil
 }
 
 // downloadRowCountFile will download the row count file from S3 if needed and verify that the table row counts is
@@ -185,7 +185,7 @@ func downloadRowCountFile(dbConf gonymizer.PGConfig, path string) (err error) {
 		// NOTE: Temp file creation. We will remove below after we load to S3
 		// Use /tmp/filePath_EPOCH_TIME to store the file before copying to S3
 		tempFile := "/tmp/" + strconv.FormatInt(time.Now().Unix(), 10) + "_" + s3File.FilePath
-		log.Infof("🚛 Downloading from S3 '%s' -> %s\n", s3File.Url, tempFile)
+		log.Infof("🚛 Downloading from S3 '%s' -> %s\n", s3File.URL, tempFile)
 		if err = gonymizer.GetFileFromS3(nil, &s3File, tempFile); err != nil {
 			return err
 		}

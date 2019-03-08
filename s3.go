@@ -20,14 +20,14 @@ type S3File struct {
 	FilePath string
 	Region   string
 	Scheme   string
-	Url      *url.URL
+	URL      *url.URL
 }
 
 // ParseS3Url will parse the supplied S3 uri and load it into a S3File structure
-func (this *S3File) ParseS3Url(s3url string) (err error) {
+func (s3f *S3File) ParseS3Url(s3url string) (err error) {
 	// Parse S3 URL into Bucket, Region, and path
 	if s3url != "" {
-		this.Url, err = url.Parse(s3url)
+		s3f.URL, err = url.Parse(s3url)
 		if err != nil {
 			log.Error("Unable to parse URL string: ", s3url)
 			return err
@@ -35,15 +35,15 @@ func (this *S3File) ParseS3Url(s3url string) (err error) {
 
 		// We need to split up the URL for the host string to pull out Bucket and Region
 		// Structure: <Bucket>.s3.<Region>.amazonaws.com<path>
-		hostSplit := strings.Split(this.Url.Host, ".")
-		this.Scheme = strings.Split(s3url, ":")[0]
-		this.Bucket = hostSplit[0]
-		this.Region = hostSplit[2]
-		this.FilePath = this.Url.Path[1:] // Chop the first / from the path
-		if this.Url.Scheme != "s3" {
+		hostSplit := strings.Split(s3f.URL.Host, ".")
+		s3f.Scheme = strings.Split(s3url, ":")[0]
+		s3f.Bucket = hostSplit[0]
+		s3f.Region = hostSplit[2]
+		s3f.FilePath = s3f.URL.Path[1:] // Chop the first / from the path
+		if s3f.URL.Scheme != "s3" {
 			return errors.New("Unable to parse S3File URL: " + s3url)
 		}
-		log.Debugf("ParseS3Url => Bucket: %s\tRegion: %s\tFilePath: %s", this.Bucket, this.Region, this.FilePath)
+		log.Debugf("ParseS3Url => Bucket: %s\tRegion: %s\tFilePath: %s", s3f.Bucket, s3f.Region, s3f.FilePath)
 	}
 	return nil
 }
@@ -116,7 +116,7 @@ func GetFileFromS3(sess *session.Session, s3file *S3File, loadFile string) (err 
 			Key:    aws.String(s3file.FilePath),
 		})
 	if err != nil {
-		log.Errorf("Unable to download item: %s", s3file.Url.String())
+		log.Errorf("Unable to download item: %s", s3file.URL.String())
 		return err
 	}
 	return nil

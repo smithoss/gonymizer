@@ -46,12 +46,14 @@ const numericSetLen = 10
 // in this map.
 var ProcessorCatalog map[string]ProcessorFunc
 
-// . We need to scramble things such as Social Security Numbers, but it is nice to keep
-// track of these changes so if we run across the same SSN again we can scramble it to what we already have.
+// AlphaNumericMap is used to keep consistency with scrambled alpha numeric strings.
+// For example, if we need to scramble things such as Social Security Numbers, but it is nice to keep track of these
+// changes so if we run across the same SSN again we can scramble it to what we already have.
 var AlphaNumericMap = map[string]map[string]string{}
 
-// Global UUID map for all UUIDs. Similar to AlphaNumericMap this map contains all UUIDs and what they are changed to.
-// Some tables use UUIDs as the primary key and this allows us to keep consistency in the data set when anonymizing it.
+// UUIDMap is the Global UUID map for all UUIDs that we anonymize. Similar to AlphaNumericMap this map contains all
+// UUIDs and what they are changed to. Some tables use UUIDs as the primary key and this allows us to keep consistency
+// in the data set when anonymizing it.
 var UUIDMap = map[uuid.UUID]uuid.UUID{}
 
 // init initializes the ProcessorCatalog map for all processors. A processor must be listed here to be accessible.
@@ -81,7 +83,6 @@ type ProcessorFunc func(*ColumnMapper, string) (string, error)
 
 // fakeFuncPtr is a simple function prototype for function pointers to the Fake package's fake functions.
 type fakeFuncPtr func() string
-
 
 // ProcessorAlphaNumericScrambler will receive the column metadata via ColumnMap and the column's actual data via the
 // input string. The processor will scramble all alphanumeric digits and characters, but it will leave all
@@ -181,18 +182,18 @@ func ProcessorRandomDate(cmap *ColumnMapper, input string) (string, error) {
 	dateSplit := strings.Split(input, "-")
 
 	if len(dateSplit) < 3 || len(dateSplit) > 3 {
-		return "", errors.New(fmt.Sprintf("Date format is not ISO-8601: %q", dateSplit))
-	} else {
-		// Parse Year
-		year, err := strconv.Atoi(dateSplit[0])
-		if err != nil {
-			return "", errors.New(fmt.Sprintf("Unable to parse year from date: %q", dateSplit))
-		}
-
-		// NOTE: HIPAA only requires we scramble month and day, not year
-		scrambledDate := randomizeDate(year)
-		return scrambledDate, nil
+		return "", fmt.Errorf("Date format is not ISO-8601: %q", dateSplit)
 	}
+
+	// Parse Year
+	year, err := strconv.Atoi(dateSplit[0])
+	if err != nil {
+		return "", fmt.Errorf("Unable to parse year from date: %q", dateSplit)
+	}
+
+	// NOTE: HIPAA only requires we scramble month and day, not year
+	scrambledDate := randomizeDate(year)
+	return scrambledDate, nil
 }
 
 // ProcessorRandomUUID will generate a random UUID and replace the input with the new UUID. The input however will be
@@ -201,12 +202,12 @@ func ProcessorRandomDate(cmap *ColumnMapper, input string) (string, error) {
 func ProcessorRandomUUID(cmap *ColumnMapper, input string) (string, error) {
 	var scrambledUUID string
 
-	inputId, err := uuid.Parse(input)
+	inputID, err := uuid.Parse(input)
 
 	if err != nil {
 		scrambledUUID = ""
 	} else {
-		scrambledUUID, err = randomizeUUID(inputId)
+		scrambledUUID, err = randomizeUUID(inputID)
 	}
 
 	return scrambledUUID, err
@@ -229,7 +230,7 @@ func jaroWinkler(input string, jwDistance float64, faker fakeFuncPtr) (output st
 			err = errors.New(errorMsg)
 			break
 		}
-		counter += 1
+		counter++
 	}
 	return output, err
 }
@@ -238,20 +239,20 @@ func jaroWinkler(input string, jwDistance float64, faker fakeFuncPtr) (output st
 // the output that was previously calculated for input.
 func randomizeUUID(input uuid.UUID) (string, error) {
 	var (
-		finalId uuid.UUID
-		err     error
+		finalUUID uuid.UUID
+		err       error
 	)
 
 	if _, ok := UUIDMap[input]; !ok {
-		finalId, err = uuid.NewRandom()
+		finalUUID, err = uuid.NewRandom()
 		if err != nil {
 			return "", err
 		}
-		UUIDMap[input] = finalId
+		UUIDMap[input] = finalUUID
 	} else {
-		finalId = UUIDMap[input]
+		finalUUID = UUIDMap[input]
 	}
-	return finalId.String(), nil
+	return finalUUID.String(), nil
 }
 
 // randomizeDate randomizes a day and month for a given year. This function is leap year compatible.

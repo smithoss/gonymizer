@@ -129,7 +129,6 @@ func ExecPostgresCmd(name string, args ...string) error {
 	outLog := "db_test_out.log"
 
 	outputFile, err := os.OpenFile(outLog, os.O_RDWR|os.O_APPEND|os.O_CREATE, 0660)
-	defer outputFile.Close()
 	if err != nil {
 		log.Error(err)
 		log.Debug("outputFile: ", outLog)
@@ -137,10 +136,10 @@ func ExecPostgresCmd(name string, args ...string) error {
 		log.Debug("args: ", args)
 		return err
 	}
+	defer outputFile.Close()
 
 	errLog := "db_test_err.log"
 	errorFile, err := os.OpenFile(errLog, os.O_RDWR|os.O_APPEND|os.O_CREATE, 0660)
-	defer errorFile.Close()
 	if err != nil {
 		log.Error(err)
 		log.Debug("errorFile: ", errLog)
@@ -148,7 +147,7 @@ func ExecPostgresCmd(name string, args ...string) error {
 		log.Debug("args: ", args)
 		return err
 	}
-
+	defer errorFile.Close()
 	return ExecPostgresCommandOutErr(outputFile, errorFile, name, args...)
 }
 

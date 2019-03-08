@@ -97,7 +97,7 @@ func TestClear(t *testing.T) {
 	line.ColumnNames = []string{"TestColumnOne", "TestColumnTwo"}
 
 	if line.IsRow == true || len(line.SchemaName) > 0 || len(line.TableName) > 0 || len(line.ColumnNames) > 0 {
-		assert.Error(t, errors.New("LineState.Clear() did not clear the object!"))
+		assert.Error(t, errors.New("LineState.Clear() did not clear the object because of invalid line"))
 	}
 }
 

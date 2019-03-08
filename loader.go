@@ -38,8 +38,8 @@ func LoadFile(conf PGConfig, filePath string) (err error) {
 	if err != nil {
 		return err
 	} else if dbExists {
-		return errors.New(fmt.Sprintf("Found a previous version of the %s database. Is there another copy "+
-			"of Anonymizer running?", tempDbConf.DefaultDBName))
+		return fmt.Errorf("Found a previous version of the %s database. Is there another copy "+
+			"of Anonymizer running?", tempDbConf.DefaultDBName)
 	}
 
 	// Create temp database
@@ -93,6 +93,10 @@ func VerifyRowCount(conf PGConfig, filePath string) (err error) {
 	// Load local row counts into a map of maps so we can quickly look up values
 	dbRowCount := make(map[string]map[string]int)
 	rowObjs, err := GetTableRowCountsInDB(conf, "", []string{})
+	if err != nil {
+		return err
+	}
+
 	for _, row := range *rowObjs {
 		if len(dbRowCount[*row.SchemaName]) < 1 {
 			dbRowCount[*row.SchemaName] = make(map[string]int)
@@ -146,7 +150,7 @@ func VerifyRowCount(conf PGConfig, filePath string) (err error) {
 				dbRowCount[schema][table],
 			)
 		}
+		lineNum++
 	}
-	lineNum += 1
 	return err
 }

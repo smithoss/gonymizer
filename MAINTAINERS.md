@@ -1,3 +1,3 @@
 # Maintainers
 
-Levi Junkert <levi.junkert@smithrx.com>
+Levi Junkert  github.com/junkert  <levi.junkert@smithrx.com> 

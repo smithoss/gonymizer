@@ -9,7 +9,6 @@ import (
 	"strings"
 )
 
-
 // RowCounts is used to keep track of the number of rows for a given schema and table.
 type RowCounts struct {
 	SchemaName *string
@@ -144,13 +143,11 @@ func GetSchemasInDatabase(conf PGConfig, excludeSchemas []string) ([]string, err
 		log.Error(err)
 		return nil, err
 	}
-	defer db.Close()
 
 	rows, err = db.Query(`
 		SELECT schema_name
 		FROM information_schema.schemata
 		WHERE schema_name NOT IN ($1)`, pq.Array(excludeSchemas))
-	defer rows.Close()
 
 	if err != nil {
 		log.Error("Query IN clause: ")
@@ -173,12 +170,11 @@ func GetSchemasInDatabase(conf PGConfig, excludeSchemas []string) ([]string, err
 			}
 		}
 
+		// Loop until the resulting set is compelete
 		if !rows.NextResultSet() {
-			break
+			return includedSchemas, db.Close()
 		}
 	}
-
-	return includedSchemas, nil
 }
 
 // GetSchemaColumnEquals returns a pointer to a list of database rows containing the names of tables and columns for

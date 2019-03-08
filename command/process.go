@@ -18,6 +18,7 @@ import (
 var (
 	processedFile string
 
+	// ProcessCmd is the cobra.Command struct we use for the "process" command.
 	ProcessCmd = &cobra.Command{
 		Use:   "process",
 		Short: "Process will use the map file to anonymize data from a PostgreSQL dump file",
@@ -98,7 +99,7 @@ func cliCommandProcess(cmd *cobra.Command, args []string) {
 		os.Exit(1)
 	}
 	log.Debugf("S3 URL: %s\tScheme: %s\tBucket: %s\tRegion: %s\tFile Path: %s",
-		s3file.Url,
+		s3file.URL,
 		s3file.Scheme,
 		s3file.Bucket,
 		s3file.Region,
@@ -139,14 +140,14 @@ func process(dumpFile, mapFile, processedDumpFile string, generateSeed bool, s3f
 	// Upload the processed file to S3 (iff the user selected this option and it is valid)
 	log.Info("S3 scheme: ", s3file.Scheme)
 	if s3file.Scheme == "s3" {
-		log.Infof("🚛 Uploading '%s' => S3: %s\n", processedDumpFile, s3file.Url)
+		log.Infof("🚛 Uploading '%s' => S3: %s\n", processedDumpFile, s3file.URL)
 		sess, err := session.NewSession(&aws.Config{Region: aws.String(s3file.Region)})
 		if err != nil {
 			return err
 		}
 
 		if err = gonymizer.AddFileToS3(sess, processedDumpFile, s3file); err != nil {
-			log.Errorf("Unable to upload '%s' => '%s'", processedDumpFile, s3file.Url)
+			log.Errorf("Unable to upload '%s' => '%s'", processedDumpFile, s3file.URL)
 			return err
 		}
 	}

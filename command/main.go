@@ -80,9 +80,9 @@ var (
 )
 
 // GetDb returns a PGConfig set to the supplied database settings.
-func GetDb(host, username, password, database string, port int32, disable_ssl bool) (gonymizer.PGConfig, *sql.DB) {
+func GetDb(host, username, password, database string, port int32, disableSSL bool) (gonymizer.PGConfig, *sql.DB) {
 	conf := gonymizer.PGConfig{}
-	conf.LoadFromCLI(host, username, password, database, port, disable_ssl)
+	conf.LoadFromCLI(host, username, password, database, port, disableSSL)
 
 	db, err := gonymizer.OpenDB(conf)
 	if err != nil {

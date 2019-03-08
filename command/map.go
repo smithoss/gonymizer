@@ -12,6 +12,7 @@ import (
 	"github.com/spf13/viper"
 )
 
+// MapCmd is the cobra.Command struct we use for "map" command.
 var (
 	MapCmd = &cobra.Command{
 		Use:   "map",
