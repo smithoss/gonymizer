@@ -22,94 +22,94 @@ type PGConfig struct {
 	SSLMode string
 }
 
-// LoadFromCli will load the PostgreSQL configuration using the function input variables.
-func (this *PGConfig) LoadFromCLI(host, username, password, database string, port int32, disableSSL bool) {
-	this.Username = username
-	this.DefaultDBName = database
-	this.Pass = password
-	this.Host = fmt.Sprintf("%s:%d", host, port)
+// LoadFromCLI will load the PostgreSQL configuration using the function input variables.
+func (conf *PGConfig) LoadFromCLI(host, username, password, database string, port int32, disableSSL bool) {
+	conf.Username = username
+	conf.DefaultDBName = database
+	conf.Pass = password
+	conf.Host = fmt.Sprintf("%s:%d", host, port)
 
 	// Set SSL Mode
 	if disableSSL {
-		this.SSLMode = "disable"
+		conf.SSLMode = "disable"
 	} else {
-		this.SSLMode = "require"
+		conf.SSLMode = "require"
 	}
 }
 
 // LoadFromEnv uses environment variables to load the PGConfig.
-func (this *PGConfig) LoadFromEnv(debugNum int64, prefix, suffix string) {
-	this.Username = viper.GetString(prefix + "USER" + suffix)
-	this.Pass = viper.GetString(prefix + "PASS" + suffix)
-	this.Host = viper.GetString(prefix + "HOST" + suffix)
+func (conf *PGConfig) LoadFromEnv(debugNum int64, prefix, suffix string) {
+	conf.Username = viper.GetString(prefix + "USER" + suffix)
+	conf.Pass = viper.GetString(prefix + "PASS" + suffix)
+	conf.Host = viper.GetString(prefix + "HOST" + suffix)
 	port := viper.GetString(prefix + "PORT" + suffix)
-	this.DefaultDBName = viper.GetString(prefix + "NAME" + suffix)
-	this.SSLMode = viper.GetString(prefix + "SSL" + suffix)
+	conf.DefaultDBName = viper.GetString(prefix + "NAME" + suffix)
+	conf.SSLMode = viper.GetString(prefix + "SSL" + suffix)
 
 	// Set Port
 	if port != "" {
-		this.Host = strings.Join([]string{this.Host, port}, ":")
+		conf.Host = strings.Join([]string{conf.Host, port}, ":")
 	}
 
-	if this.Host == "" {
+	if conf.Host == "" {
 		log.Fatal("no database host provided")
 	}
 }
 
 // DSN will construct the data source name from the supplied data in the PGConfig.
 // See: https://en.wikipedia.org/wiki/Data_source_name
-func (this *PGConfig) DSN() string {
-	dsn := this.queryBaseDsn()
+func (conf *PGConfig) DSN() string {
+	dsn := conf.queryBaseDsn()
 
-	if len(this.DefaultDBName) > 0 {
-		dsn += "/" + this.DefaultDBName
+	if len(conf.DefaultDBName) > 0 {
+		dsn += "/" + conf.DefaultDBName
 	}
-	if len(this.SSLMode) > 0 {
-		if len(this.DefaultDBName) == 0 {
+	if len(conf.SSLMode) > 0 {
+		if len(conf.DefaultDBName) == 0 {
 			dsn += "/"
 		}
 
-		dsn += "?sslmode=" + this.SSLMode
+		dsn += "?sslmode=" + conf.SSLMode
 	}
 
 	return dsn
 }
 
 // BaseDSN will return the base of the DSN in string form.
-func (this *PGConfig) BaseDSN() string {
-	dsn := this.queryBaseDsn()
+func (conf *PGConfig) BaseDSN() string {
+	dsn := conf.queryBaseDsn()
 
-	if len(this.SSLMode) > 0 {
-		dsn += "/?sslmode=" + this.SSLMode
+	if len(conf.SSLMode) > 0 {
+		dsn += "/?sslmode=" + conf.SSLMode
 	}
 
 	return dsn
 }
 
 // queryBaseDSN will return the base DSN constructed from the data in the PGConfig.
-func (this *PGConfig) queryBaseDsn() string {
+func (conf *PGConfig) queryBaseDsn() string {
 	var u *url.Userinfo
-	if this.Pass != "" {
-		u = url.UserPassword(this.Username, this.Pass)
-	} else if this.Username != "" {
-		u = url.User(this.Username)
+	if conf.Pass != "" {
+		u = url.UserPassword(conf.Username, conf.Pass)
+	} else if conf.Username != "" {
+		u = url.User(conf.Username)
 	}
 
 	return (&url.URL{
 		Scheme: "postgres",
 		User:   u,
-		Host:   this.Host,
+		Host:   conf.Host,
 	}).String()
 }
 
 // URI returns a URI constructed from the supplied PGConfig.
-func (this *PGConfig) URI() string {
-	return this.DSN()
+func (conf *PGConfig) URI() string {
+	return conf.DSN()
 }
 
 // BaseURI will return the BaseDSN for the supplied PGConfig.
-func (this *PGConfig) BaseURI() string {
-	return this.BaseDSN()
+func (conf *PGConfig) BaseURI() string {
+	return conf.BaseDSN()
 }
 
 // OpenDB will open the database set in the PGConfig and return a pointer to the database connection.

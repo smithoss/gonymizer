@@ -8,6 +8,7 @@ import (
 	"runtime"
 )
 
+// VersionCmd is the cobra.Command struct we use for "VersionCmd" command.
 var (
 	VersionCmd = &cobra.Command{
 		Use:   "version",

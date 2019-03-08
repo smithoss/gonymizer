@@ -45,17 +45,17 @@ func TestProcessorAlphaNumericScrambler(t *testing.T) {
 	alphaTest.ParentTable = "test_table"
 	alphaTest.ParentColumn = "test_column"
 
-	output_a, err := ProcessorAlphaNumericScrambler(&alphaTest, "My name is Mud - Pr1mUs")
+	outputA, err := ProcessorAlphaNumericScrambler(&alphaTest, "My name is Mud - Pr1mUs")
 	assert.Nil(t, err)
-	output_b, err := ProcessorAlphaNumericScrambler(&alphaTest, "My name is Mud - 111111")
+	outputB, err := ProcessorAlphaNumericScrambler(&alphaTest, "My name is Mud - 111111")
 	assert.Nil(t, err)
-	output_c, err := ProcessorAlphaNumericScrambler(&alphaTest, "My name is Mud - Pr1mUs")
+	outputC, err := ProcessorAlphaNumericScrambler(&alphaTest, "My name is Mud - Pr1mUs")
 	assert.Nil(t, err)
 
-	// output_a != output_b
-	assert.NotEqual(t, output_a, output_b)
-	// output_a === output_c
-	assert.Equal(t, output_a, output_c)
+	// outputA != outputB
+	assert.NotEqual(t, outputA, outputB)
+	// outputA === outputC
+	assert.Equal(t, outputA, outputC)
 }
 
 func TestProcessorAddress(t *testing.T) {
@@ -231,11 +231,12 @@ func TestProcessorScrubString(t *testing.T) {
 }
 
 func TestRandomizeUUID(t *testing.T) {
-	temp_uuid := uuid.New().String()
-	output, err := ProcessorRandomUUID(&cMap, temp_uuid)
+	tempUUID := uuid.New().String()
+	output, err := ProcessorRandomUUID(&cMap, tempUUID)
 	assert.Nil(t, err)
-	assert.NotEqual(t, output, temp_uuid)
+	assert.NotEqual(t, output, tempUUID)
 
 	output, err = ProcessorRandomUUID(&cMap, "")
+	assert.NotNil(t, err)
 	assert.Equal(t, output, "")
 }

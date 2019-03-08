@@ -68,6 +68,7 @@ func LoadTestDb(dbName string) error {
 
 	// Prep database
 	if err := DropDatabase(conf); err != nil {
+		return err
 	}
 	if err := CreateDatabase(conf); err != nil {
 		return err

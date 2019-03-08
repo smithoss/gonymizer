@@ -19,9 +19,11 @@ import (
 
 var lineCount = int64(0) // Used to notify user progress during processing
 
+// StateChangeTokenBeginCopy is the token used to notify the processor that we have hit SQL-COPY in the dump file
+// StateChangeTokenEndCopy is the token used to notify the processor that we are done with SQL-COPY
 const (
-	STATE_CHANGE_TOKEN_BEGIN_COPY = "COPY"
-	STATE_CHANGE_TOKEN_END_COPY   = "\\."
+	StateChangeTokenBeginCopy = "COPY"
+	StateChangeTokenEndCopy   = "\\."
 )
 
 // LineState contains all the required information for parsing a line in the SQL dump file.
@@ -34,11 +36,11 @@ type LineState struct {
 }
 
 // Clear will clear out all known line stat for the current LineState object.
-func (this *LineState) Clear() {
-	this.IsRow = false
-	this.SchemaName = ""
-	this.TableName = ""
-	this.ColumnNames = nil
+func (curLine *LineState) Clear() {
+	curLine.IsRow = false
+	curLine.SchemaName = ""
+	curLine.TableName = ""
+	curLine.ColumnNames = nil
 }
 
 // CreateDumpFile will create a PostgreSQL dump file from the specified PGConfig to the location, and with
@@ -124,7 +126,9 @@ func CreateDumpFile(
 
 	// Add create schema statements to top of dump file
 	log.Info("Adding CREATE statements for: non-system schemas")
-	err = generateSchemaSQL(conf, outputFile, excludeCreateSchemas)
+	if err := generateSchemaSQL(conf, outputFile, excludeCreateSchemas); err != nil {
+		return err
+	}
 
 	// Now grab tables and data
 	err = ExecPostgresCommandOutErr(outputFile, &errBuffer, cmd, args...)
@@ -315,12 +319,12 @@ func processLine(mapper *DBMapper, state *LineState, inputLine string) (*LineSta
 		return state, outputLine, nil
 	}
 
-	if strings.HasPrefix(trimmedInput, STATE_CHANGE_TOKEN_BEGIN_COPY) {
+	if strings.HasPrefix(trimmedInput, StateChangeTokenBeginCopy) {
 		state.parseCopyLine(inputLine)
 		return state, outputLine, nil
 	}
 
-	if strings.HasPrefix(trimmedInput, STATE_CHANGE_TOKEN_END_COPY) {
+	if strings.HasPrefix(trimmedInput, StateChangeTokenEndCopy) {
 		state.Clear()
 		return state, outputLine, nil
 	}
@@ -416,23 +420,23 @@ func processValue(cmap *ColumnMapper, input string) (string, error) {
 }
 
 // parseCopyLine will parse the /copy line in a PostgreSQL dump file
-func (this *LineState) parseCopyLine(inputLine string) {
+func (curLine *LineState) parseCopyLine(inputLine string) {
 
 	spaceSplts := strings.Split(inputLine, " ")
 	schemaTableSplt := strings.Split(spaceSplts[1], ".")
 
-	this.IsRow = true
-	this.SchemaName = schemaTableSplt[0]
-	this.TableName = schemaTableSplt[1]
+	curLine.IsRow = true
+	curLine.SchemaName = schemaTableSplt[0]
+	curLine.TableName = schemaTableSplt[1]
 
 	openSplts := strings.Split(inputLine, "(")
 	parensContent := openSplts[1]
 	closeSplits := strings.Split(parensContent, ")")
 	parensContent = closeSplits[0]
-	this.ColumnNames = strings.Split(parensContent, ",")
+	curLine.ColumnNames = strings.Split(parensContent, ",")
 
-	for i, v := range this.ColumnNames {
-		this.ColumnNames[i] = strings.TrimSpace(v)
+	for i, v := range curLine.ColumnNames {
+		curLine.ColumnNames[i] = strings.TrimSpace(v)
 	}
 
 	debugLine := fmt.Sprintf(`
@@ -442,7 +446,7 @@ func (this *LineState) parseCopyLine(inputLine string) {
  Is a row:     %t
  Columns:      %s
 ====================================================================================================================`,
-		this.SchemaName, this.TableName, this.LineNum, this.IsRow, strings.Join(this.ColumnNames, ", "))
+		curLine.SchemaName, curLine.TableName, curLine.LineNum, curLine.IsRow, strings.Join(curLine.ColumnNames, ", "))
 	log.Debug(debugLine)
 }
 
@@ -450,14 +454,14 @@ func (this *LineState) parseCopyLine(inputLine string) {
 func preProcess(dstFile *os.File) (err error) {
 	settings := `
 --
--- Begin settings set by Anonymizer (pre-processor)
+-- Begin settings set by Gonymizer (pre-processor)
 --
 
 SET session_replication_role = replica;   /* Used to import without getting FK check errors   */
 CREATE EXTENSION btree_gist;              /* BTree_Gist plugin required by some tables        */
 
 --
--- End settings set by Anonymizer (pre-processor)
+-- End settings set by Gonymizer (pre-processor)
 --
 `
 	_, err = dstFile.WriteString(settings)
@@ -468,7 +472,7 @@ CREATE EXTENSION btree_gist;              /* BTree_Gist plugin required by some 
 func postProcess(dstFile *os.File, postProcessPath string) error {
 	_, err := dstFile.WriteString(`
 --
--- Begin settings set by Anonymizer (post-processor)
+-- Begin settings set by Gonymizer (post-processor)
 --
 `)
 	if err != nil {
@@ -499,7 +503,7 @@ func postProcess(dstFile *os.File, postProcessPath string) error {
 	}
 	_, err = dstFile.WriteString(`
 --
--- End settings set by Anonymizer (post-processor)
+-- End settings set by Gonymizer (post-processor)
 --
 `)
 	if err != nil {
@@ -515,12 +519,12 @@ func postProcess(dstFile *os.File, postProcessPath string) error {
 func writeDebugMap() (err error) {
 	// Dump map to disk for debug
 	outputFile, err := os.OpenFile("/tmp/map.txt", os.O_RDWR|os.O_CREATE, 0660)
-	defer outputFile.Close()
 	if err != nil {
-		log.Debug("error open or create: ", err)
-		log.Debug("outputFileName: ", "/tmp/map.txt")
+		log.Debug("outputFileName: /tmp/map.txt")
 		return err
 	}
+	defer outputFile.Close()
+
 	for k, v := range UUIDMap {
 		_, err = outputFile.WriteString(fmt.Sprintf("%s => %s\n", k, v))
 		if err != nil {

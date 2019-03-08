@@ -29,10 +29,10 @@ func TestLoadConfigSkeleton(t *testing.T) {
 	dbmap, err := LoadConfigSkeleton(TestMapFile)
 	assert.Nil(t, err)
 	assert.Nil(t, dbmap.Validate())
-	dbmap, err = LoadConfigSkeleton(TestDbFile)
+	_, err = LoadConfigSkeleton(TestDbFile)
 	assert.NotNil(t, err)
-	dbmap, err = LoadConfigSkeleton("")
+	_, err = LoadConfigSkeleton("")
 	assert.NotNil(t, err)
-	dbmap, err = LoadConfigSkeleton("/dev/null")
+	_, err = LoadConfigSkeleton("/dev/null")
 	assert.NotNil(t, err)
 }

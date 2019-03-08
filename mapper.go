@@ -51,12 +51,12 @@ type DBMapper struct {
 
 // ColumnMapper returns the address of the ColumnMapper object if it matches the given parameters otherwise it returns
 // nil. Special cases exist for sharded schemas using the schema-prefix. See documentation for details.
-func (this DBMapper) ColumnMapper(schemaName, tableName, columnName string) *ColumnMapper {
-	for _, cmap := range this.ColumnMaps {
-		//log.Infoln("this.SchemaPrefix-> ", this.SchemaPrefix)
+func (dbMap DBMapper) ColumnMapper(schemaName, tableName, columnName string) *ColumnMapper {
+	for _, cmap := range dbMap.ColumnMaps {
+		//log.Infoln("dbMap.SchemaPrefix-> ", dbMap.SchemaPrefix)
 		//log.Infoln("schemaName-> ", schemaName)
 
-		if len(this.SchemaPrefix) > 0 && strings.HasPrefix(schemaName, this.SchemaPrefix) && cmap.TableName == tableName &&
+		if len(dbMap.SchemaPrefix) > 0 && strings.HasPrefix(schemaName, dbMap.SchemaPrefix) && cmap.TableName == tableName &&
 			cmap.ColumnName == columnName {
 			return &cmap
 		} else if cmap.TableSchema == schemaName && cmap.TableName == tableName && cmap.ColumnName == columnName {
@@ -66,8 +66,9 @@ func (this DBMapper) ColumnMapper(schemaName, tableName, columnName string) *Col
 	return nil
 }
 
-func (dbmap *DBMapper) Validate() error {
-	if len(dbmap.DBName) == 0 {
+// Validate is used to verify that a database map is complete and correct.
+func (dbMap *DBMapper) Validate() error {
+	if len(dbMap.DBName) == 0 {
 		return errors.New("Expected non-empty DBName")
 	}
 	return nil
@@ -99,6 +100,9 @@ func GenerateConfigSkeleton(conf PGConfig, schemaPrefix string, schemas, exclude
 	for _, schema := range schemas {
 		log.Info("Mapping columns for schema: ", schema)
 		columnMap, err = mapColumns(db, columnMap, schemaPrefix, schema, excludeTables)
+		if err != nil {
+			return nil, err
+		}
 	}
 	dbmap.ColumnMaps = columnMap
 	return dbmap, nil
@@ -189,7 +193,9 @@ func addColumn(columnName, tableName, schema, dataType string, ordinalPosition i
 	col := ColumnMapper{}
 
 	col.Processors = []ProcessorDefinition{
-		ProcessorDefinition{Name: "Identity"},
+		{
+			Name: "Identity",
+		},
 	}
 	col.TableName = tableName
 	col.ColumnName = columnName
@@ -242,7 +248,7 @@ func mapColumns(db *sql.DB, columns []ColumnMapper, schemaPrefix, schema string,
 	} else if schemaPrefix != "" && schema == "" {
 
 		// Invalid
-		return nil, errors.New("You cannot use SchemaPrefix option without a schema to map it to!")
+		return nil, errors.New("You cannot use SchemaPrefix option without a schema to map it to")
 
 	} else if strings.HasPrefix(schemaPrefix, schema) {
 

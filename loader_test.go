@@ -17,7 +17,7 @@ func TestLoadFile(t *testing.T) {
 	_ = CloseTestDb(TestLoadFileDb)
 	conf := GetTestDbConf(TestLoadFileDb)
 	assert.Nil(t, CreateDatabase(conf))
-	defer CloseTestDb(TestLoadFileDb)
+	assert.Nil(t, CloseTestDb(TestLoadFileDb))
 	assert.Nil(t, LoadFile(conf, TestProcessDumpfile))
 }
 

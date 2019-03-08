@@ -17,6 +17,7 @@ import (
 	"time"
 )
 
+// DumpCmd is the cobra.Command struct we use for "dump" command.
 var (
 	DumpCmd = &cobra.Command{
 		Use:   "dump",
@@ -257,9 +258,8 @@ func dump(
 		skipProcedures,
 	); err != nil {
 		return err
-	} else {
-		return nil
 	}
+	return nil
 }
 
 // storeRowCountFile stores the row counts for every table that was saved into the dump file. This can be used during
@@ -296,14 +296,14 @@ func storeRowCountFile(dbConf gonymizer.PGConfig, schemaPrefix, path string, exc
 			return err
 		}
 
-		log.Infof("🚛 Uploading '%s' => S3: %s\n", tempFile, s3file.Url)
+		log.Infof("🚛 Uploading '%s' => S3: %s\n", tempFile, s3file.URL)
 		sess, err := session.NewSession(&aws.Config{Region: aws.String(s3file.Region)})
 		if err != nil {
 			return err
 		}
 
 		if err = gonymizer.AddFileToS3(sess, tempFile, &s3file); err != nil {
-			log.Errorf("Unable to upload '%s' => '%s'", tempFile, s3file.Url)
+			log.Errorf("Unable to upload '%s' => '%s'", tempFile, s3file.URL)
 			return err
 		}
 
