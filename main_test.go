@@ -12,10 +12,10 @@ import (
 */
 
 // Test Databases
-const TestDb = "anon_test_db"
-const TestPiiDb = "anon_generator_test_pii"
-const TestPostLocalDb = "anon_generator_test_postprocess"
-const TestLoadFileDb = "anon_loader_test"
+const TestDb = "gon_test_db"
+const TestPiiDb = "gon_generator_test_pii"
+const TestPostLocalDb = "gon_generator_test_postprocess"
+const TestLoadFileDb = "gon_loader_test"
 
 // Input Test Files
 const TestDbFile = "testing/test_db.sql"
@@ -144,10 +144,9 @@ func seqUnitTests(t *testing.T) {
 	// Below are tests that require the test database to be loaded into Postgres for testing functionality. This requires
 	// one to update the map file as well as create fake data in the testing/test_db.sql file when  updating users
 
-	// db_client.go - test and remove testing database
 	t.Run("CreateDatabase", TestCreateDatabase)
-	t.Run("DropDatabase", TestDropDatabase)
-	t.Run("DropDatabase (IF EXISTS)", TestDropDatabase) // DROP IF NOT EXISTS should ignore missing DB
+	// t.Run("DropDatabase", TestDropDatabase)
+	// t.Run("DropDatabase (IF EXISTS)", TestDropDatabase) // DROP IF NOT EXISTS should ignore missing DB
 
 	assert.Nil(t, LoadTestDb(TestDb))
 	t.Run("CreateDumpFile", TestCreateDumpFile)
@@ -211,6 +210,7 @@ func removeTestFiles(t *testing.T) {
 		if os.IsNotExist(err) || !fi.IsDir() {
 			continue
 		} else {
+			t.Logf("Removing file: %s", f)
 			assert.Nil(t, os.Remove(f))
 		}
 	}
