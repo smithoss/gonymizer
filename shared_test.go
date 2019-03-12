@@ -1,10 +1,6 @@
 package gonymizer
 
 import (
-	"errors"
-	"fmt"
-	"github.com/stretchr/testify/assert"
-	"os"
 	"reflect"
 	"testing"
 )
@@ -40,6 +36,7 @@ func CheckAll(t *testing.T, checks []Checker) {
 	}
 }
 
+/*
 func VerifyFileSize(t *testing.T, filePath string, size int64) error {
 	fp, err := os.OpenFile(filePath, os.O_RDONLY, 0660)
 	assert.Nil(t, err)
@@ -59,3 +56,4 @@ func VerifyFileSize(t *testing.T, filePath string, size int64) error {
 	assert.Nil(t, fp.Close())
 	return err
 }
+*/

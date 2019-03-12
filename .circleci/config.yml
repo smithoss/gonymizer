@@ -6,13 +6,15 @@ jobs:
   test:
     docker:
       # specify the version
-      - image: circleci/golang:1.11
+      - image: circleci/golang:1.12
         environment:
           PGUSER: circleci
           PGDATABASE: circleci
+          PGPASSWORD: circleci
           PGHOST: 127.0.0.1
-      - image: circleci/postgres:9.6-alpine
+      - image: circleci/postgres:10.6-alpine
         environment:
+          POSTGRES_PASSWORD: circleci
           POSTGRES_USER: circleci
           POSTGRES_DB: circleci
     working_directory: /go/src/github.com/smithoss/gonymizer
@@ -45,7 +47,7 @@ jobs:
             go test -v -covermode=atomic -coverprofile=profile.out \
             -run TestStart && \
             /bin/bash <(curl -s https://codecov.io/bash) -f profile.out
-            if [[ $? -ne 0 ]]; then cat db_test_err.log; exit $?; fi
+            if [[ $? -ne 0 ]]; then cat db_test_err.log; exit 1; fi
 workflows:
   version: 2
   basic-commits:
