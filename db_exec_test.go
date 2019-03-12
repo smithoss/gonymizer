@@ -34,7 +34,13 @@ func TestPsqlCommand(t *testing.T) {
 	args := []string{
 		dburl,
 		"-c", // run a command
-		` SELECT table_catalog, table_schema, table_name, column_name, data_type, ordinal_position, is_nullable 
+		` SELECT table_catalog, table_schema, table_name, column_name, data_type, ordinal_position,
+			CASE
+			    WHEN is_nullable = 'YES' THEN
+			        TRUE
+          WHEN is_nullable = 'NO' THEN
+              FALSE
+					END AS is_nullable
 			FROM information_schema.columns
 			WHERE table_schema = 'public'
 			ORDER BY table_name, ordinal_position;`,
