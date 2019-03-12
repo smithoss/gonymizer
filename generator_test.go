@@ -36,7 +36,7 @@ func TestCreateDumpFile(t *testing.T) {
 	conf.DefaultDBName = TestPiiDb
 	assert.Nil(t, DropDatabase(conf))
 	assert.Nil(t, CreateDatabase(conf))
-	assert.Nil(t, SQLCommandFile(conf, TestCreateFile, false))
+	assert.Nil(t, SQLCommandFile(conf, TestCreateFile, true))
 }
 
 func TestProcessDumpFile(t *testing.T) {

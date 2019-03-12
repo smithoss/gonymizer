@@ -66,10 +66,8 @@ func GetTestDbConf(dbName string) PGConfig {
 func LoadTestDb(dbName string) error {
 	conf := GetTestDbConf(dbName)
 
-	// Prep database
-	if err := DropDatabase(conf); err != nil {
-		return err
-	}
+	// Prep database -- ignore if the db does not exist
+	_ = DropDatabase(conf)
 	if err := CreateDatabase(conf); err != nil {
 		return err
 	}
@@ -94,14 +92,14 @@ func CloseTestDb(dbName string) error {
 // TestStart is the main entry point for all tests. Testing should be started using the Go test -run TestStart
 // command.
 func TestStart(t *testing.T) {
-	// ****************************** NOTITCE TO TESTERS / DEVELOPERS *************************************************
+	// ****************************** NOTICE TO TESTERS / DEVELOPERS *************************************************
 	// Please remember to always checkin logrus.FatalLevel
 	// otherwise there is noise in the CI logs.
 	//
 	// To change LogLevel:
 	// Info -> logrus.SetLevel(logrus.InfoLevel)
 	// Fatal -> logrus.SetLevel(logrus.FatalLevel)
-	logrus.SetLevel(logrus.InfoLevel)
+	logrus.SetLevel(logrus.FatalLevel)
 	removeTestFiles(t)
 	seqUnitTests(t)
 }
@@ -138,11 +136,7 @@ func seqUnitTests(t *testing.T) {
 
 	// Below are tests that require the test database to be loaded into Postgres for testing functionality. This requires
 	// one to update the map file as well as create fake data in the testing/test_db.sql file when  updating users
-
 	t.Run("CreateDatabase", TestCreateDatabase)
-	// t.Run("DropDatabase", TestDropDatabase)
-	// t.Run("DropDatabase (IF EXISTS)", TestDropDatabase) // DROP IF NOT EXISTS should ignore missing DB
-
 	assert.Nil(t, LoadTestDb(TestDb))
 	t.Run("CreateDumpFile", TestCreateDumpFile)
 
