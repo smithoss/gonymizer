@@ -183,7 +183,7 @@ func initConfig() {
 	}
 
 	// 2. Load ENV variables
-	viper.SetEnvPrefix("ANON")
+	viper.SetEnvPrefix("GON")
 	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
 	viper.AutomaticEnv()
 
