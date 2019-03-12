@@ -17,8 +17,8 @@ func TestLoadFile(t *testing.T) {
 	_ = CloseTestDb(TestLoadFileDb)
 	conf := GetTestDbConf(TestLoadFileDb)
 	assert.Nil(t, CreateDatabase(conf))
-	assert.Nil(t, CloseTestDb(TestLoadFileDb))
 	assert.Nil(t, LoadFile(conf, TestProcessDumpfile))
+	assert.Nil(t, CloseTestDb(TestLoadFileDb))
 }
 
 func TestVerifyRowCount(t *testing.T) {
