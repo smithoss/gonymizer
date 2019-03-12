@@ -68,7 +68,13 @@ func GetAllProceduresInSchema(conf PGConfig, schema string) ([]string, error) {
 // GetAllSchemaColumns will return a row pointer to a list of table and column names for the given database connection.
 func GetAllSchemaColumns(db *sql.DB) (*sql.Rows, error) {
 	query := `
-			SELECT table_catalog, table_schema, table_name, column_name, data_type, ordinal_position, is_nullable
+			SELECT table_catalog, table_schema, table_name, column_name, data_type, ordinal_position,
+			CASE
+			    WHEN is_nullable = 'YES' THEN
+			        TRUE
+          WHEN is_nullable = 'NO' THEN
+              FALSE
+					END AS is_nullable
 			FROM information_schema.columns
 			WHERE table_schema NOT IN ('information_schema', 'pg_catalog')
 			ORDER BY table_schema, table_name, ordinal_position
@@ -181,7 +187,13 @@ func GetSchemasInDatabase(conf PGConfig, excludeSchemas []string) ([]string, err
 // the provided schema (using the SQL equals operator).
 func GetSchemaColumnEquals(db *sql.DB, schema string) (*sql.Rows, error) {
 	rows, err := db.Query(`
-	SELECT table_catalog, table_schema, table_name, column_name, data_type, ordinal_position, is_nullable
+	SELECT table_catalog, table_schema, table_name, column_name, data_type, ordinal_position, 
+			CASE
+			    WHEN is_nullable = 'YES' THEN
+			        TRUE
+          WHEN is_nullable = 'NO' THEN
+              FALSE
+					END AS is_nullable
 	FROM information_schema.columns
 	WHERE table_schema = $1
 	ORDER BY table_schema, table_name, ordinal_position`, schema)
@@ -214,7 +226,13 @@ func GetSchemaColumnsLike(db *sql.DB, schemaPrefix string) (*sql.Rows, error) {
 
 	// Now grab all the columns from this schema
 	rows, err := db.Query(`
-			SELECT table_catalog, table_schema, table_name, column_name, data_type, ordinal_position, is_nullable
+			SELECT table_catalog, table_schema, table_name, column_name, data_type, ordinal_position, 
+			CASE
+			    WHEN is_nullable = 'YES' THEN
+			        TRUE
+          WHEN is_nullable = 'NO' THEN
+              FALSE
+					END AS is_nullable
 			FROM information_schema.columns
 			WHERE table_schema = $1
 			ORDER BY table_schema, table_name, ordinal_position`, selectedSchema)
