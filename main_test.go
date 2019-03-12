@@ -94,22 +94,17 @@ func CloseTestDb(dbName string) error {
 // TestStart is the main entry point for all tests. Testing should be started using the Go test -run TestStart
 // command.
 func TestStart(t *testing.T) {
-	// Set logrus to FATAL only so we do not see output from application
-	logrus.SetLevel(logrus.FatalLevel)
+	// ****************************** NOTITCE TO TESTERS / DEVELOPERS *************************************************
+	// Please remember to always checkin logrus.FatalLevel
+	// otherwise there is noise in the CI logs.
+	//
+	// To change LogLevel:
+	// Info -> logrus.SetLevel(logrus.InfoLevel)
+	// Fatal -> logrus.SetLevel(logrus.FatalLevel)
+	logrus.SetLevel(logrus.InfoLevel)
 	removeTestFiles(t)
 	seqUnitTests(t)
 }
-
-/********************************************************************************************************************
-Quick way to build the below statements for a given test file. Can do the same for lib_name_test.go by simply echoing
-different input variables.
-
-TEST_FILE="file_to_test.go"
-for i in $(grep func $TEST_FILE |awk '{print $2}' | cut -d '(' -f 1); do
-	echo "t.Run(\"$(echo $i | sed 's/Test//g')\", $i)"
-done
-
-********************************************************************************************************************/
 
 // SeqUnitTests is where we keep our unit tests that require sequential runs in-order
 // For example: CREATE/DROP DB should follow each other
