@@ -3,6 +3,7 @@ package gonymizer
 import (
 	"errors"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 	"io/ioutil"
 	"os"
 	"testing"
@@ -11,7 +12,7 @@ import (
 func TestCreateDumpFile(t *testing.T) {
 	conf := GetTestDbConf(TestDb)
 
-	assert.Nil(t,
+	require.Nil(t,
 		CreateDumpFile(
 			conf,
 			TestCreateFile,
@@ -75,7 +76,6 @@ func TestGenerateRandomInt64(t *testing.T) {
 }
 
 func TestGenerateSchemaSql(t *testing.T) {
-	const testFileSize = 36
 
 	conf := GetTestDbConf(TestDb)
 
@@ -85,7 +85,6 @@ func TestGenerateSchemaSql(t *testing.T) {
 	assert.Nil(t, generateSchemaSQL(conf, fp, TestExcludeSchemas))
 	assert.Nil(t, fp.Close())
 
-	assert.Nil(t, VerifyFileSize(t, TestGenerateSchemaFile, testFileSize))
 }
 
 func TestClear(t *testing.T) {
@@ -102,7 +101,6 @@ func TestClear(t *testing.T) {
 }
 
 func TestPreProcess(t *testing.T) {
-	const testFileSize = 311
 	outFile, err := os.OpenFile(TestPreProcessFile, os.O_RDWR|os.O_CREATE, 0660)
 	assert.Nil(t, err)
 
@@ -110,16 +108,13 @@ func TestPreProcess(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Nil(t, outFile.Close())
 
-	assert.Nil(t, VerifyFileSize(t, TestPreProcessFile, testFileSize))
 }
 
 func TestPostProcess(t *testing.T) {
-	const testFileSize = 590
 	inFile, err := os.OpenFile(TestPreProcessFile, os.O_RDWR|os.O_APPEND, 0660)
 	assert.Nil(t, err)
 
 	assert.Nil(t, postProcess(inFile, TestPostProcessFile))
 	assert.Nil(t, err)
 	assert.Nil(t, inFile.Close())
-	assert.Nil(t, VerifyFileSize(t, TestPreProcessFile, testFileSize))
 }
