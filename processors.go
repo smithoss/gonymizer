@@ -122,27 +122,27 @@ func ProcessorAlphaNumericScrambler(cmap *ColumnMapper, input string) (string, e
 
 // ProcessorAddress will return a fake address string that is compiled from the fake library
 func ProcessorAddress(cmap *ColumnMapper, input string) (string, error) {
-	return jaroWinkler(input, 0.4, fake.StreetAddress)
+	return fake.StreetAddress(), nil
 }
 
 // ProcessorCity will return a real city name that is >= 0.4 Jaro-Winkler similar than the input.
 func ProcessorCity(cmap *ColumnMapper, input string) (string, error) {
-	return jaroWinkler(input, 0.4, fake.City)
+	return fake.City(), nil
 }
 
 // ProcessorEmailAddress will return an e-mail address that is >= 0.4 Jaro-Winkler similar than the input.
 func ProcessorEmailAddress(cmap *ColumnMapper, input string) (string, error) {
-	return jaroWinkler(input, 0.4, fake.EmailAddress)
+	return fake.EmailAddress(), nil
 }
 
 // ProcessorFirstName will return a first name that is >= 0.4 Jaro-Winkler similar than the input.
 func ProcessorFirstName(cmap *ColumnMapper, input string) (string, error) {
-	return jaroWinkler(input, 0.4, fake.FirstName)
+	return fake.FirstName(), nil
 }
 
 // ProcessorFullName will return a full name that is >= 0.4 Jaro-Winkler similar than the input.
 func ProcessorFullName(cmap *ColumnMapper, input string) (string, error) {
-	return jaroWinkler(input, 0.4, fake.FullName)
+	return fake.FullName(), nil
 }
 
 // ProcessorIdentity will skip anonymization and leave output === input.
@@ -152,27 +152,27 @@ func ProcessorIdentity(cmap *ColumnMapper, input string) (string, error) {
 
 // ProcessorLastName will return a last name that is >= 0.4 Jaro-Winkler similar than the input.
 func ProcessorLastName(cmap *ColumnMapper, input string) (string, error) {
-	return jaroWinkler(input, 0.4, fake.LastName)
+	return fake.LastName(), nil
 }
 
 // ProcessorPhoneNumber will return a phone number that is >= 0.4 Jaro-Winkler similar than the input.
 func ProcessorPhoneNumber(cmap *ColumnMapper, input string) (string, error) {
-	return jaroWinkler(input, 0.4, fake.Phone)
+	return fake.Phone(), nil
 }
 
 // ProcessorState will return a state that is >= 0.4 Jaro-Winkler similar than the input.
 func ProcessorState(cmap *ColumnMapper, input string) (string, error) {
-	return jaroWinkler(input, 0.4, fake.State)
+	return fake.State(), nil
 }
 
 // ProcessorUserName will return a username that is >= 0.4 Jaro-Winkler similar than the input.
 func ProcessorUserName(cmap *ColumnMapper, input string) (string, error) {
-	return jaroWinkler(input, 0.4, fake.UserName)
+	return fake.UserName(), nil
 }
 
 // ProcessorZip will return a zip code that is >= 0.4 Jaro-Winkler similar than the input.
 func ProcessorZip(cmap *ColumnMapper, input string) (string, error) {
-	return jaroWinkler(input, 0.4, fake.Zip)
+	return fake.Zip(), nil
 }
 
 // ProcessorRandomDate will return a random day and month, but keep year the same (See: HIPAA rules)
