@@ -8,7 +8,6 @@ import (
 	"time"
 	"unicode/utf8"
 
-	"github.com/antzucaro/matchr"
 	"github.com/google/uuid"
 	"github.com/icrowley/fake"
 )
@@ -26,7 +25,7 @@ import (
 
 // The number of times to check the input string for similarity to the output string. We want to keep this at a distance
 // of 0.4 or higher. Please see: https://en.wikipedia.org/wiki/Jaro%E2%80%93Winkler_distance
-const jaroWinklerAttempts = 1000
+//const jaroWinklerAttempts = 1000
 
 // lookup string for random lowercase letters
 const lowercaseSet = "abcdefghijklmnopqrstuvwxyz"
@@ -81,7 +80,7 @@ func init() {
 type ProcessorFunc func(*ColumnMapper, string) (string, error)
 
 // fakeFuncPtr is a simple function prototype for function pointers to the Fake package's fake functions.
-type fakeFuncPtr func() string
+//type fakeFuncPtr func() string
 
 // ProcessorAlphaNumericScrambler will receive the column metadata via ColumnMap and the column's actual data via the
 // input string. The processor will scramble all alphanumeric digits and characters, but it will leave all
@@ -217,6 +216,7 @@ func ProcessorScrubString(cmap *ColumnMapper, input string) (string, error) {
 	return scrubString(input), nil
 }
 
+/*
 func jaroWinkler(input string, jwDistance float64, faker fakeFuncPtr) (output string, err error) {
 	for counter := 0; counter < jaroWinklerAttempts; counter++ {
 		output = faker()
@@ -227,6 +227,7 @@ func jaroWinkler(input string, jwDistance float64, faker fakeFuncPtr) (output st
 	return output, fmt.Errorf("Jaro-Winkler: distance < %e for %d attempts. Input: %s, Output: %s",
 		jwDistance, jaroWinklerAttempts, input, output)
 }
+*/
 
 // randomizeUUID creates a random UUID and adds it to the map of input->output. If input already exists it returns
 // the output that was previously calculated for input.
