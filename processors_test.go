@@ -64,7 +64,7 @@ func TestProcessorAddress(t *testing.T) {
 	assert.NotEqual(t, output, "1234 Testing Lane")
 
 	output, err = ProcessorAddress(&cMap, "")
-	assert.NotNil(t, err)
+	assert.Nil(t, err)
 	assert.NotEqual(t, output, "")
 }
 
@@ -74,7 +74,7 @@ func TestProcessorCity(t *testing.T) {
 	assert.NotEqual(t, output, "Rick and Morty Ville")
 
 	output, err = ProcessorCity(&cMap, "")
-	assert.NotNil(t, err)
+	assert.Nil(t, err)
 	assert.NotEqual(t, output, "")
 }
 
@@ -84,7 +84,7 @@ func TestProcessorEmailAddress(t *testing.T) {
 	assert.NotEqual(t, output, "rick@morty.example.com")
 
 	output, err = ProcessorEmailAddress(&cMap, "")
-	assert.NotNil(t, err)
+	assert.Nil(t, err)
 	assert.NotEqual(t, output, "")
 }
 
@@ -94,7 +94,7 @@ func TestProcessorFirstName(t *testing.T) {
 	assert.NotEqual(t, output, "RickMortyRick")
 
 	output, err = ProcessorFirstName(&cMap, "")
-	assert.NotNil(t, err)
+	assert.Nil(t, err)
 	assert.NotEqual(t, output, "")
 }
 
@@ -105,7 +105,7 @@ func TestProcessorFullName(t *testing.T) {
 
 	// Jaro-Winkler distance will be 0 for empty string. Should get an error here.
 	output, err = ProcessorFullName(&cMap, "")
-	assert.NotNil(t, err)
+	assert.Nil(t, err)
 	assert.NotEqual(t, output, "")
 }
 
@@ -125,7 +125,7 @@ func TestProcessorLastName(t *testing.T) {
 	assert.NotEqual(t, output, "Bye Rick!")
 
 	output, err = ProcessorLastName(&cMap, "")
-	assert.NotNil(t, err)
+	assert.Nil(t, err)
 	assert.NotEqual(t, output, "")
 }
 
@@ -135,7 +135,7 @@ func TestProcessorPhoneNumber(t *testing.T) {
 	assert.NotEqual(t, output, "+18885551212")
 
 	output, err = ProcessorPhoneNumber(&cMap, "")
-	assert.NotNil(t, err)
+	assert.Nil(t, err)
 	assert.NotEqual(t, output, "")
 }
 
@@ -145,7 +145,7 @@ func TestProcessorState(t *testing.T) {
 	assert.NotEqual(t, output, "Antarctica")
 
 	output, err = ProcessorState(&cMap, "")
-	assert.NotNil(t, err)
+	assert.Nil(t, err)
 	assert.NotEqual(t, output, "")
 }
 
@@ -156,7 +156,7 @@ func TestProcessorUserName(t *testing.T) {
 
 	// Jaro-Winkler distance will be 0 for empty string. Should get an error here.
 	output, err = ProcessorUserName(&cMap, "")
-	assert.NotNil(t, err)
+	assert.Nil(t, err)
 	assert.NotEqual(t, output, "")
 }
 
@@ -167,7 +167,7 @@ func TestProcessorZip(t *testing.T) {
 
 	// Jaro-Winkler distance will be 0 for empty string. Should get an error here.
 	output, err = ProcessorZip(&cMap, "")
-	assert.NotNil(t, err)
+	assert.Nil(t, err)
 	assert.NotEqual(t, output, "")
 }
 
