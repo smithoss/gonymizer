@@ -63,7 +63,6 @@ func TestProcessorAddress(t *testing.T) {
 	assert.Nil(t, err)
 	assert.NotEqual(t, output, "1234 Testing Lane")
 
-	// Jaro-Winkler distance will be 0 for empty string. Should get an error here.
 	output, err = ProcessorAddress(&cMap, "")
 	assert.NotNil(t, err)
 	assert.NotEqual(t, output, "")
@@ -74,7 +73,6 @@ func TestProcessorCity(t *testing.T) {
 	assert.Nil(t, err)
 	assert.NotEqual(t, output, "Rick and Morty Ville")
 
-	// Jaro-Winkler distance will be 0 for empty string. Should get an error here.
 	output, err = ProcessorCity(&cMap, "")
 	assert.NotNil(t, err)
 	assert.NotEqual(t, output, "")
@@ -85,7 +83,6 @@ func TestProcessorEmailAddress(t *testing.T) {
 	assert.Nil(t, err)
 	assert.NotEqual(t, output, "rick@morty.example.com")
 
-	// Jaro-Winkler distance will be 0 for empty string. Should get an error here.
 	output, err = ProcessorEmailAddress(&cMap, "")
 	assert.NotNil(t, err)
 	assert.NotEqual(t, output, "")
@@ -96,7 +93,6 @@ func TestProcessorFirstName(t *testing.T) {
 	assert.Nil(t, err)
 	assert.NotEqual(t, output, "RickMortyRick")
 
-	// Jaro-Winkler distance will be 0 for empty string. Should get an error here.
 	output, err = ProcessorFirstName(&cMap, "")
 	assert.NotNil(t, err)
 	assert.NotEqual(t, output, "")
@@ -128,7 +124,6 @@ func TestProcessorLastName(t *testing.T) {
 	assert.Nil(t, err)
 	assert.NotEqual(t, output, "Bye Rick!")
 
-	// Jaro-Winkler distance will be 0 for empty string. Should get an error here.
 	output, err = ProcessorLastName(&cMap, "")
 	assert.NotNil(t, err)
 	assert.NotEqual(t, output, "")
@@ -139,7 +134,6 @@ func TestProcessorPhoneNumber(t *testing.T) {
 	assert.Nil(t, err)
 	assert.NotEqual(t, output, "+18885551212")
 
-	// Jaro-Winkler distance will be 0 for empty string. Should get an error here.
 	output, err = ProcessorPhoneNumber(&cMap, "")
 	assert.NotNil(t, err)
 	assert.NotEqual(t, output, "")
@@ -150,7 +144,6 @@ func TestProcessorState(t *testing.T) {
 	assert.Nil(t, err)
 	assert.NotEqual(t, output, "Antarctica")
 
-	// Jaro-Winkler distance will be 0 for empty string. Should get an error here.
 	output, err = ProcessorState(&cMap, "")
 	assert.NotNil(t, err)
 	assert.NotEqual(t, output, "")
@@ -185,6 +178,7 @@ func TestProcessorRandomDate(t *testing.T) {
 		"01/01/1970",
 		"1970.01.01",
 		"1970/01/01",
+		"",
 	}
 
 	output, err := ProcessorRandomDate(&cMap, "1970-01-01")

@@ -1,7 +1,6 @@
 package gonymizer
 
 import (
-	"errors"
 	"fmt"
 	"math/rand"
 	"strconv"
@@ -27,7 +26,7 @@ import (
 
 // The number of times to check the input string for similarity to the output string. We want to keep this at a distance
 // of 0.4 or higher. Please see: https://en.wikipedia.org/wiki/Jaro%E2%80%93Winkler_distance
-const jaroWinklerAttempts = 100
+const jaroWinklerAttempts = 1000
 
 // lookup string for random lowercase letters
 const lowercaseSet = "abcdefghijklmnopqrstuvwxyz"
@@ -219,20 +218,14 @@ func ProcessorScrubString(cmap *ColumnMapper, input string) (string, error) {
 }
 
 func jaroWinkler(input string, jwDistance float64, faker fakeFuncPtr) (output string, err error) {
-	var counter = 0
-	for {
+	for counter := 0; counter < jaroWinklerAttempts; counter++ {
 		output = faker()
-		if jw := matchr.JaroWinkler(input, output, true); jw >= jwDistance {
-			break
-		} else if counter >= jaroWinklerAttempts {
-			errorMsg := fmt.Sprintf("Jaro-Winkler: %e < %e for %d attempts. Input: %s, Output: %s",
-				jw, jwDistance, counter, input, output)
-			err = errors.New(errorMsg)
-			break
+		if jw := matchr.JaroWinkler(input, output, true); jw > jwDistance {
+			return output, nil
 		}
-		counter++
 	}
-	return output, err
+	return output, fmt.Errorf("Jaro-Winkler: distance < %e for %d attempts. Input: %s, Output: %s",
+		jwDistance, jaroWinklerAttempts, input, output)
 }
 
 // randomizeUUID creates a random UUID and adds it to the map of input->output. If input already exists it returns
