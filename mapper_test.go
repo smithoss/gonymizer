@@ -1,7 +1,7 @@
 package gonymizer
 
 import (
-	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 	"testing"
 )
 
@@ -11,28 +11,28 @@ func TestGenerateConfigSkeleton(t *testing.T) {
 	// Dump testing database
 	excludeTables := append(TestExcludeTable, TestExcludeTableData...)
 	skeleton, err := GenerateConfigSkeleton(conf, TestSchemaPrefix, TestSchemas, excludeTables)
-	assert.Nil(t, err)
+	require.Nil(t, err)
 
 	_, err = GenerateConfigSkeleton(conf, TestSchemaPrefix, []string{}, excludeTables)
-	assert.Nil(t, err)
+	require.Nil(t, err)
 	_, err = GenerateConfigSkeleton(conf, TestSchemaPrefix, TestSchemas, []string{})
-	assert.Nil(t, err)
+	require.Nil(t, err)
 
 	err = WriteConfigSkeleton(skeleton, TestMapOutputFile)
-	assert.Nil(t, err)
+	require.Nil(t, err)
 	err = WriteConfigSkeleton(skeleton, "")
-	assert.NotNil(t, err)
+	require.NotNil(t, err)
 
 }
 
 func TestLoadConfigSkeleton(t *testing.T) {
 	dbmap, err := LoadConfigSkeleton(TestMapFile)
-	assert.Nil(t, err)
-	assert.Nil(t, dbmap.Validate())
+	require.Nil(t, err)
+	require.Nil(t, dbmap.Validate())
 	_, err = LoadConfigSkeleton(TestDbFile)
-	assert.NotNil(t, err)
+	require.NotNil(t, err)
 	_, err = LoadConfigSkeleton("")
-	assert.NotNil(t, err)
+	require.NotNil(t, err)
 	_, err = LoadConfigSkeleton("/dev/null")
-	assert.NotNil(t, err)
+	require.NotNil(t, err)
 }

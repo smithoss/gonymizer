@@ -1,7 +1,7 @@
 package gonymizer
 
 import (
-	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 	"testing"
 )
 
@@ -135,8 +135,8 @@ func TestBaseURI(t *testing.T) {
 func TestOpenDB(t *testing.T) {
 	conf := GetTestDbConf(TestDb)
 	dbConn, err := OpenDB(conf)
-	assert.Nil(t, err)
-	assert.NotNil(t, dbConn)
+	require.Nil(t, err)
+	require.NotNil(t, dbConn)
 	result := dbConn.QueryRow("SELECT count(*) FROM information_schema.columns")
-	assert.NotNil(t, result)
+	require.NotNil(t, result)
 }

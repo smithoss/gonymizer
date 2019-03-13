@@ -2,7 +2,7 @@ package gonymizer
 
 import (
 	"github.com/sirupsen/logrus"
-	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 	"os"
 	"testing"
 )
@@ -137,7 +137,7 @@ func seqUnitTests(t *testing.T) {
 	// Below are tests that require the test database to be loaded into Postgres for testing functionality. This requires
 	// one to update the map file as well as create fake data in the testing/test_db.sql file when  updating users
 	t.Run("CreateDatabase", TestCreateDatabase)
-	assert.Nil(t, LoadTestDb(TestDb))
+	require.Nil(t, LoadTestDb(TestDb))
 	t.Run("CreateDumpFile", TestCreateDumpFile)
 
 	// Load test database for testing sequential tests
@@ -200,7 +200,7 @@ func removeTestFiles(t *testing.T) {
 			continue
 		} else {
 			t.Logf("Removing file: %s", f)
-			assert.Nil(t, os.Remove(f))
+			require.Nil(t, os.Remove(f))
 		}
 	}
 }
