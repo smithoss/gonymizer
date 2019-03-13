@@ -1,13 +1,13 @@
 package gonymizer
 
 import (
-	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 	"testing"
 )
 
 func TestCreateDatabase(t *testing.T) {
 	conf := GetTestDbConf(TestDb)
-	assert.Nil(t, CreateDatabase(conf))
+	require.Nil(t, CreateDatabase(conf))
 }
 
 func TestDropDatabase(t *testing.T) {
@@ -17,14 +17,14 @@ func TestDropDatabase(t *testing.T) {
 	psqlDbConf := GetTestDbConf(TestDb)
 	psqlDbConf.DefaultDBName = "postgres"
 	psqlConn, err := OpenDB(psqlDbConf)
-	assert.Nil(t, err)
+	require.Nil(t, err)
 	err = KillDatabaseConnections(psqlConn, conf.DefaultDBName)
 	if err != nil && err.Error() != "sql: no rows in result set" {
-		assert.Nil(t, err)
+		require.Nil(t, err)
 	}
 
 	// Now drop the database
-	assert.Nil(t, DropDatabase(conf))
+	require.Nil(t, DropDatabase(conf))
 }
 
 func TestPsqlCommand(t *testing.T) {
@@ -45,5 +45,5 @@ func TestPsqlCommand(t *testing.T) {
 			WHERE table_schema = 'public'
 			ORDER BY table_name, ordinal_position;`,
 	}
-	assert.Nil(t, ExecPostgresCmd(cmd, args...))
+	require.Nil(t, ExecPostgresCmd(cmd, args...))
 }

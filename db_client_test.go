@@ -1,7 +1,7 @@
 package gonymizer
 
 import (
-	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 	"testing"
 )
 
@@ -11,13 +11,13 @@ func TestCheckIfDbExists(t *testing.T) {
 	// First connect to postgres db to get connection
 	conf.DefaultDBName = "postgres"
 	dbConn, err := OpenDB(conf)
-	assert.Nil(t, err)
-	assert.NotNil(t, dbConn)
+	require.Nil(t, err)
+	require.NotNil(t, dbConn)
 
 	// Next check to make sure the database exists
 	doesExist, err := CheckIfDbExists(dbConn, conf.DefaultDBName)
-	assert.Nil(t, err)
-	assert.True(t, doesExist)
+	require.Nil(t, err)
+	require.True(t, doesExist)
 }
 
 func TestGetAllProceduresInSchema(t *testing.T) {
@@ -28,16 +28,16 @@ func TestGetAllProceduresInSchema(t *testing.T) {
 	if len(procs) < 1 {
 		t.Fatal("Using 'public' as our schema we received 0 procedures back")
 	}
-	assert.Nil(t, err)
+	require.Nil(t, err)
 }
 
 func TestGetAllSchemaColumns(t *testing.T) {
 	conf := GetTestDbConf(TestDb)
 	dbConn, err := OpenDB(conf)
-	assert.Nil(t, err)
-	assert.NotNil(t, dbConn)
+	require.Nil(t, err)
+	require.NotNil(t, dbConn)
 	_, err = GetAllSchemaColumns(dbConn)
-	assert.Nil(t, err)
+	require.Nil(t, err)
 }
 
 func TestGetAllTablesInSchema(t *testing.T) {
@@ -48,39 +48,39 @@ func TestGetAllTablesInSchema(t *testing.T) {
 	if len(tables) < 1 {
 		t.Fatal("Using empty string as our schema we received 0 tables back")
 	}
-	assert.Nil(t, err)
+	require.Nil(t, err)
 
 	// Check to make sure public schema has tables
 	tables, err = GetAllTablesInSchema(conf, "public")
 	if len(tables) < 1 {
 		t.Fatal("Using empty string '' as our schema we received 0 tables back")
 	}
-	assert.Nil(t, err)
+	require.Nil(t, err)
 
 }
 
 func TestGetSchemasInDatabase(t *testing.T) {
 	conf := GetTestDbConf(TestDb)
 	_, err := GetSchemasInDatabase(conf, []string{"public"})
-	assert.Nil(t, err)
+	require.Nil(t, err)
 	_, err = GetSchemasInDatabase(conf, []string{})
-	assert.Nil(t, err)
+	require.Nil(t, err)
 }
 
 func TestGetSchemaColumnEquals(t *testing.T) {
 	conf := GetTestDbConf(TestDb)
 	dbConn, err := OpenDB(conf)
-	assert.Nil(t, err)
+	require.Nil(t, err)
 
 	// Get column data for "public" schema
 	_, err = GetSchemaColumnEquals(dbConn, "public")
-	assert.Nil(t, err)
+	require.Nil(t, err)
 }
 
 func TestGetTableRowCountsInDB(t *testing.T) {
 	conf := GetTestDbConf(TestDb)
 	counts, err := GetTableRowCountsInDB(conf, "", nil)
-	assert.Nil(t, err)
+	require.Nil(t, err)
 
 	total := 0
 	for _, row := range *counts {
@@ -104,13 +104,13 @@ func TestRenameDatabase(t *testing.T) {
 	conf = GetTestDbConf(tempDbFrom)
 	_ = DropDatabase(conf)
 
-	assert.Nil(t, CreateDatabase(conf))
+	require.Nil(t, CreateDatabase(conf))
 
 	// Rename database
 	conf.DefaultDBName = "postgres" // Switch to postgres so we are not connected to DBs to be renamed
 	dbConn, err := OpenDB(conf)
-	assert.Nil(t, err)
-	assert.Nil(t, RenameDatabase(dbConn, tempDbFrom, tempDbTo))
+	require.Nil(t, err)
+	require.Nil(t, RenameDatabase(dbConn, tempDbFrom, tempDbTo))
 
 	query := `
 		SELECT COUNT(*)
@@ -121,10 +121,10 @@ func TestRenameDatabase(t *testing.T) {
 	// Check to see if it exist
 	result := dbConn.QueryRow(query, tempDbTo)
 	err = result.Scan(&count)
-	assert.Nil(t, err)
+	require.Nil(t, err)
 	if count < 1 {
 		t.Fatalf("Renamed database '%s'->'%s', but could not find the latter in pg_catalog", tempDbFrom, tempDbTo)
 	}
 	conf.DefaultDBName = tempDbTo
-	assert.Nil(t, DropDatabase(conf))
+	require.Nil(t, DropDatabase(conf))
 }
