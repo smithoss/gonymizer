@@ -414,8 +414,4 @@ FOR COMPLIANCE PURPOSES. PLEASE SEE LICENSE.txt FOR MORE INFORMATION.**
 
 All graphics used in this project are released under the [Create Common License 3.0](https://creativecommons.org/licenses/by/3.0/us/)
 
-The Go gopher was designed by [Renee French](http://reneefrench.blogspot.com/)
-
-The Go gopher PNG the Gonymizer logo was created from is [Takuya Ueda](https://twitter.com/tenntenn)
-
-The Gonymizer gophers logo was created by [Levi Junkert](https://github.com/junkert)
+The Gonymizer Gophers logo was created by [Levi Junkert](https://github.com/junkert) which uses the Go Gopher that [Takuya Ueda](https://twitter.com/tenntenn) made from the original design of the Go Gopher which was created by [Renee French](http://reneefrench.blogspot.com/)
