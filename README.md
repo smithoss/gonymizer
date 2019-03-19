@@ -16,12 +16,13 @@ other databases welcome through pull requests.
 
 We have built in support, and examples, for:
 * Kubernetes CRONJOB scheduling
-* AWS-Lambda Job scheduling
-* AWS-S3 Storage (processing and loading)
-* CRONJOB BASH scripts
+* AWS-S3 Storage processing and loading 
 
-Our API is easy one to follow and we hope others will join in by tying in Gonymizer into their development and staging
-environments either directly using the CLI or using the API. We include in our documentation: example configurations,
+We plan to have built-in:
+* CRONJOB BASH scripts to use local disk as storage (see tasks, we need help!)
+* AWS-Lambda Job scheduling (see tasks, we need help!)
+
+Our API is an easy one to follow and we encourage others to join in by trying Gonymizer with their own development and stagingenvironments either directly using the CLI or using the API. We include in our documentation: example configurations,
 best practices, Kubernetes CRONJOB examples, examples for AWS-Lambda, and other infrastructure tools. Please see the 
 docs directory in this application to see a full how-to guide and where to get started.
 
