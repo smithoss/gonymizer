@@ -400,7 +400,7 @@ the scope of Gonymizer project and should be done by external database administr
 
 ## Notices and License
 
-Please make sure to read our license agreement here []. We may state throughout our documentation that we are using this 
+Please make sure to read our license agreement here [LICENSE.txt](https://github.com/smithoss/gonymizer/blob/master/LICENSE.txt). We may state throughout our documentation that we are using this 
 application to anonymize data for HIPAA requirements, but this is in our own environment and we give NO guarantee this
 will be the same for other's uses. Considering everyone's data set is completely different and the configuration of 
 this application is very involved we cannot guarantee that this application will guarantee any compliance of any type.
