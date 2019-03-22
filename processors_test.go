@@ -64,7 +64,7 @@ func TestProcessorAddress(t *testing.T) {
 	require.NotEqual(t, output, "1234 Testing Lane")
 
 	output, err = ProcessorAddress(&cMap, "")
-	require.NotNil(t, err)
+	require.Nil(t, err)
 	require.NotEqual(t, output, "")
 }
 
@@ -74,7 +74,7 @@ func TestProcessorCity(t *testing.T) {
 	require.NotEqual(t, output, "Rick and Morty Ville")
 
 	output, err = ProcessorCity(&cMap, "")
-	require.NotNil(t, err)
+	require.Nil(t, err)
 	require.NotEqual(t, output, "")
 }
 
@@ -84,7 +84,7 @@ func TestProcessorEmailAddress(t *testing.T) {
 	require.NotEqual(t, output, "rick@morty.example.com")
 
 	output, err = ProcessorEmailAddress(&cMap, "")
-	require.NotNil(t, err)
+	require.Nil(t, err)
 	require.NotEqual(t, output, "")
 }
 
@@ -94,7 +94,7 @@ func TestProcessorFirstName(t *testing.T) {
 	require.NotEqual(t, output, "RickMortyRick")
 
 	output, err = ProcessorFirstName(&cMap, "")
-	require.NotNil(t, err)
+	require.Nil(t, err)
 	require.NotEqual(t, output, "")
 }
 
@@ -104,7 +104,7 @@ func TestProcessorFullName(t *testing.T) {
 	require.NotEqual(t, output, "Morty & Rick")
 
 	output, err = ProcessorFullName(&cMap, "")
-	require.NotNil(t, err)
+	require.Nil(t, err)
 	require.NotEqual(t, output, "")
 }
 
@@ -124,7 +124,7 @@ func TestProcessorLastName(t *testing.T) {
 	require.NotEqual(t, output, "Bye Rick!")
 
 	output, err = ProcessorLastName(&cMap, "")
-	require.NotNil(t, err)
+	require.Nil(t, err)
 	require.NotEqual(t, output, "")
 }
 
@@ -134,7 +134,7 @@ func TestProcessorPhoneNumber(t *testing.T) {
 	require.NotEqual(t, output, "+18885551212")
 
 	output, err = ProcessorPhoneNumber(&cMap, "")
-	require.NotNil(t, err)
+	require.Nil(t, err)
 	require.NotEqual(t, output, "")
 }
 
@@ -144,7 +144,7 @@ func TestProcessorState(t *testing.T) {
 	require.NotEqual(t, output, "Antarctica")
 
 	output, err = ProcessorState(&cMap, "")
-	require.NotNil(t, err)
+	require.Nil(t, err)
 	require.NotEqual(t, output, "")
 }
 
@@ -154,7 +154,7 @@ func TestProcessorUserName(t *testing.T) {
 	require.NotEqual(t, output, "Ricky and Julian")
 
 	output, err = ProcessorUserName(&cMap, "")
-	require.NotNil(t, err)
+	require.Nil(t, err)
 	require.NotEqual(t, output, "")
 }
 
@@ -164,7 +164,7 @@ func TestProcessorZip(t *testing.T) {
 	require.NotEqual(t, output, "00000-00")
 
 	output, err = ProcessorZip(&cMap, "")
-	require.NotNil(t, err)
+	require.Nil(t, err)
 	require.NotEqual(t, output, "")
 }
 
