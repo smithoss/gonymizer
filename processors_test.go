@@ -103,7 +103,6 @@ func TestProcessorFullName(t *testing.T) {
 	require.Nil(t, err)
 	require.NotEqual(t, output, "Morty & Rick")
 
-	// Jaro-Winkler distance will be 0 for empty string. Should get an error here.
 	output, err = ProcessorFullName(&cMap, "")
 	require.NotNil(t, err)
 	require.NotEqual(t, output, "")
@@ -154,7 +153,6 @@ func TestProcessorUserName(t *testing.T) {
 	require.Nil(t, err)
 	require.NotEqual(t, output, "Ricky and Julian")
 
-	// Jaro-Winkler distance will be 0 for empty string. Should get an error here.
 	output, err = ProcessorUserName(&cMap, "")
 	require.NotNil(t, err)
 	require.NotEqual(t, output, "")
@@ -165,7 +163,6 @@ func TestProcessorZip(t *testing.T) {
 	require.Nil(t, err)
 	require.NotEqual(t, output, "00000-00")
 
-	// Jaro-Winkler distance will be 0 for empty string. Should get an error here.
 	output, err = ProcessorZip(&cMap, "")
 	require.NotNil(t, err)
 	require.NotEqual(t, output, "")
