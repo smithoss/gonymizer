@@ -172,7 +172,7 @@ func cliCommandMap(cmd *cobra.Command, args []string) {
 	)
 	if err != nil {
 		log.Error(err)
-		log.Error("❌ Anonymizer did not exit properly. See above for errors ❌")
+		log.Error("❌ Gonymizer did not exit properly. See above for errors ❌")
 		os.Exit(1)
 	} else {
 		log.Info("🦄 ", aurora.Bold(aurora.Green("-- SUCCESS --")), " 🌈")

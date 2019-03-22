@@ -39,7 +39,7 @@ func LoadFile(conf PGConfig, filePath string) (err error) {
 		return err
 	} else if dbExists {
 		return fmt.Errorf("Found a previous version of the %s database. Is there another copy "+
-			"of Anonymizer running?", tempDbConf.DefaultDBName)
+			"of Gonymizer running?", tempDbConf.DefaultDBName)
 	}
 
 	// Create temp database

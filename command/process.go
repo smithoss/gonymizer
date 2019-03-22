@@ -95,7 +95,7 @@ func cliCommandProcess(cmd *cobra.Command, args []string) {
 
 	if err = s3file.ParseS3Url(urlStr); err != nil {
 		log.Error(err)
-		log.Error("❌ Anonymizer did not exit properly. See above for errors ❌")
+		log.Error("❌ Gonymizer did not exit properly. See above for errors ❌")
 		os.Exit(1)
 	}
 	log.Debugf("S3 URL: %s\tScheme: %s\tBucket: %s\tRegion: %s\tFile Path: %s",
@@ -116,7 +116,7 @@ func cliCommandProcess(cmd *cobra.Command, args []string) {
 	)
 	if err != nil {
 		log.Error(err)
-		log.Error("❌ Anonymizer did not exit properly. See above for errors ❌")
+		log.Error("❌ Gonymizer did not exit properly. See above for errors ❌")
 		os.Exit(1)
 	} else {
 		log.Info("🦄 ", aurora.Bold(aurora.Green("-- SUCCESS --")), " 🌈")
