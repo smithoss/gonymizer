@@ -91,14 +91,6 @@ func init() {
 	)
 	_ = viper.BindPFlag("dump.dump-file", DumpCmd.Flags().Lookup("dump-file"))
 
-	DumpCmd.Flags().BoolVar(
-		&procedures,
-		"skip-procedures",
-		false,
-		"Skip adding stored procedures to dump file",
-	)
-	_ = viper.BindPFlag("dump.skip-procedures", DumpCmd.Flags().Lookup("skip-procedures"))
-
 	DumpCmd.Flags().StringSliceVar(
 		&schema,
 		"schema",
@@ -224,7 +216,6 @@ func cliCommandDump(cmd *cobra.Command, args []string) {
 		viper.GetStringSlice("dump.exclude-table-data"),
 		viper.GetStringSlice("dump.exclude-schemas"),
 		viper.GetStringSlice("dump.schema"),
-		viper.GetBool("dump.skip-procedures"),
 	)
 
 	if err != nil {
@@ -245,7 +236,6 @@ func dump(
 	excludeTableData,
 	excludeSchemas,
 	schema []string,
-	skipProcedures bool,
 ) (err error) {
 	if err = gonymizer.CreateDumpFile(
 		conf,
@@ -255,7 +245,6 @@ func dump(
 		excludeTableData,
 		excludeSchemas,
 		schema,
-		skipProcedures,
 	); err != nil {
 		return err
 	}
