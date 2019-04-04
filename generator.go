@@ -79,7 +79,6 @@ func CreateDumpFile(
 		log.Info("Dumping the following schemas: ", schemas)
 	}
 
-
 	// Exclude system schemas
 	for _, sch := range excludeCreateSchemas {
 		args = append(args, fmt.Sprintf("--exclude-table=%s.*", sch))
