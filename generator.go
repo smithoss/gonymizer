@@ -68,17 +68,22 @@ func CreateDumpFile(
 	log.Info("Dumping the following schemas: ", schemas)
 
 	if len(schemas) < 1 {
-		args = append(args, fmt.Sprintf("--table=public.*"))
+		args = append(args, fmt.Sprintf("--schema=public"))
 		schemas = append(schemas, "public")
 	} else {
 		// Add all schemas that match schemaPrefix to the dump list
 		for _, schema := range schemas {
 			if strings.HasPrefix(schemaPrefix, schema) {
-				args = append(args, fmt.Sprintf("--table=%s*.*", schemaPrefix))
+				args = append(args, fmt.Sprintf("--schema=%s*.*", schemaPrefix))
 			} else {
-				args = append(args, fmt.Sprintf("--table=%s.*", schema))
+				args = append(args, fmt.Sprintf("--schema=%s.*", schema))
 			}
 		}
+	}
+
+	// Exclude system schemas
+	for _, sch := range excludeCreateSchemas {
+		args = append(args, fmt.Sprintf("--exclude-table=%s.*", sch))
 	}
 
 	// Exclude tables that are not needed (schema will not be dumped)
@@ -103,7 +108,7 @@ func CreateDumpFile(
 		return err
 	}
 	defer outputFile.Close()
-
+	/*
 	// Prepopulate our dumpfile with user defined functions
 	if !skipProcedures {
 		log.Info("Adding CREATE statements for: stored procedures")
@@ -123,12 +128,12 @@ func CreateDumpFile(
 			}
 		}
 	}
-
+	*/
 	// Add create schema statements to top of dump file
-	log.Info("Adding CREATE statements for: non-system schemas")
-	if err := generateSchemaSQL(conf, outputFile, excludeCreateSchemas); err != nil {
-		return err
-	}
+	//log.Info("Adding CREATE statements for: non-system schemas")
+	//if err := generateSchemaSQL(conf, outputFile, excludeCreateSchemas); err != nil {
+	//		return err
+	//	}
 
 	// Now grab tables and data
 	err = ExecPostgresCommandOutErr(outputFile, &errBuffer, cmd, args...)
