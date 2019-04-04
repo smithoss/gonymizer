@@ -20,7 +20,6 @@ func TestCreateDumpFile(t *testing.T) {
 			TestExcludeTableData,
 			TestExcludeSchemas,
 			TestSchemas,
-			true, // Skip stored procedures for testing
 		),
 	)
 
@@ -51,7 +50,6 @@ func TestProcessDumpFile(t *testing.T) {
 			TestExcludeTableData,
 			TestExcludeSchemas,
 			TestSchemas,
-			true,
 		),
 	)
 
