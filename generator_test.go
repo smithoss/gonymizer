@@ -64,7 +64,7 @@ func TestProcessDumpFile(t *testing.T) {
 	conf.DefaultDBName = TestPostLocalDb
 	_ = DropDatabase(conf)
 	require.Nil(t, CreateDatabase(conf))
-	require.Nil(t, SQLCommandFile(conf, TestProcessDumpfile, false))
+	require.Nil(t, SQLCommandFile(conf, TestProcessDumpfile, true)) //Must ignore errors
 }
 
 func TestGenerateRandomInt64(t *testing.T) {
