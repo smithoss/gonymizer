@@ -64,21 +64,21 @@ func CreateDumpFile(
 
 	var errBuffer bytes.Buffer
 
-	log.Info("Dumping the following schemas: ", schemas)
-
 	if len(schemas) < 1 {
 		args = append(args, fmt.Sprintf("--schema=public"))
-		schemas = append(schemas, "public")
+		log.Info("Dumping the following schemas: [public]")
 	} else {
 		// Add all schemas that match schemaPrefix to the dump list
-		for _, schema := range schemas {
-			if strings.HasPrefix(schemaPrefix, schema) {
+		for _, s := range schemas {
+			if strings.HasPrefix(schemaPrefix, s) {
 				args = append(args, fmt.Sprintf("--schema=%s*.*", schemaPrefix))
 			} else {
-				args = append(args, fmt.Sprintf("--schema=%s.*", schema))
+				args = append(args, fmt.Sprintf("--schema=%s.*", s))
 			}
 		}
+		log.Info("Dumping the following schemas: ", schemas)
 	}
+
 
 	// Exclude system schemas
 	for _, sch := range excludeCreateSchemas {
