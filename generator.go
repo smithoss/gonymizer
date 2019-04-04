@@ -53,7 +53,6 @@ func CreateDumpFile(
 	excludeDataTables,
 	excludeCreateSchemas,
 	schemas []string,
-	skipProcedures bool,
 ) error {
 
 	cmd := "pg_dump"
@@ -108,32 +107,6 @@ func CreateDumpFile(
 		return err
 	}
 	defer outputFile.Close()
-	/*
-	// Prepopulate our dumpfile with user defined functions
-	if !skipProcedures {
-		log.Info("Adding CREATE statements for: stored procedures")
-		for _, schema := range schemas {
-			var procedures, err = GetAllProceduresInSchema(conf, schema)
-			if err != nil {
-				return err
-			}
-			for _, proc := range procedures {
-				// When pulling procedures from the information schema we are not given a ';' at the end of each
-				// statement. Add the ';' here. Some functions will fail on import, but we ignore them since they are
-				// system functions that are already defined in the 'public' schema
-				_, err = outputFile.WriteString(fmt.Sprintf("%s;\n", proc))
-				if err != nil {
-					return err
-				}
-			}
-		}
-	}
-	*/
-	// Add create schema statements to top of dump file
-	//log.Info("Adding CREATE statements for: non-system schemas")
-	//if err := generateSchemaSQL(conf, outputFile, excludeCreateSchemas); err != nil {
-	//		return err
-	//	}
 
 	// Now grab tables and data
 	err = ExecPostgresCommandOutErr(outputFile, &errBuffer, cmd, args...)
