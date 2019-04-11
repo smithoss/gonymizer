@@ -237,7 +237,7 @@ func dump(
 	excludeSchemas,
 	schema []string,
 ) (err error) {
-	if err = gonymizer.CreateDumpFile(
+	return gonymizer.CreateDumpFile(
 		conf,
 		dumpFile,
 		schemaPrefix,
@@ -245,10 +245,7 @@ func dump(
 		excludeTableData,
 		excludeSchemas,
 		schema,
-	); err != nil {
-		return err
-	}
-	return nil
+	)
 }
 
 // storeRowCountFile stores the row counts for every table that was saved into the dump file. This can be used during

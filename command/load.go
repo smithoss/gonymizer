@@ -166,10 +166,7 @@ func load(conf gonymizer.PGConfig, loadFile, s3FilePath string) (err error) {
 	}
 
 	log.Info("Loading data from file: ", loadFile)
-	if err = gonymizer.LoadFile(conf, loadFile); err != nil {
-		return err
-	}
-	return nil
+	return gonymizer.LoadFile(conf, loadFile)
 }
 
 // downloadRowCountFile will download the row count file from S3 if needed and verify that the table row counts is

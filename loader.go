@@ -81,11 +81,7 @@ func LoadFile(conf PGConfig, filePath string) (err error) {
 
 	// Rename temp database -> main database
 	log.Infof("Renaming database '%s' -> '%s'", tempDbConf.DefaultDBName, conf.DefaultDBName)
-	if err = RenameDatabase(psqlConn, tempDbConf.DefaultDBName, conf.DefaultDBName); err != nil {
-		return err
-	}
-
-	return nil
+	return RenameDatabase(psqlConn, tempDbConf.DefaultDBName, conf.DefaultDBName)
 }
 
 // VerifyRowCount will verify that the rowcounts in the PGConfig matches the supplied CSV file (see command/dump)

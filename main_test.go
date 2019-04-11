@@ -83,10 +83,7 @@ func LoadTestDb(dbName string) error {
 // after completing a test in which the database is loaded.
 func CloseTestDb(dbName string) error {
 	conf := GetTestDbConf(dbName)
-	if err := DropDatabase(conf); err != nil {
-		return err
-	}
-	return nil
+	return DropDatabase(conf)
 }
 
 // TestStart is the main entry point for all tests. Testing should be started using the Go test -run TestStart
