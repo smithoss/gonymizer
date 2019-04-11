@@ -302,7 +302,7 @@ func GetTableRowCountsInDB(conf PGConfig, schemaPrefix string, excludeTable []st
 			_ = rows.Scan(&schemaName, &tableName)
 
 			// Search exclude list to see if schema + table are in it. if so skip them
-			//TODO: Refactor this to use efficent search (key lookups are possible)
+			//TODO: Refactor this to use efficient search (key lookups are possible)
 			for _, e := range excludeTable {
 				s := strings.Split(e, ".")
 				if len(schemaPrefix) > 0 && strings.HasPrefix(s[0], schemaPrefix) && s[1] == tableName {

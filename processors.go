@@ -195,7 +195,7 @@ func ProcessorRandomDate(cmap *ColumnMapper, input string) (string, error) {
 }
 
 // ProcessorRandomUUID will generate a random UUID and replace the input with the new UUID. The input however will be
-// mapped to the output so every occurance of the input UUID will replace it with the same output UUID that was
+// mapped to the output so every occurrence of the input UUID will replace it with the same output UUID that was
 // originally created during the first occurrence of the input UUID.
 func ProcessorRandomUUID(cmap *ColumnMapper, input string) (string, error) {
 	var scrambledUUID string
