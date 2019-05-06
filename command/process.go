@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/session"
 	"os"
 	"strings"
+
+	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/session"
 
 	log "github.com/sirupsen/logrus"
 
@@ -66,7 +67,7 @@ func init() {
 		"",
 		"File to concatenate to the end of the processed dump file. Useful for adding static credentials to the database",
 	)
-	_ = viper.BindPFlag("process.map-file", ProcessCmd.Flags().Lookup("post-process-file"))
+	_ = viper.BindPFlag("process.post-process-file", ProcessCmd.Flags().Lookup("post-process-file"))
 
 	ProcessCmd.Flags().StringVar(
 		&s3FilePath,
