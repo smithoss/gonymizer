@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
-	log "github.com/sirupsen/logrus"
 	"os"
 	"strings"
+
+	log "github.com/sirupsen/logrus"
 
 	"github.com/logrusorgru/aurora"
 	"github.com/smithoss/gonymizer"
@@ -127,7 +128,7 @@ func init() {
 func cliCommandMap(cmd *cobra.Command, args []string) {
 	var err error
 
-	log.Info(aurora.Bold(aurora.Brown(fmt.Sprint("Enabling log level: ",
+	log.Info(aurora.Bold(aurora.Yellow(fmt.Sprint("Enabling log level: ",
 		strings.ToUpper(viper.GetString("log-level"))))))
 
 	// Check to make sure schema-prefix and schema are used in conjunction with each other

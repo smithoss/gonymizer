@@ -2,15 +2,16 @@ package main
 
 import (
 	"fmt"
+	"os"
+	"strconv"
+	"strings"
+	"time"
+
 	"github.com/logrusorgru/aurora"
 	log "github.com/sirupsen/logrus"
 	"github.com/smithoss/gonymizer"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"os"
-	"strconv"
-	"strings"
-	"time"
 )
 
 // LoadCmd is the cobra.Command struct we use for "load" command.
@@ -110,7 +111,7 @@ func init() {
 func cliCommandLoad(cmd *cobra.Command, args []string) {
 	var err error
 
-	log.Info(aurora.Bold(aurora.Brown(fmt.Sprint("Enabling log level: ",
+	log.Info(aurora.Bold(aurora.Yellow(fmt.Sprint("Enabling log level: ",
 		strings.ToUpper(viper.GetString("log-level"))))),
 	)
 

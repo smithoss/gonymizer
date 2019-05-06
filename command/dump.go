@@ -4,6 +4,11 @@ import (
 	"encoding/csv"
 	"errors"
 	"fmt"
+	"os"
+	"strconv"
+	"strings"
+	"time"
+
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/logrusorgru/aurora"
@@ -11,10 +16,6 @@ import (
 	"github.com/smithoss/gonymizer"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"os"
-	"strconv"
-	"strings"
-	"time"
 )
 
 // DumpCmd is the cobra.Command struct we use for "dump" command.
@@ -150,7 +151,7 @@ func init() {
 func cliCommandDump(cmd *cobra.Command, args []string) {
 	var err error
 
-	log.Info(aurora.Bold(aurora.Brown(fmt.Sprint("Enabling log level: ",
+	log.Info(aurora.Bold(aurora.Yellow(fmt.Sprint("Enabling log level: ",
 		strings.ToUpper(viper.GetString("log-level"))))),
 	)
 

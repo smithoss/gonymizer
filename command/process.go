@@ -87,7 +87,7 @@ func cliCommandProcess(cmd *cobra.Command, args []string) {
 		err    error
 	)
 
-	log.Info(aurora.Bold(aurora.Brown(fmt.Sprint("Enabling log level: ",
+	log.Info(aurora.Bold(aurora.Yellow(fmt.Sprint("Enabling log level: ",
 		strings.ToUpper(viper.GetString("log-level"))))))
 
 	// Parse S3 URL into bucket, region, and path
