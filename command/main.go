@@ -3,12 +3,13 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	log "github.com/sirupsen/logrus"
-	"golang.org/x/crypto/ssh/terminal"
 	"os"
 	"runtime"
 	"strings"
 	"syscall"
+
+	log "github.com/sirupsen/logrus"
+	"golang.org/x/crypto/ssh/terminal"
 
 	"github.com/logrusorgru/aurora"
 	"github.com/smithoss/gonymizer"
@@ -72,7 +73,7 @@ var (
 	schema           []string
 
 	rootCmd = &cobra.Command{
-		Use:              "anonymize",
+		Use:              "gonymizer",
 		Short:            "Usage: gonymizer [optional_flags] map|dump|process|load",
 		Long:             longHelp,
 		PersistentPreRun: preRun,
