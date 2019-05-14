@@ -27,7 +27,7 @@ docs directory in this application to see a full how-to guide and where to get s
 
 ## Supported RDBMS
 
-Currently Gonymizer only supports **PostgreSQL 9.5.x and 10.x**. We have not tested Gonymizer on versions 11 and 12 yet, but plan to in the near future. If you would like to help by adding support for other database manangementsystems please join the team by reading over our issues. We are looking for help on this roject.
+Currently Gonymizer only supports **PostgreSQL 9.5.x and 10.x**. We have not tested Gonymizer on versions 11 and 12 yet, but plan to in the near future. If you would like to help by adding support for other database manangement systems please join the team by joining us (see CONTRIBUTING.md).
 
 ## Abbreviations and Definitions:
 
