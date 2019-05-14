@@ -9,10 +9,9 @@
 [![CircleCI](https://circleci.com/gh/smithoss/gonymizer.svg?style=svg)](https://circleci.com/gh/smithoss/gonymizer)[![codecov](https://codecov.io/gh/smithoss/gonymizer/branch/master/graph/badge.svg)](https://codecov.io/gh/smithoss/gonymizer)[![Go Report Card](https://goreportcard.com/badge/github.com/smithoss/gonymizer)](https://goreportcard.com/report/github.com/smithoss/gonymizer)[![GoDoc](https://godoc.org/github.com/smithoss/gonymizer?status.svg)](https://godoc.org/github.com/smithoss/gonymizer)
 
 ## Weird name, what does it do?
-The Gonymizer project (Go + Anonymizer) is a project that was completed at [SmithRx](https://www.smithrx.com) in hope to simplify the QA process. Gonymizer is 
+The Gonymizer project (Go + Anonymizer) is a project that was built at [SmithRx](https://www.smithrx.com) in hope to simplify the QA process. Gonymizer is 
 written in Go lang and is meant to help database administrators and infrastructure folks easily anonymize production
-database dumps before loading this data into a QA environment. Currently PostgreSQL 9.6+ is supported with support for
-other databases welcome through pull requests.
+database dumps before loading this data into a QA environment.
 
 We have built in support, and examples, for:
 * Kubernetes CRONJOB scheduling
@@ -25,6 +24,10 @@ We plan to have built-in:
 Our API is an easy one to follow and we encourage others to join in by trying Gonymizer with their own development and stagingenvironments either directly using the CLI or using the API. We include in our documentation: example configurations,
 best practices, Kubernetes CRONJOB examples, examples for AWS-Lambda, and other infrastructure tools. Please see the 
 docs directory in this application to see a full how-to guide and where to get started.
+
+## Supported RDBMS
+
+Currently Gonymizer only supports **PostgreSQL 9.5.x and 10.x**. We have not tested Gonymizer on versions 11 and 12 yet, but plan to in the near future. If you would like to help by adding support for other database manangementsystems please join the team by reading over our issues. We are looking for help on this roject.
 
 ## Abbreviations and Definitions:
 
@@ -39,6 +42,7 @@ In this document/codebase, we use them interchangeably.
 ## Getting Started
 If you are a seasoned Go veteran or already have an environment which contains Go>= 1.11 then you can skip to 
 the next section.
+
 
 ### OSX
 
