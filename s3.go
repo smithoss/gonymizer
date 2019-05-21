@@ -3,15 +3,16 @@ package gonymizer
 import (
 	"bytes"
 	"errors"
+	"net/http"
+	"net/url"
+	"os"
+	"strings"
+
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 	log "github.com/sirupsen/logrus"
-	"net/http"
-	"net/url"
-	"os"
-	"strings"
 )
 
 // S3File is the main structure for gonymizer files in S3 metadata.
