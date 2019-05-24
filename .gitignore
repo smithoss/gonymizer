@@ -7,7 +7,7 @@ bin/
 export_*
 
 # Test Databases
-docs/demos/storedb/dellstore2-normal-1.0
+docs/demos/dellstore2/dellstore2-normal-1.0
 
 # Test files
 db_test_*.log
