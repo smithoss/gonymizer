@@ -1,0 +1,55 @@
+{
+    "comment":                  [
+        "This is a configuration for the demo Dell Store database 2",
+        "This database can be found at: http://pgfoundry.org/projects/dbsamples/"
+    ],
+    "dump":     {
+        "database":             "store",
+        "disable-ssl":          true,
+        "dump-file":            "phi_dump.sql",
+        "exclude-schemas":      [
+            "pg_toast",
+            "pg_temp_1",
+            "pg_toast_temp1",
+            "pg_catalog",
+            "information_schema"
+        ],
+        "host":                 "localhost",
+        "port":                 5432,
+        "schema":               ["public"],
+        "row-count-file":       "row-counts.csv",
+        "username":             "levi"
+    },
+
+    "map":      {
+        "database":             "store",
+        "disable-ssl":          true,
+        "host":                 "localhost",
+        "map-file":             "db_map.json",
+        "port":                 5432,
+        "schema":               ["public"],
+        "username":             "levi"
+
+    },
+
+    "process":  {
+        "dump-file":            "phi_dump.sql",
+        "map-file":             "db_map.json",
+        "generate-seed":        true,
+        "processed-file":       "anonymized_dump.sql"
+    },
+
+    "load": {
+        
+        "database":             "store_anonymized",
+        "disable-ssl":          true,
+        "host":                 "localhost",
+        "load-file":            "anonymized_dump.sql",
+        "port":                 5432,
+        "row-count-file":       "row-counts.csv",
+        "username":             "levi"
+
+    },
+
+    "log-level":                "DEBUG"
+}

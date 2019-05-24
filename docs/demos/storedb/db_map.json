@@ -1,0 +1,428 @@
+{
+    "DBName": "store",
+    "SchemaPrefix": "",
+    "Seed": 0,
+    "ColumnMaps": [
+        {
+            "Comment": "",
+            "TableSchema": "public",
+            "TableName": "customers",
+            "ColumnName": "customerid",
+            "DataType": "integer",
+            "ParentSchema": "",
+            "ParentTable": "",
+            "ParentColumn": "",
+            "OrdinalPosition": 1,
+            "IsNullable": false,
+            "Processors": [
+                {
+                    "Name": "Identity",
+                    "Max": 0,
+                    "Min": 0,
+                    "Variance": 0,
+                    "Comment": ""
+                }
+            ]
+        },
+        {
+            "Comment": "",
+            "TableSchema": "public",
+            "TableName": "customers",
+            "ColumnName": "firstname",
+            "DataType": "character varying",
+            "ParentSchema": "",
+            "ParentTable": "",
+            "ParentColumn": "",
+            "OrdinalPosition": 2,
+            "IsNullable": false,
+            "Processors": [
+                {
+                    "Name": "FakeFirstName",
+                    "Max": 0,
+                    "Min": 0,
+                    "Variance": 0,
+                    "Comment": ""
+                }
+            ]
+        },
+        {
+            "Comment": "",
+            "TableSchema": "public",
+            "TableName": "customers",
+            "ColumnName": "lastname",
+            "DataType": "character varying",
+            "ParentSchema": "",
+            "ParentTable": "",
+            "ParentColumn": "",
+            "OrdinalPosition": 3,
+            "IsNullable": false,
+            "Processors": [
+                {
+                    "Name": "FakeLastName",
+                    "Max": 0,
+                    "Min": 0,
+                    "Variance": 0,
+                    "Comment": ""
+                }
+            ]
+        },
+        {
+            "Comment": "",
+            "TableSchema": "public",
+            "TableName": "customers",
+            "ColumnName": "address1",
+            "DataType": "character varying",
+            "ParentSchema": "",
+            "ParentTable": "",
+            "ParentColumn": "",
+            "OrdinalPosition": 4,
+            "IsNullable": false,
+            "Processors": [
+                {
+                    "Name": "FakeStreetAddress",
+                    "Max": 0,
+                    "Min": 0,
+                    "Variance": 0,
+                    "Comment": ""
+                }
+            ]
+        },
+        {
+            "Comment": "",
+            "TableSchema": "public",
+            "TableName": "customers",
+            "ColumnName": "address2",
+            "DataType": "character varying",
+            "ParentSchema": "",
+            "ParentTable": "",
+            "ParentColumn": "",
+            "OrdinalPosition": 5,
+            "IsNullable": true,
+            "Processors": [
+                {
+                    "Name": "FakeStreetAddress",
+                    "Max": 0,
+                    "Min": 0,
+                    "Variance": 0,
+                    "Comment": ""
+                }
+            ]
+        },
+        {
+            "Comment": "",
+            "TableSchema": "public",
+            "TableName": "customers",
+            "ColumnName": "city",
+            "DataType": "character varying",
+            "ParentSchema": "",
+            "ParentTable": "",
+            "ParentColumn": "",
+            "OrdinalPosition": 6,
+            "IsNullable": false,
+            "Processors": [
+                {
+                    "Name": "FakeCity",
+                    "Max": 0,
+                    "Min": 0,
+                    "Variance": 0,
+                    "Comment": ""
+                }
+            ]
+        },
+        {
+            "Comment": "",
+            "TableSchema": "public",
+            "TableName": "customers",
+            "ColumnName": "state",
+            "DataType": "character varying",
+            "ParentSchema": "",
+            "ParentTable": "",
+            "ParentColumn": "",
+            "OrdinalPosition": 7,
+            "IsNullable": true,
+            "Processors": [
+                {
+                    "Name": "FakeState",
+                    "Max": 0,
+                    "Min": 0,
+                    "Variance": 0,
+                    "Comment": ""
+                }
+            ]
+        },
+        {
+            "Comment": "",
+            "TableSchema": "public",
+            "TableName": "customers",
+            "ColumnName": "zip",
+            "DataType": "integer",
+            "ParentSchema": "",
+            "ParentTable": "",
+            "ParentColumn": "",
+            "OrdinalPosition": 8,
+            "IsNullable": true,
+            "Processors": [
+                {
+                    "Name": "FakeZip",
+                    "Max": 0,
+                    "Min": 0,
+                    "Variance": 0,
+                    "Comment": ""
+                }
+            ]
+        },
+        {
+            "Comment": "",
+            "TableSchema": "public",
+            "TableName": "customers",
+            "ColumnName": "country",
+            "DataType": "character varying",
+            "ParentSchema": "",
+            "ParentTable": "",
+            "ParentColumn": "",
+            "OrdinalPosition": 9,
+            "IsNullable": false,
+            "Processors": [
+                {
+                    "Name": "AlphaNumericScrambler",
+                    "Max": 0,
+                    "Min": 0,
+                    "Variance": 0,
+                    "Comment": ""
+                }
+            ]
+        },
+        {
+            "Comment": "",
+            "TableSchema": "public",
+            "TableName": "customers",
+            "ColumnName": "region",
+            "DataType": "smallint",
+            "ParentSchema": "",
+            "ParentTable": "",
+            "ParentColumn": "",
+            "OrdinalPosition": 10,
+            "IsNullable": false,
+            "Processors": [
+                {
+                    "Name": "AlphaNumericScrambler",
+                    "Max": 0,
+                    "Min": 0,
+                    "Variance": 0,
+                    "Comment": ""
+                }
+            ]
+        },
+        {
+            "Comment": "",
+            "TableSchema": "public",
+            "TableName": "customers",
+            "ColumnName": "email",
+            "DataType": "character varying",
+            "ParentSchema": "",
+            "ParentTable": "",
+            "ParentColumn": "",
+            "OrdinalPosition": 11,
+            "IsNullable": true,
+            "Processors": [
+                {
+                    "Name": "FakeEmailAddress",
+                    "Max": 0,
+                    "Min": 0,
+                    "Variance": 0,
+                    "Comment": ""
+                }
+            ]
+        },
+        {
+            "Comment": "",
+            "TableSchema": "public",
+            "TableName": "customers",
+            "ColumnName": "phone",
+            "DataType": "character varying",
+            "ParentSchema": "",
+            "ParentTable": "",
+            "ParentColumn": "",
+            "OrdinalPosition": 12,
+            "IsNullable": true,
+            "Processors": [
+                {
+                    "Name": "FakePhoneNumber",
+                    "Max": 0,
+                    "Min": 0,
+                    "Variance": 0,
+                    "Comment": ""
+                }
+            ]
+        },
+        {
+            "Comment": "",
+            "TableSchema": "public",
+            "TableName": "customers",
+            "ColumnName": "creditcardtype",
+            "DataType": "integer",
+            "ParentSchema": "",
+            "ParentTable": "",
+            "ParentColumn": "",
+            "OrdinalPosition": 13,
+            "IsNullable": false,
+            "Processors": [
+                {
+                    "Name": "Identity",
+                    "Max": 0,
+                    "Min": 0,
+                    "Variance": 0,
+                    "Comment": ""
+                }
+            ]
+        },
+        {
+            "Comment": "",
+            "TableSchema": "public",
+            "TableName": "customers",
+            "ColumnName": "creditcard",
+            "DataType": "character varying",
+            "ParentSchema": "",
+            "ParentTable": "",
+            "ParentColumn": "",
+            "OrdinalPosition": 14,
+            "IsNullable": false,
+            "Processors": [
+                {
+                    "Name": "AlphaNumericScrambler",
+                    "Max": 0,
+                    "Min": 0,
+                    "Variance": 0,
+                    "Comment": ""
+                }
+            ]
+        },
+        {
+            "Comment": "",
+            "TableSchema": "public",
+            "TableName": "customers",
+            "ColumnName": "creditcardexpiration",
+            "DataType": "character varying",
+            "ParentSchema": "",
+            "ParentTable": "",
+            "ParentColumn": "",
+            "OrdinalPosition": 15,
+            "IsNullable": false,
+            "Processors": [
+                {
+                    "Name": "Identity",
+                    "Max": 0,
+                    "Min": 0,
+                    "Variance": 0,
+                    "Comment": ""
+                }
+            ]
+        },
+        {
+            "Comment": "",
+            "TableSchema": "public",
+            "TableName": "customers",
+            "ColumnName": "username",
+            "DataType": "character varying",
+            "ParentSchema": "",
+            "ParentTable": "",
+            "ParentColumn": "",
+            "OrdinalPosition": 16,
+            "IsNullable": false,
+            "Processors": [
+                {
+                    "Name": "FakeUsername",
+                    "Max": 0,
+                    "Min": 0,
+                    "Variance": 0,
+                    "Comment": ""
+                }
+            ]
+        },
+        {
+            "Comment": "",
+            "TableSchema": "public",
+            "TableName": "customers",
+            "ColumnName": "password",
+            "DataType": "character varying",
+            "ParentSchema": "",
+            "ParentTable": "",
+            "ParentColumn": "",
+            "OrdinalPosition": 17,
+            "IsNullable": false,
+            "Processors": [
+                {
+                    "Name": "ScrubString",
+                    "Max": 0,
+                    "Min": 0,
+                    "Variance": 0,
+                    "Comment": ""
+                }
+            ]
+        },
+        {
+            "Comment": "",
+            "TableSchema": "public",
+            "TableName": "customers",
+            "ColumnName": "age",
+            "DataType": "smallint",
+            "ParentSchema": "",
+            "ParentTable": "",
+            "ParentColumn": "",
+            "OrdinalPosition": 18,
+            "IsNullable": true,
+            "Processors": [
+                {
+                    "Name": "AlphaNumericScrambler",
+                    "Max": 0,
+                    "Min": 0,
+                    "Variance": 0,
+                    "Comment": ""
+                }
+            ]
+        },
+        {
+            "Comment": "",
+            "TableSchema": "public",
+            "TableName": "customers",
+            "ColumnName": "income",
+            "DataType": "integer",
+            "ParentSchema": "",
+            "ParentTable": "",
+            "ParentColumn": "",
+            "OrdinalPosition": 19,
+            "IsNullable": true,
+            "Processors": [
+                {
+                    "Name": "AlphaNumericScrambler",
+                    "Max": 0,
+                    "Min": 0,
+                    "Variance": 0,
+                    "Comment": ""
+                }
+            ]
+        },
+        {
+            "Comment": "",
+            "TableSchema": "public",
+            "TableName": "customers",
+            "ColumnName": "gender",
+            "DataType": "character varying",
+            "ParentSchema": "",
+            "ParentTable": "",
+            "ParentColumn": "",
+            "OrdinalPosition": 20,
+            "IsNullable": true,
+            "Processors": [
+                {
+                    "Name": "Identity",
+                    "Max": 0,
+                    "Min": 0,
+                    "Variance": 0,
+                    "Comment": ""
+                }
+            ]
+        }
+    ]
+}
+
