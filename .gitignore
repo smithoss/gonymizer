@@ -14,3 +14,8 @@ db_test_*.log
 
 # IntelliJ Idea
 .idea
+
+# Demo SQL/Log files
+docs/demos/dellstore2/*.sql
+docs/demos/dellstore2/*.log
+
