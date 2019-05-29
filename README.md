@@ -21,13 +21,17 @@ We plan to have built-in:
 * CRONJOB BASH scripts to use local disk as storage (see tasks, we need help!)
 * AWS-Lambda Job scheduling (see tasks, we need help!)
 
-Our API is an easy one to follow and we encourage others to join in by trying Gonymizer with their own development and stagingenvironments either directly using the CLI or using the API. We include in our documentation: example configurations,
-best practices, Kubernetes CRONJOB examples, examples for AWS-Lambda, and other infrastructure tools. Please see the 
-docs directory in this application to see a full how-to guide and where to get started.
+Our API is an easy one to follow and we encourage others to join in by trying Gonymizer with their own
+development and staging environments either directly using the CLI or using the API. We include in our
+documentation: example configurations, best practices, Kubernetes CRONJOB examples, examples for AWS-Lambda, and other
+infrastructure tools. Please see the docs directory in this application to see a full how-to guide and where
+to get started.
 
 ## Supported RDBMS
 
-Currently Gonymizer only supports **PostgreSQL 9.5.x and 10.x**. We have not tested Gonymizer on versions 11 and 12 yet, but plan to in the near future. If you would like to help by adding support for other database manangement systems please join the team by joining us (see CONTRIBUTING.md).
+Currently Gonymizer only supports **PostgreSQL 9.x-11.x**. We have not tested Gonymizer on versions 12+,
+but plan to in the near future. If you would like to help by adding support for other database management systems, new
+processors, or general questions please join by checking the CONTRIBUTING.md file in this repository.
 
 ## Abbreviations and Definitions:
 
@@ -73,7 +77,7 @@ binaries are stored under the Gonymizer/bin directory. Now that we have a built 
 map file using our JSON configuration:
 
 ```
-./gonymizer-darwin -c ~/conf/map-file.json map
+./gonymizer-darwin -c ~/conf/gonymizer-config-file.json dump
 ```
 
 ## Debian 9.x / Ubuntu 18.04
@@ -104,6 +108,12 @@ git clone https://github.com/smithoss/Gonymizer.git gonymizer
 cd gonymizer/scripts
 bash build.sh
 ```
+or
+
+```
+cd gonymizer/cmd/
+go build . -o ../bin/gonymizer
+```
 
 5. Run the binary
 ```
@@ -124,33 +134,37 @@ Gonymizer was built using the Cobra + Viper Golang libraries to allow for easy c
 recommend using a JSON, YAML, or TOML file to configure Gonymizer. Below we will go over an example configuration for
 running Gonymizer.
 
+For an example of how to set up a CLI configuration check our Dell Store 2 example in 
+docs/demo/dellstore2/gonymizer_config.json
+
 ```
 {
-  "comment":             "Test database used for Go tests",
-
-  "log-level":           "DEBUG",
-  "log-format":          "text",
-  "database":            "pii_localtest",
-  "host":                "localhost",
-  "port":                5432,
-  "username":            "bob",
-  "password":            "Bob's_Password",
-  "disable-ssl":         true,
-  "dump-file":           "/tmp/dump-db.sql",
-  "map-file":            "/tmp/db-map.skeleton.json",
-  "exclude-table":       ["upload_history", "download_history"],
-  "exclude-table-data":  ["accounts"],
-  "schema":              ["public", "company"],
-  "exclude-schema":      ["pg_toast", "pg_catagory"],
-  "schema-prefix":       "company_"
-
+	comment: "This example is viewable under docs/demo/dellstore2"
+    "dump":     {
+        "database":             "store",
+        "disable-ssl":          true,
+        "dump-file":            "phi_dump.sql",
+        "exclude-schemas":      [
+            "pg_toast",
+            "pg_temp_1",
+            "pg_toast_temp1",
+            "pg_catalog",
+            "information_schema"
+        ],
+        "host":                 "localhost",
+        "port":                 5432,
+        "schema":               ["public"],
+        "row-count-file":       "row-counts.csv",
+        "username":             "levi"
+    }
+  }
 }
 ```
 
 `comment`: is used to leave for comments for the reader and is not used by the application.
 
 `log-level`: is the level the application uses to know what should be displayed to the screen. Choices are: FATAL, 
-ERROR, WARN, INFO, DEBUG. We use the logrus Golang library for logging so please read the documentation 
+ERROR, WARN, INFO, DEBUG. We use the Logrus Golang library for logging so please read the documentation 
 [here](https://github.com/sirupsen/logrus) for more information.
 
 `database`: is the master database with PHI and PII that will be used for dumping a SQL dump file from.
@@ -344,11 +358,13 @@ the scope of Gonymizer project and should be done by external database administr
 
 ### TL;DR Steps to anonymization (that's a word right?)
 
-1. Create a map file: `gonymizer -c config/prod-conf.json map`
+1. Create a map file: `gonymizer -c config/production-conf.json map`
 2. Edit dump file to define which columns need to be anonymized.
 2. Create a PII encumbered dump file: `gonymizer -c config/prod-conf.json dump`
 3. Use the Process command to anonymize the PII dump file: `gonymizer -c config/prod-conf.json process`
 4. Use the Load command to load the anonymized database file into the database `gonymizer -c config/staging.json load`
+
+Also check out our slides from [Percona Live 2019](https://www.percona.com/live/19/) [here](https://github.com/smithoss/gonymizer/tree/master/docs/conferences/PerconaLive2019)
 
 
 ### Detailed Steps
