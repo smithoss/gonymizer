@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"path"
 	"strconv"
 	"strings"
 	"time"
@@ -132,7 +133,7 @@ func cliCommandLoad(cmd *cobra.Command, args []string) {
 
 	// Start the loading process
 	log.Info("🚜 ", aurora.Bold(aurora.Green("Loading the anonymized database")), " 🚜")
-	if err = load(dbConf, viper.GetString("load.load-file"), viper.GetString("load.s3-file-path")); err != nil {
+	if err = load(dbConf, viper.GetString("load.load-file")); err != nil {
 		log.Error(err)
 		log.Error("❌ Gonymizer did not exit properly. See above for errors ❌")
 		os.Exit(1)
@@ -153,15 +154,16 @@ func cliCommandLoad(cmd *cobra.Command, args []string) {
 }
 
 // load starts the loading process.
-func load(conf gonymizer.PGConfig, loadFile, s3FilePath string) (err error) {
-	// Check for S3 file here. If it is defined we should download it to loadFile's path and then load it.
-	if s3FilePath != "" {
-		log.Infof("🚛 Downloading from S3 '%s' -> %s\n", s3FilePath, loadFile)
+func load(conf gonymizer.PGConfig, filePath string) (err error) {
+	// Check for S3 file here. If it is defined we should download it to loadFile's filePath and then load it.
+	if strings.HasPrefix(strings.ToLower(filePath), "s3://") {
 		anonFile := new(gonymizer.S3File)
-		if err = anonFile.ParseS3Url(s3FilePath); err != nil {
+		if err = anonFile.ParseS3Url(filePath); err != nil {
 			return err
 		}
-		if err = gonymizer.GetFileFromS3(nil, anonFile, loadFile); err != nil {
+		tmpPath := "/tmp/" + path.Base(anonFile.FilePath)
+		log.Infof("🚛 Downloading from S3 '%s' -> %s\n", filePath, tmpPath)
+		if err = gonymizer.GetFileFromS3(nil, anonFile, tmpPath); err != nil {
 			return err
 		}
 	}
