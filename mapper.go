@@ -52,6 +52,9 @@ type DBMapper struct {
 // ColumnMapper returns the address of the ColumnMapper object if it matches the given parameters otherwise it returns
 // nil. Special cases exist for sharded schemas using the schema-prefix. See documentation for details.
 func (dbMap DBMapper) ColumnMapper(schemaName, tableName, columnName string) *ColumnMapper {
+	if strings.Contains(tableName, "\"") {
+		tableName = strings.Replace(tableName, "\"", "", -1)
+	}
 	for _, cmap := range dbMap.ColumnMaps {
 		//log.Infoln("dbMap.SchemaPrefix-> ", dbMap.SchemaPrefix)
 		//log.Infoln("schemaName-> ", schemaName)
