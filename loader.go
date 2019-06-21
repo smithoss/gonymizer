@@ -5,11 +5,12 @@ import (
 	"encoding/csv"
 	"errors"
 	"fmt"
-	log "github.com/sirupsen/logrus"
 	"io"
 	"os"
 	"strconv"
 	"time"
+
+	log "github.com/sirupsen/logrus"
 )
 
 // LoadFile will load an SQL file into the specified PGConfig.

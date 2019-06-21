@@ -2,10 +2,11 @@ package gonymizer
 
 import (
 	"errors"
-	"github.com/stretchr/testify/require"
 	"io/ioutil"
 	"os"
 	"testing"
+
+	"github.com/stretchr/testify/require"
 )
 
 func TestCreateDumpFile(t *testing.T) {

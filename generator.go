@@ -7,12 +7,13 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
-	"github.com/spf13/viper"
 	"io"
 	mathRand "math/rand"
 	"os"
 	"strings"
 	"unicode"
+
+	"github.com/spf13/viper"
 
 	log "github.com/sirupsen/logrus"
 )

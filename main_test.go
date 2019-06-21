@@ -1,10 +1,11 @@
 package gonymizer
 
 import (
-	"github.com/sirupsen/logrus"
-	"github.com/stretchr/testify/require"
 	"os"
 	"testing"
+
+	"github.com/sirupsen/logrus"
+	"github.com/stretchr/testify/require"
 )
 
 /*

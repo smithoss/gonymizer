@@ -3,13 +3,14 @@ package gonymizer
 import (
 	"bytes"
 	"fmt"
-	log "github.com/sirupsen/logrus"
-	"github.com/spf13/viper"
 	"io"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"strings"
+
+	log "github.com/sirupsen/logrus"
+	"github.com/spf13/viper"
 )
 
 // DropDatabase will drop the database that is supplied in the PGConfig.

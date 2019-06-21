@@ -4,9 +4,10 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"strings"
+
 	"github.com/lib/pq"
 	log "github.com/sirupsen/logrus"
-	"strings"
 )
 
 // RowCounts is used to keep track of the number of rows for a given schema and table.
