@@ -79,4 +79,4 @@ Complying to these simple rules will greatly accelerate the review process, and 
 ## Review and Development notes
 
 - All merges require LGTMs from any 1 of the maintainers (See MAINTAINERS.md)
-- We using tags to indicate release versions. We use the `master` branch as our development branch.  We have scripts under the scripts directory to change the version numbers for the application (see gonymizer/scripts/version_bump.sh).  Hot fixes, minor patches, and full version releases will be following [Semantic Versioning 2.0.0](https://semver.org/#semantic-versioning-200)
+- We are using tags to indicate release versions. We use the `master` branch as our development branch.  We have scripts under the `scripts/` directory to change the version numbers for the application (see gonymizer/scripts/version_bump.sh).  Hot fixes, minor patches, and full version releases will be following [Semantic Versioning 2.0.0](https://semver.org/#semantic-versioning-200)
