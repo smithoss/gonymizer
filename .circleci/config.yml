@@ -53,7 +53,7 @@ jobs:
               exit 0
             fi
 
-  build:
+  deploy:
     machine:
       enabled: true
     working_directory: /go/src/github.com/smithoss/gonymizer
@@ -85,5 +85,4 @@ workflows:
   basic-commits:
     jobs:
       - test
-      - build
-      - push
+      - deploy
