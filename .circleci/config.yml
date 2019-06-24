@@ -67,6 +67,7 @@ jobs:
       - run:
           name: Build Gonymizer Image
           command: |
+            docker build -t smithhealth/gonymizer:$(git rev-parse HEAD) --target gonymizer -f Dockerfile .
             docker build -t smithhealth/gonymizer:latest --target gonymizer -f Dockerfile .
       - run:
           name: Tag Gonymizer Image
