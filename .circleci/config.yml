@@ -56,7 +56,6 @@ jobs:
   deploy:
     machine:
       enabled: true
-    working_directory: /go/src/github.com/smithoss/gonymizer
     steps:
       - checkout
       - run:
