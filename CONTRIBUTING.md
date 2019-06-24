@@ -52,7 +52,7 @@ Additionally, you must [sign your commits](https://github.com/docker/docker/blob
 Some simple rules to ensure quick merge:
 
  - clearly point to the issue(s) you want to fix in your PR comment (e.g., `closes #12345`)
- - prefer multiple (smaller) PRs addressing individual issues over a big one trying to address multiple issues at once
+ - prefer multiple (smaller) PRs addressing individual issues over a big one trying to address multiple issues at once. The only exception here is large features that create more code than the change. Larger diffs with discriptive comments
  - if you need to amend your PR following comments, please squash instead of adding more commits
  - if fixing a bug or adding a feature, please add or update the relevant `CHANGELOG.md` entry with your pull request number
    and a description of the change
@@ -78,9 +78,5 @@ Complying to these simple rules will greatly accelerate the review process, and 
 
 ## Review and Development notes
 
-- All merges require LGTMs from any 2 maintainers.
-- We use the git flow model (as best we can) using the `releases` branch as the stable branch, and the `master` branch as the development branch.  When we get near a potential release, a release branch (`release/<semver>`) will be created from `master`.  Any PRs that should go into the release should be made against that branch.  Hot fixes for a minor release will be added to the branch `hotfix/<semver>`.
-
-## Taken from Notary
-These rules were taken and modified from [Notary](https://github.com/theupdateframework/notary/).
-
+- All merges require LGTMs from any 1 of the maintainers (See MAINTAINERS.md)
+- We using tags to indicate release versions. We use the `master` branch as our development branch.  We have scripts under the scripts directory to change the version numbers for the application (see gonymizer/scripts/version_bump.sh).  Hot fixes, minor patches, and full version releases will be following [Semantic Versioning 2.0.0](https://semver.org/#semantic-versioning-200)
