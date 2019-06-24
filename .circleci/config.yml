@@ -63,7 +63,7 @@ jobs:
           command: go get -v -t -d ./...
       - run:
           name: Docker Login
-          command: docker login -e $DOCKER_HUB_EMAIL -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASS
+          command: docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASS
       - run:
           name: Build Gonymizer Image
           command: |
