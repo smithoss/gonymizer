@@ -67,18 +67,13 @@ jobs:
       - run:
           name: Build Gonymizer Image
           command: |
-            docker build -t smithhealth/gonymizer:$(git rev-parse HEAD) --target gonymizer -f Dockerfile .
-            docker build -t smithhealth/gonymizer:latest --target gonymizer -f Dockerfile .
-      - run:
-          name: Tag Gonymizer Image
-          command: |
-            docker tag gonymizer $DOCKER_HUB_USER/gonymizer:$(git rev-parse HEAD)
-            docker tag gonymizer $DOCKER_HUB_USER/gonymizer:latest
+            docker build -t $DOCKER_HUB_USER/gonymizer:$(git rev-parse HEAD) -f Dockerfile .
+            docker build -t $DOCKER_HUB_USER/gonymizer:latest -f Dockerfile .
       - run:
           name: Push Docker image
           command: |
-            docker push $DOCKER_HUB_USER_ID/dockerapp:$(git rev-parse HEAD)
-            docker push $DOCKER_HUB_USER_ID/dockerapp:latest
+            docker push $DOCKER_HUB_USER/gonymizer:$(git rev-parse HEAD)
+            docker push $DOCKER_HUB_USER/gonymizer:latest
 
 workflows:
   version: 2
