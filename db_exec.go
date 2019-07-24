@@ -154,17 +154,15 @@ func ExecPostgresCmd(name string, args ...string) error {
 
 // ExecPostgresCommandOutErr is the executing function for the psql -f command. It also closed the loaded files/buffers
 // from the calling functions.
-func ExecPostgresCommandOutErr(
-	stdOut, stdErr io.Writer,
-	name string, arg ...string) error {
+func ExecPostgresCommandOutErr(stdOut, stdErr io.Writer, name string, arg ...string) error {
 	var err error
 
 	pgBinDir := viper.GetString("PG_BIN_DIR")
 	if len(pgBinDir) > 0 {
 		name = filepath.Join(pgBinDir, name)
 	}
-
 	cmd := exec.Command(name, arg...)
+	cmd.Env = append(os.Environ())
 
 	// we use buffers cause we want the output to go to two places...
 	var outBuffer bytes.Buffer
@@ -173,28 +171,31 @@ func ExecPostgresCommandOutErr(
 	cmd.Stdout = &outBuffer
 	cmd.Stderr = &errBuffer
 
-	log.Debugf("Running command: %s  %s", name, strings.Join(arg, " "))
+	log.Debugf("Running command: %s %s", name, strings.Join(arg, " "))
 
 	err = cmd.Run()
-
 	outBytes := outBuffer.Bytes()
 	errBytes := errBuffer.Bytes()
 
-	stdOut.Write(outBytes)
-	stdErr.Write(errBytes)
+	if _, err := stdOut.Write(outBytes); err != nil {
+		log.Error(err)
+	}
+	if _, err := stdErr.Write(errBytes); err != nil {
+		log.Error(err)
+	}
 
 	if err != nil {
 		log.Error(err)
 		log.Debug("name: ", name)
 		log.Debug("arg: ", arg)
 		if len(errBytes) > 0 {
-			log.Debugf("errBytes: \n=====================\n%s=====================\n", string(errBytes))
+			log.Debugf("errBytes: \n=====================\n%s\n=====================\n", string(errBytes))
+			log.Debugf("errBytes: \n=====================\n%s\n=====================\n", string(errBytes))
 		}
 		if len(outBytes) > 0 {
-			log.Debugf("outBytes: \n=====================\n%s=====================\n", string(outBytes))
+			log.Debugf("outBytes: \n=====================\n%s\n=====================\n", string(outBytes))
+			log.Debugf("outBytes: \n=====================\n%s\n=====================\n", string(outBytes))
 		}
-		return err
 	}
-
-	return nil
+	return err
 }

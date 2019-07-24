@@ -56,14 +56,16 @@ func CreateDumpFile(
 	schemas []string,
 ) error {
 
+	var (
+		errBuffer bytes.Buffer
+		outBuffer bytes.Buffer
+	)
+
 	cmd := "pg_dump"
 	args := []string{
-		conf.URI(),
 		"--oids",
 		"--no-owner",
 	}
-
-	var errBuffer bytes.Buffer
 
 	if len(schemas) < 1 {
 		args = append(args, fmt.Sprintf("--schema=public"))
@@ -77,12 +79,11 @@ func CreateDumpFile(
 				args = append(args, fmt.Sprintf("--schema=%s.*", s))
 			}
 		}
-		log.Info("Dumping the following schemas: ", schemas)
 	}
 
 	// Exclude system schemas
 	for _, sch := range excludeCreateSchemas {
-		args = append(args, fmt.Sprintf("--exclude-table=%s.*", sch))
+		args = append(args, fmt.Sprintf("--exclude-schema=%s", sch))
 	}
 
 	// Exclude tables that are not needed (schema will not be dumped)
@@ -100,23 +101,20 @@ func CreateDumpFile(
 		args = append(args, fmt.Sprintf("--exclude-table-data=%s", tbl))
 	}
 
-	outputFile, err := os.OpenFile(dumpfilePath, os.O_RDWR|os.O_CREATE, 0660)
-	if err != nil {
-		log.Debug("error open or create: ", err)
-		log.Debug("outputFileName: ", dumpfilePath)
-		return err
-	}
-	defer outputFile.Close()
+	args = append(args, "-f")
+	args = append(args, dumpfilePath)
 
-	// Now grab tables and data
-	err = ExecPostgresCommandOutErr(outputFile, &errBuffer, cmd, args...)
+	// Always put URI last
+	args = append(args, conf.URI())
+
+	// Execute pg_dump
+	err := ExecPostgresCommandOutErr(&outBuffer, &errBuffer, cmd, args...)
 	if err != nil {
+		log.Error("STDOUT: ", outBuffer.String())
+		log.Error("STDERR: ", errBuffer.String())
 		log.Error(err)
-		log.Debug("stdErr: ", errBuffer.String())
-		return err
 	}
-
-	return nil
+	return err
 }
 
 // ProcessDumpFile will process the supplied dump file according to the supplied database map file. GenerateSeed can

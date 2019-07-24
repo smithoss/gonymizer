@@ -51,7 +51,6 @@ var (
 		"pg_catalog",
 		"information_schema",
 	}
-	TestColumnMapper = []DBMapper{}
 )
 
 // GetTestDbConf will return a PGConfig for the specified localhost testing database.
