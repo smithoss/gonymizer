@@ -77,7 +77,12 @@ jobs:
 
 workflows:
   version: 2
-  basic-commits:
+  build-test-deploy:
     jobs:
       - test
-      - deploy
+      - deploy:
+          filters:
+            branches:
+              only: master
+          requires:
+            - test
