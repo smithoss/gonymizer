@@ -1,14 +1,24 @@
 package gonymizer
 
 import (
+	"bytes"
 	"testing"
 
+	"github.com/spf13/viper"
 	"github.com/stretchr/testify/require"
 )
 
 func TestCreateDatabase(t *testing.T) {
 	conf := GetTestDbConf(TestDb)
 	require.Nil(t, CreateDatabase(conf))
+
+	// Setup for Failure! Mwhaha
+	conf = PGConfig{}
+	conf.Host = "somewhereinoutterspace.dune"
+	conf.DefaultDBName = "Arrakis"
+	conf.SSLMode = "enable"
+
+	require.NotNil(t, CreateDatabase(conf))
 }
 
 func TestDropDatabase(t *testing.T) {
@@ -28,7 +38,18 @@ func TestDropDatabase(t *testing.T) {
 	require.Nil(t, DropDatabase(conf))
 }
 
+func TestSQLCommandFileFunc(t *testing.T) {
+	conf := GetTestDbConf(TestDb)
+	require.NotNil(t, SQLCommandFile(conf, "asdf", false))
+	require.Nil(t, SQLCommandFile(conf, TestSQLCommandFile, true))
+}
+
 func TestPsqlCommand(t *testing.T) {
+	var (
+		errBuffer bytes.Buffer
+		outBuffer bytes.Buffer
+	)
+
 	conf := GetTestDbConf(TestDb)
 	dburl := conf.BaseURI()
 	cmd := "psql"
@@ -47,4 +68,9 @@ func TestPsqlCommand(t *testing.T) {
 			ORDER BY table_name, ordinal_position;`,
 	}
 	require.Nil(t, ExecPostgresCmd(cmd, args...))
+	require.Nil(t, ExecPostgresCommandOutErr(&outBuffer, &errBuffer, cmd, args...))
+
+	viper.Set("PG_BIN_DIR", "/tmp")
+	require.NotNil(t, ExecPostgresCmd(cmd, args...))
+	viper.Set("PG_BIN_DIR", nil)
 }

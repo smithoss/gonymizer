@@ -22,6 +22,7 @@ const TestLoadFileDb = "gon_loader_test"
 const TestDbFile = "testing/test_db.sql"
 const TestMapFile = "testing/test_map.json"
 const TestPostProcessFile = "testing/test_post_process.sql"
+const TestSQLCommandFile = "testing/test_sql_command_file.sql"
 const TestRowCountFile = "testing/test_row_counts.csv"
 const TestRowCountIncorrectRowCountsFile = "testing/test_row_counts_incorrect_row_counts.csv"
 const TestRowCountsIncorrectNumberColumnsFile = "testing/test_row_counts_incorrect_number_columns.csv"
@@ -139,6 +140,7 @@ func seqUnitTests(t *testing.T) {
 
 	// Load test database for testing sequential tests
 	t.Run("PsqlCommand", TestPsqlCommand)
+	t.Run("SQLCommandFile", TestSQLCommandFileFunc)
 
 	// db_client.go
 	t.Run("CheckIfDbExists", TestCheckIfDbExists)
