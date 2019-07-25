@@ -177,12 +177,8 @@ func ExecPostgresCommandOutErr(stdOut, stdErr io.Writer, name string, arg ...str
 	outBytes := outBuffer.Bytes()
 	errBytes := errBuffer.Bytes()
 
-	if _, err := stdOut.Write(outBytes); err != nil {
-		log.Error(err)
-	}
-	if _, err := stdErr.Write(errBytes); err != nil {
-		log.Error(err)
-	}
+	stdOut.Write(outBytes)
+	stdErr.Write(errBytes)
 
 	if err != nil {
 		log.Error(err)
