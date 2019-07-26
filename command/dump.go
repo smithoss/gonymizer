@@ -58,13 +58,13 @@ func init() {
 
 	DumpCmd.Flags().StringSliceVar(
 		&excludeSchemas,
-		"exclude-schemas",
+		"exclude-schema",
 		[]string{},
 		"Schemas to skip DROP SCHEMA and CREATES SCHEMA for when creating the dump file. "+
 			"NOTE: This is useful when using --schema-prefix and --schema to skip dropping/creating system schemas "+
 			"such as 'public' which is done at initialization of the new anonymized database. See documentation.",
 	)
-	_ = viper.BindPFlag("dump.exclude-schemas", DumpCmd.Flags().Lookup("exclude-schemas"))
+	_ = viper.BindPFlag("dump.exclude-schema", DumpCmd.Flags().Lookup("exclude-schema"))
 
 	DumpCmd.Flags().StringVarP(
 		&dbHost,
@@ -215,7 +215,7 @@ func cliCommandDump(cmd *cobra.Command, args []string) {
 		viper.GetString("dump.schema-prefix"),
 		viper.GetStringSlice("dump.exclude-table"),
 		viper.GetStringSlice("dump.exclude-table-data"),
-		viper.GetStringSlice("dump.exclude-schemas"),
+		viper.GetStringSlice("dump.exclude-schema"),
 		viper.GetStringSlice("dump.schema"),
 	)
 
