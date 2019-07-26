@@ -1,9 +1,7 @@
 package gonymizer
 
 import (
-	"bytes"
 	"errors"
-	"net/http"
 	"net/url"
 	"os"
 	"strings"
@@ -51,46 +49,7 @@ func (s3f *S3File) ParseS3Url(s3url string) (err error) {
 
 // AddFileToS3 will upload the supplied inFile to the supplied S3File.FilePath
 func AddFileToS3(sess *session.Session, inFile string, s3file *S3File) (err error) {
-	if sess == nil {
-		sess, err = session.NewSession(&aws.Config{Region: aws.String(s3file.Region)})
-		if err != nil {
-			return err
-		}
-	}
-
-	file, err := os.Open(inFile)
-	if err != nil {
-		return err
-	}
-	defer file.Close()
-
-	// Get file size and read the file content into a buffer
-	fileInfo, err := file.Stat()
-	if err != nil {
-		log.Error("Unable to get file stats: ", inFile)
-		return err
-	}
-
-	size := fileInfo.Size()
-	buffer := make([]byte, size)
-	_, err = file.Read(buffer)
-	if err != nil {
-		return err
-	}
-
-	// Config settings: this is where you choose the Bucket, filename, content-type etc.
-	// of the file you're uploading.
-	_, err = s3.New(sess).PutObject(&s3.PutObjectInput{
-		Bucket:               aws.String(s3file.Bucket),
-		Key:                  aws.String(s3file.FilePath),
-		ACL:                  aws.String("private"),
-		Body:                 bytes.NewReader(buffer),
-		ContentLength:        aws.Int64(size),
-		ContentType:          aws.String(http.DetectContentType(buffer)),
-		ContentDisposition:   aws.String("attachment"),
-		ServerSideEncryption: aws.String("AES256"),
-	})
-	return err
+	return S3MultiPartUpload(inFile, s3file)
 }
 
 // GetFileFromS3 will save the S3File to the loadFile destination.
@@ -102,7 +61,6 @@ func GetFileFromS3(sess *session.Session, s3file *S3File, loadFile string) (err 
 			return err
 		}
 	}
-
 	file, err := os.OpenFile(loadFile, os.O_RDWR|os.O_CREATE, 0660)
 	if err != nil {
 		return err
