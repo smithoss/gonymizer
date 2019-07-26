@@ -144,11 +144,8 @@ docs/demo/dellstore2/gonymizer_config.json
         "database":             "store",
         "disable-ssl":          true,
         "dump-file":            "phi_dump.sql",
-        "exclude-schemas":      [
-            "pg_toast",
-            "pg_temp_1",
-            "pg_toast_temp1",
-            "pg_catalog",
+        "exclude-schema":      [
+            "pg*",
             "information_schema"
         ],
         "host":                 "localhost",
@@ -197,7 +194,7 @@ feature explained above and is identical to pg_dump's `--exclude-table-data` opt
 `schema`: is a list of schemas the Gonymizer should dump from the master database. This option must be in the form
 of a list if you are using the configuration methods mentioned above.
 
-`exclude-schemas`: is a list of system level schemas that Gonymizer should ignore when adding CREATE SCHEMA statements 
+`exclude-schema`: is a list of system level schemas that Gonymizer should ignore when adding CREATE SCHEMA statements 
 to the dump file. These schemas may still be included in the `--schema` option, for example the `public` schema.
 
 `schema-prefix`: is the prefix used for a schema environment where there is a prefix that matches other schemas. This 

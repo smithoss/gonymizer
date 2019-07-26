@@ -7,7 +7,7 @@
         "database":             "store",
         "disable-ssl":          true,
         "dump-file":            "phi_dump.sql",
-        "exclude-schemas":      [
+        "exclude-schema":      [
             "pg_toast",
             "pg_temp_1",
             "pg_toast_temp1",
