@@ -14,12 +14,10 @@ import (
 
 /* The original version of this library was taken from:
 https://github.com/apoorvam/aws-s3-multipart-upload/blob/master/aws-multipart-upload.go
-
 Modified by: Levi Junkert
 */
-
 const (
-	maxPartSize = int64(512 * 1000)
+	maxPartSize = int64(512 * 1000000) // 512 MB
 	maxRetries  = 3
 )
 
@@ -65,7 +63,7 @@ func S3MultiPartUpload(inputFile string, s3f *S3File) error {
 			log.Error(err.Error())
 			err := abortMultipartUpload(svc, resp)
 			if err != nil {
-				logrus.Error(err.Error())
+				log.Error(err.Error())
 			}
 			return err
 		}
