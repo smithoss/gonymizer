@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
-	"github.com/smithoss/gonymizer"
-	"github.com/spf13/cobra"
 	"os"
 	"runtime"
+
+	"github.com/smithoss/gonymizer"
+	"github.com/spf13/cobra"
 )
 
 // VersionCmd is the cobra.Command struct we use for "VersionCmd" command.
