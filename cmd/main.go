@@ -3,12 +3,14 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"io"
 	"os"
 	"runtime"
 	"strings"
 	"syscall"
 
 	log "github.com/sirupsen/logrus"
+	prefixed "github.com/x-cray/logrus-prefixed-formatter"
 	"golang.org/x/crypto/ssh/terminal"
 
 	"github.com/logrusorgru/aurora"
@@ -143,22 +145,25 @@ func init() {
 		"/tmp/gonymizer.log",
 		"If log-type=file, the /path/to/logfile; ignored otherwise",
 	)
+	_ = viper.BindPFlag("log.file", rootCmd.PersistentFlags().Lookup("log-file"))
 
 	rootCmd.PersistentFlags().StringVarP(
 		&logLevel,
 		"log-level",
 		"L",
-		"INFO",
+		"info",
 		"Output level of logs (TRACE, DEBUG, INFO, WARN, ERROR, FATAL)",
 	)
+	_ = viper.BindPFlag("log.level", rootCmd.PersistentFlags().Lookup("log-level"))
 
 	rootCmd.PersistentFlags().StringVarP(
 		&logFormat,
 		"log-format",
 		"f",
-		"text",
-		"Type of output, one of json or text",
+		"clean",
+		"Type of output, one of: json, text, clean",
 	)
+	_ = viper.BindPFlag("log.format", rootCmd.PersistentFlags().Lookup("log-format"))
 
 	// Bind commands to root
 	rootCmd.AddCommand(
@@ -205,18 +210,16 @@ func initConfig() {
 
 // preRun sets up default logging as well as printing the build number and date to the screen for debug purposes.
 func preRun(cmd *cobra.Command, args []string) {
-	setLoggingLevel()
+	setupLogging()
 
-	log.Debugf("os.Args: %v", os.Args)
-
-	log.Debugf("Starting %v (v%v, build %v, build date:%v)",
+	log.Infof("Starting %v (v%v, build %v, build date: %v)",
 		os.Args[0],
 		gonymizer.Version(),
 		gonymizer.BuildNumber(),
 		gonymizer.BuildDate(),
 	)
 
-	log.Debugf("Go (runtime:%v) (GOMAXPROCS:%d) (NumCPUs:%d)\n",
+	log.Infof("Go (runtime: %v) (GOMAXPROCS: %d) (NumCPUs: %d)\n",
 		runtime.Version(),
 		runtime.GOMAXPROCS(-1),
 		runtime.NumCPU(),
@@ -224,14 +227,30 @@ func preRun(cmd *cobra.Command, args []string) {
 }
 
 // setLoggingLevel sets the logging level depending on the application configuration.
-func setLoggingLevel() {
-	logLevel := strings.ToLower(viper.GetString("log-level"))
-
-	if logLevel == "" {
-		logLevel = "info"
+func setupLogging() {
+	// Setup Log File
+	if viper.GetString("log-file") != "" {
+		if f, err := os.OpenFile(viper.GetString("log-file"), os.O_WRONLY|os.O_CREATE, 0755); err != nil {
+			os.Exit(1)
+		} else {
+			// Write to stdout and the file
+			mw := io.MultiWriter(os.Stdout, f)
+			log.SetOutput(mw)
+		}
 	}
 
-	switch logLevel {
+	// Setup Log Formatter
+	switch strings.ToLower(viper.GetString("log.format")) {
+	case "json":
+		log.SetFormatter(&log.JSONFormatter{})
+	case "text":
+		log.SetFormatter(&log.TextFormatter{})
+	default:
+		log.SetFormatter(&prefixed.TextFormatter{})
+	}
+
+	// Setup Log level
+	switch strings.ToLower(viper.GetString("log.level")) {
 	case "debug":
 		log.SetLevel(log.DebugLevel)
 	case "info":
@@ -245,7 +264,9 @@ func setLoggingLevel() {
 	default:
 		log.SetLevel(log.InfoLevel)
 	}
-	if logLevel == "debug" {
+
+	if log.GetLevel() == log.DebugLevel {
+		log.Debugf("os.Args: %v", os.Args)
 		log.Debugf("🐍 %s 👇", aurora.Bold(aurora.Green(fmt.Sprintf(" configuration "))))
 		viper.Debug()
 		log.Debugf("🐍 %s ☝️", aurora.Bold(aurora.Green(fmt.Sprintf(" configuration "))))
