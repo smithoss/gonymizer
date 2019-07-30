@@ -1,4 +1,10 @@
 # Changelog
+=======
+## [v1.1.4](https://github.com/SmithRx/gonymizer/releases/tag/v1.1.3) 7/30/2019
+* Rename command directory to cmd
+* Fix ENV variables and logging flags at the root command level
+  * log flags and ENV variables were broken in previous versions
+  
 ## [v1.1.3](https://github.com/SmithRx/gonymizer/releases/tag/v1.1.3) 7/25/2019
 * Rename --exclude-schemas to --exclude-schema mimic pg_dump
 
