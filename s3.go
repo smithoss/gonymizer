@@ -85,7 +85,7 @@ func AddFileToS3(sess *session.Session, inFile string, s3file *S3File) (err erro
 		Key:                  aws.String(s3file.FilePath),
 		ServerSideEncryption: aws.String("AES256"),
 	})
-	log.Debug("AWS Response: %s", response)
+	log.Debug("AWS Response: ", response)
 	return err
 }
 
@@ -116,23 +116,4 @@ func GetFileFromS3(sess *session.Session, s3file *S3File, loadFile string) (err 
 		return err
 	}
 	return nil
-}
-
-// s3UploadFile will create a buffer of up to 2^32 (about 4GB of memory). AWS allows for 5GB files, but might as well
-// use multipart upload to upload files.
-func s3UploadFile(sess *session.Session, file *os.File, size int64, s3file *S3File) (err error) {
-
-	// Config settings: this is where you choose the Bucket, filename, content-type etc.
-	// of the file you're uploading.
-	_, err = s3.New(sess).PutObject(&s3.PutObjectInput{
-		Bucket:               aws.String(s3file.Bucket),
-		Key:                  aws.String(s3file.FilePath),
-		ACL:                  aws.String("private"),
-		Body:                 file,
-		ContentLength:        aws.Int64(size),
-		ContentType:          aws.String("text/plain"),
-		ContentDisposition:   aws.String("attachment"),
-		ServerSideEncryption: aws.String("AES256"),
-	})
-	return err
 }

@@ -88,7 +88,7 @@ func upload(localFile, urlStr string) (err error) {
 
 		//TODO: Add other cloud service providers here
 	default:
-		log.Error("Unrecognized transfer protocol: %s", s3file.Scheme)
+		log.Error("Unrecognized transfer protocol: ", s3file.Scheme)
 	}
 	return err
 }
