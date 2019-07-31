@@ -181,8 +181,8 @@ func LoadConfigSkeleton(givenPathToFile string) (*DBMapper, error) {
 }
 
 // findColumn searches the in-memory loaded column map using the specified parameters.
-func findColumn(columns []ColumnMapper, columnName, tableName, schemaPrefix, schema, dataType string,
-	ordinalPosition int, isNullable bool) (col ColumnMapper) {
+func findColumn(columns []ColumnMapper, columnName, tableName, schemaPrefix, schema,
+	dataType string) (col ColumnMapper) {
 
 	for _, col = range columns {
 
@@ -325,7 +325,7 @@ func mapColumns(db *sql.DB, columns []ColumnMapper, schemaPrefix, schema string,
 
 			// Search for columnName in columns, if the column exists in the dbmap leave as-is otherwise create a new one and
 			// add to the column map
-			col = findColumn(columns, columnName, tableName, schemaPrefix, schema, dataType, ordinalPosition, isNullable)
+			col = findColumn(columns, columnName, tableName, schemaPrefix, schema, dataType)
 			if col.TableSchema == "" && col.ColumnName == "" {
 				col = addColumn(columnName, tableName, schema, dataType, ordinalPosition, isNullable)
 				// Continuously append into the column map (old and new together)

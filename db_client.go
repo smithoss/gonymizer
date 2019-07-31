@@ -275,7 +275,6 @@ func GetTableRowCountsInDB(conf PGConfig, schemaPrefix string, excludeTable []st
 	} else {
 		query += "          ORDER BY schemaname, tablename;"
 		rows, err = db.Query(query)
-
 	}
 
 	if err != nil {
@@ -286,9 +285,6 @@ func GetTableRowCountsInDB(conf PGConfig, schemaPrefix string, excludeTable []st
 
 	// Build array string to pass into query (Injection Safe)
 	// See: https://groups.google.com/forum/#!msg/golang-nuts/vHbg09g7s2I/RKU7XsO25SIJ
-	if err != nil {
-		return nil, err
-	}
 	for {
 		for rows.Next() {
 			var (
