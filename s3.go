@@ -1,9 +1,7 @@
 package gonymizer
 
 import (
-	"bytes"
 	"errors"
-	"net/http"
 	"net/url"
 	"os"
 	"strings"
@@ -74,23 +72,20 @@ func AddFileToS3(sess *session.Session, inFile string, s3file *S3File) (err erro
 	fileSize := fileInfo.Size()
 	log.Infof("File Size: %.2f GB", fileSize/(1024*1024*1024))
 
-	if fileSize >= MaxPartSize {
-		// Use s3 manager to upload the file in pieces
-		//select Region to use.
-		svc := s3manager.NewUploader(sess)
+	// Use s3 manager to upload the file in pieces
+	//select Region to use.
+	svc := s3manager.NewUploader(sess)
 
-		response, err := svc.Upload(&s3manager.UploadInput{
-			Bucket: aws.String(s3file.Bucket),
-			Key:    aws.String(s3file.FilePath),
-			Body:   file,
-		})
-		log.Debug("AWS Response: %s", response)
-		if err != nil {
-			return err
-		}
-	} else {
-		err = s3UploadFile(sess, file, fileSize, s3file)
-	}
+	response, err := svc.Upload(&s3manager.UploadInput{
+		ACL:                  aws.String("private"),
+		Body:                 file,
+		Bucket:               aws.String(s3file.Bucket),
+		ContentDisposition:   aws.String("attachment"),
+		ContentType:          aws.String("text/plain"),
+		Key:                  aws.String(s3file.FilePath),
+		ServerSideEncryption: aws.String("AES256"),
+	})
+	log.Debug("AWS Response: %s", response)
 	return err
 }
 
@@ -126,11 +121,6 @@ func GetFileFromS3(sess *session.Session, s3file *S3File, loadFile string) (err 
 // s3UploadFile will create a buffer of up to 2^32 (about 4GB of memory). AWS allows for 5GB files, but might as well
 // use multipart upload to upload files.
 func s3UploadFile(sess *session.Session, file *os.File, size int64, s3file *S3File) (err error) {
-	buffer := make([]byte, size)
-	_, err = file.Read(buffer)
-	if err != nil {
-		return err
-	}
 
 	// Config settings: this is where you choose the Bucket, filename, content-type etc.
 	// of the file you're uploading.
@@ -138,9 +128,9 @@ func s3UploadFile(sess *session.Session, file *os.File, size int64, s3file *S3Fi
 		Bucket:               aws.String(s3file.Bucket),
 		Key:                  aws.String(s3file.FilePath),
 		ACL:                  aws.String("private"),
-		Body:                 bytes.NewReader(buffer),
+		Body:                 file,
 		ContentLength:        aws.Int64(size),
-		ContentType:          aws.String(http.DetectContentType(buffer)),
+		ContentType:          aws.String("text/plain"),
 		ContentDisposition:   aws.String("attachment"),
 		ServerSideEncryption: aws.String("AES256"),
 	})
