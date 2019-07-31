@@ -3,7 +3,6 @@ package gonymizer
 import (
 	"bytes"
 	"errors"
-	"fmt"
 	"net/http"
 	"net/url"
 	"os"
@@ -59,33 +58,38 @@ func AddFileToS3(sess *session.Session, inFile string, s3file *S3File) (err erro
 		}
 	}
 
+	// Get file stats
 	file, err := os.Open(inFile)
 	if err != nil {
 		return err
 	}
 	defer file.Close()
 
-	// Get file size and read the file content into a buffer
+	// Get file size
 	fileInfo, err := file.Stat()
 	if err != nil {
 		log.Error("Unable to get file stats: ", inFile)
 		return err
 	}
+	fileSize := fileInfo.Size()
+	log.Infof("File Size: %.2f GB", fileSize/(1024*1024*1024))
 
-	size := fileInfo.Size()
-	if size >= (2 ^ 32) {
+	if fileSize >= MaxPartSize {
+		// Use s3 manager to upload the file in pieces
 		//select Region to use.
 		svc := s3manager.NewUploader(sess)
 
-		fmt.Println("Uploading file to S3...")
-		_, err = svc.Upload(&s3manager.UploadInput{
+		response, err := svc.Upload(&s3manager.UploadInput{
 			Bucket: aws.String(s3file.Bucket),
 			Key:    aws.String(s3file.FilePath),
 			Body:   file,
 		})
-		//err = S3MultiPartUpload(inFile, s3file)
+		log.Debug("AWS Response: %s", response)
+		if err != nil {
+			return err
+		}
 	} else {
-		err = s3UploadFile(sess, file, size, s3file)
+		err = s3UploadFile(sess, file, fileSize, s3file)
 	}
 	return err
 }
