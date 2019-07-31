@@ -82,10 +82,7 @@ func init() {
 		"",
 		"Database name",
 	)
-	if err := viper.BindPFlag("dump.database", DumpCmd.Flags().Lookup("database")); err != nil {
-		log.Error(err)
-		os.Exit(1)
-	}
+	_ = viper.BindPFlag("dump.database", DumpCmd.Flags().Lookup("database"))
 
 	DumpCmd.Flags().StringVar(
 		&dumpFile,
