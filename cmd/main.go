@@ -62,6 +62,7 @@ var (
 	excludeTableData []string
 	generateSeed     bool
 	loadFile         string
+	localFile        string
 	logFile          string
 	logFormat        string
 	logLevel         string
@@ -71,7 +72,7 @@ var (
 	procedures       bool
 	rowCountFile     string
 	schemaPrefix     string
-	s3FilePath       string
+	s3File           string
 	schema           []string
 
 	rootCmd = &cobra.Command{
@@ -104,7 +105,7 @@ func GetDb(host, username, password, database string, port int32, disableSSL boo
 // configuration. Returns the password as a string.
 func GetPassword() string {
 	fmt.Print("Database Password: ")
-	bytePassword, err := terminal.ReadPassword(int(syscall.Stdin))
+	bytePassword, err := terminal.ReadPassword(syscall.Stdin)
 	fmt.Println() // terminal.ReadPassword does not add a new line after receiving the password
 	if err != nil {
 		log.Error("Unable to read password")
@@ -124,11 +125,6 @@ func main() {
 // init initializes the persistent flags for all commands for the application.
 func init() {
 	cobra.OnInitialize(initConfig)
-
-	Formatter := new(log.TextFormatter)
-	Formatter.TimestampFormat = "2006-01-02 15:04:05.000"
-	Formatter.FullTimestamp = true
-	log.SetFormatter(Formatter)
 
 	rootCmd.PersistentFlags().StringVarP(
 		&configPath,
@@ -171,6 +167,7 @@ func init() {
 		LoadCmd,
 		MapCmd,
 		ProcessCmd,
+		UploadCmd,
 		VersionCmd,
 	)
 }
@@ -203,6 +200,9 @@ func initConfig() {
 	if err := viper.BindPFlags(ProcessCmd.Flags()); err != nil {
 		log.Error("Unable to bind flags")
 	}
+	if err := viper.BindPFlags(UploadCmd.Flags()); err != nil {
+		log.Error("Unable to bind flags")
+	}
 	if err := viper.BindPFlags(rootCmd.PersistentFlags()); err != nil {
 		log.Error("Unable to bind flags")
 	}
@@ -212,14 +212,14 @@ func initConfig() {
 func preRun(cmd *cobra.Command, args []string) {
 	setupLogging()
 
-	log.Infof("Starting %v (v%v, build %v, build date: %v)",
+	log.Debugf("Starting %v (v%v, build %v, build date: %v)",
 		os.Args[0],
 		gonymizer.Version(),
 		gonymizer.BuildNumber(),
 		gonymizer.BuildDate(),
 	)
 
-	log.Infof("Go (runtime: %v) (GOMAXPROCS: %d) (NumCPUs: %d)\n",
+	log.Debugf("Go (runtime: %v) (GOMAXPROCS: %d) (NumCPUs: %d)\n",
 		runtime.Version(),
 		runtime.GOMAXPROCS(-1),
 		runtime.NumCPU(),
@@ -240,13 +240,22 @@ func setupLogging() {
 	}
 
 	// Setup Log Formatter
+
 	switch strings.ToLower(viper.GetString("log.format")) {
 	case "json":
-		log.SetFormatter(&log.JSONFormatter{})
+		formatter := new(log.JSONFormatter)
+		formatter.TimestampFormat = "2006-01-02 15:04:05.000"
+		log.SetFormatter(formatter)
 	case "text":
-		log.SetFormatter(&log.TextFormatter{})
+		formatter := new(log.TextFormatter)
+		formatter.FullTimestamp = true
+		formatter.TimestampFormat = "2006-01-02 15:04:05.000"
+		log.SetFormatter(formatter)
 	default:
-		log.SetFormatter(&prefixed.TextFormatter{})
+		// Cleaner at detecting terminal and non-terminal modes
+		formatter := new(prefixed.TextFormatter)
+		formatter.TimestampFormat = "2006-01-02 15:04:05.000"
+		log.SetFormatter(formatter)
 	}
 
 	// Setup Log level

@@ -70,7 +70,7 @@ func AddFileToS3(sess *session.Session, inFile string, s3file *S3File) (err erro
 		return err
 	}
 	fileSize := fileInfo.Size()
-	log.Infof("File Size: %.2f GB", fileSize/(1024*1024*1024))
+	log.Infof("File Size: %.2f GB", (float64(fileSize) / float64(1024*1024*1024)))
 
 	// Use s3 manager to upload the file in pieces
 	//select Region to use.
