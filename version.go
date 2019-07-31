@@ -3,9 +3,9 @@ package gonymizer
 import "time"
 
 const (
-	buildTimeStamp = 1564524673
-	buildNumber    = 8
-	buildVersion   = "1.1.4"
+	buildTimeStamp = 1564593815
+	buildNumber    = 10
+	buildVersion   = "1.2.0"
 )
 
 // BuildDate will return the current unix time as the build date time for the application.
