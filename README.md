@@ -139,7 +139,7 @@ docs/demo/dellstore2/gonymizer_config.json
 
 ```
 {
-	comment: "This example is viewable under docs/demo/dellstore2"
+    comment: "This example is viewable under docs/demo/dellstore2"
     "dump":     {
         "database":             "store",
         "disable-ssl":          true,
@@ -281,8 +281,8 @@ the new columns into your map file while adding the proper processors at the sam
 #### Relationship Mapping
 Relationship mapping allows the user to define columns that should remain congruent during the processing/anonymization 
 step. For example if a user is identified by a unique UUID that is used across multiple tables in the database one may 
-select the `RandomUUID` processor which keeps a global variable Go lang string map of `OLD-UUID => NEW-UUID`. The 
-global map variable can be found in the processor.go file and can also be stored to disk for back-tracing values to 
+select the `RandomUUID` processor which keeps a global hash map of `OLD-UUID => NEW-UUID`. The 
+global hash map then can be used by the processor and can also be stored to disk for back-tracing values to 
 debug the application. The only way to enable this type of logging is to edit the generator.go file and add the 
 function call the *writeDebugMap* function. Adding this to your run-time is outside of the scope of this documentation 
 and it is recommended to **NEVER** use this option when working with real PHI and PII data. If this file is compromised 
@@ -338,8 +338,37 @@ original SSN key does not exist in the map the Gonymizer will automatically scra
 Every time gonymizer checks a value in the SSN column it will look up this value and replace it with the previously 
 anonymized SSN. This allows us to map keys between tables.
 
-*Note:* Multiple tables can link back to the user table by simply adding the schema, table, and column names to the 
+**Note 1:** Multiple tables can link back to the user table by simply adding the schema, table, and column names to the 
 parent fields in the map file for the specified column.
+
+You must also add the parent table itself as a parent when creating a relationship mapping. From the example
+above the same would be true:
+
+```
+{
+    "TableSchema": "public",
+    "TableName": "user",
+    "ColumnName": "ssn",
+    "DataType": "integer",
+    "ParentSchema": "public",
+    "ParentTable": "user",
+    "ParentColumn": "ssn",
+    "OrdinalPosition": 6,
+    "IsNullable": false,
+    "Processors": [
+        {
+            "Name": "AlphaNumericScrambler",
+            "Max": 0,
+            "Min": 0,
+            "Variance": 0,
+            "Comment": ""
+        }
+    ]
+    "Comment": ""
+},
+```
+Notice that we added the column as a parent of itself. If you miss this all other columns will be mapped to the correct
+value, but the parent column will not be mapped to the same hash map so it will contain different values than expected.
 
 #### Grouping and Schema Prefix Matching (sharding)
 Sharding is a type of database partitioning that separates very large databases the into smaller, faster, more easily 
