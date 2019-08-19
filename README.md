@@ -338,10 +338,7 @@ original SSN key does not exist in the map the Gonymizer will automatically scra
 Every time gonymizer checks a value in the SSN column it will look up this value and replace it with the previously 
 anonymized SSN. This allows us to map keys between tables.
 
-**Note 1:** Multiple tables can link back to the user table by simply adding the schema, table, and column names to the 
-parent fields in the map file for the specified column.
-
-You must also add the parent table itself as a parent when creating a relationship mapping. From the example
+Also make sure to add the parent table itself as a parent when creating a relationship mapping. From the example
 above the same would be true:
 
 ```
@@ -367,8 +364,13 @@ above the same would be true:
     "Comment": ""
 },
 ```
-Notice that we added the column as a parent of itself. If you miss this all other columns will be mapped to the correct
-value, but the parent column will not be mapped to the same hash map so it will contain different values than expected.
+Notice that we added the column as a parent of itself. If this step is missing all other columns will be mapped to the 
+correct value, but the parent column will not be mapped to the same hash map so it will contain different values
+than expected.
+
+**Note 1:** Multiple tables can link back to the user table by simply adding the schema, table, and column names to the 
+parent fields in the map file for the specified column.
+
 
 #### Grouping and Schema Prefix Matching (sharding)
 Sharding is a type of database partitioning that separates very large databases the into smaller, faster, more easily 
