@@ -324,7 +324,7 @@ exist that the column should be mapped to. Below is an example where we identify
         }
     ]
     "Comment": ""
-},
+}
 ```
 
 In the example above we are mapping the social security number (SSN) from the `credit_scores` table to the `users` 
@@ -362,7 +362,7 @@ above the same would be true:
         }
     ]
     "Comment": ""
-},
+}
 ```
 Notice that we added the column as a parent of itself. If this step is missing all other columns will be mapped to the 
 correct value, but the parent column will not be mapped to the same hash map so it will contain different values
