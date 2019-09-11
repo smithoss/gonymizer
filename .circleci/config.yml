@@ -21,8 +21,6 @@ jobs:
     steps:
       - checkout
       - run: go get -v -t -d ./...
-      - run: go mod tidy
-      - run: go mod vendor
       - run:
           name: Install PSQL client
           command: sudo apt install -y postgresql-client curl || true
@@ -63,8 +61,6 @@ jobs:
       - run:
           name: Go mod install
           command: go get -v -t -d ./...
-      - run: go mod tidy
-      - run: go mod vendor
       - run:
           name: Docker Login
           command: docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASS
