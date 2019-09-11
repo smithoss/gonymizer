@@ -63,6 +63,7 @@ jobs:
           command: go get -v -t -d ./...
       - run: 
           command: |
+              go version
               go mod tidy
               go mod vendor
       - run:
