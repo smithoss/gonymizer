@@ -1,7 +1,7 @@
 #############
 ### BUILD ###
 #############
-FROM golang:alpine as build
+FROM golang:1.13-alpine as build
 ENV GO111MODULE=on
 RUN apk update && apk upgrade && apk add --no-cache bash git gcc go linux-headers musl-dev postgresql curl
 RUN mkdir -p /usr/local/go/src/github.com/smithoss/gonymizer/
@@ -14,7 +14,7 @@ RUN GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -v -ldflags '-w -extldflags "
 ##########################
 ### Gonymizer Runtime  ###
 ##########################
-FROM alpine as gonymizer
+FROM golang:1.13-alpine as gonymizer
 RUN apk update && apk upgrade && apk add --no-cache postgresql curl
 
 COPY --from=build /usr/local/go/src/github.com/smithoss/gonymizer/gonymizer /usr/bin/gonymizer
