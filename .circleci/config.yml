@@ -40,7 +40,7 @@ jobs:
           name: Go Linter
           command: |
             sudo chown -R circleci:circleci /go/bin
-            curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b $(go env GOPATH)/bin v1.14.0
+            curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b $(go env GOPATH)/bin v1.18.0
             golangci-lint run --enable gofmt
       - run:
           name: Run TestStart Golang tests
