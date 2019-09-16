@@ -54,14 +54,15 @@ jobs:
             fi
 
   deploy:
-    machine:
-      enabled: true
+    docker:
+      - image: circleci/golang:1.13
     steps:
       - checkout
       - run:
-          name: Go mod install
+          name: Go get
           command: go get -v -t -d ./...
       - run: 
+          name: Go mod install
           command: |
               go version
               go mod tidy
