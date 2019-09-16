@@ -54,10 +54,16 @@ func TestProcessDumpFile(t *testing.T) {
 		),
 	)
 
-	// Generate dump file
+	// Generate a processed dump file
 	columnMap, err := LoadConfigSkeleton(TestMapFile)
 	require.Nil(t, err)
-	require.Nil(t, ProcessDumpFile(columnMap, TestDumpFile, TestProcessDumpfile, "", true))
+	require.Nil(t, ProcessDumpFile(
+		columnMap,
+		TestDumpFile,
+		TestProcessDumpfile,
+		TestPreProcessFile,
+		TestPostProcessFile,
+		true))
 
 	// Load processed/anonymized dump file
 	conf.DefaultDBName = TestPostLocalDb
@@ -99,20 +105,15 @@ func TestClear(t *testing.T) {
 }
 
 func TestPreProcess(t *testing.T) {
-	outFile, err := os.OpenFile(TestPreProcessFile, os.O_RDWR|os.O_CREATE, 0660)
+	dstFile, err := os.OpenFile(TestProcessDumpfile, os.O_RDWR|os.O_CREATE, 0660)
 	require.Nil(t, err)
-
-	err = preProcess(outFile)
-	require.Nil(t, err)
-	require.Nil(t, outFile.Close())
-
+	require.Nil(t, fileInjector(TestPreProcessFile, dstFile))
+	require.Nil(t, dstFile.Close())
 }
 
 func TestPostProcess(t *testing.T) {
-	inFile, err := os.OpenFile(TestPreProcessFile, os.O_RDWR|os.O_APPEND, 0660)
+	dstFile, err := os.OpenFile(TestProcessDumpfile, os.O_RDWR|os.O_APPEND, 0660)
 	require.Nil(t, err)
-
-	require.Nil(t, postProcess(inFile, TestPostProcessFile))
-	require.Nil(t, err)
-	require.Nil(t, inFile.Close())
+	require.Nil(t, fileInjector(TestPostProcessFile, dstFile))
+	require.Nil(t, dstFile.Close())
 }

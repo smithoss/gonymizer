@@ -21,6 +21,7 @@ const TestLoadFileDb = "gon_loader_test"
 // Input Test Files
 const TestDbFile = "testing/test_db.sql"
 const TestMapFile = "testing/test_map.json"
+const TestPreProcessFile = "testing/test_pre_process.sql"
 const TestPostProcessFile = "testing/test_post_process.sql"
 const TestSQLCommandFile = "testing/test_sql_command_file.sql"
 const TestRowCountFile = "testing/test_row_counts.csv"
@@ -32,7 +33,7 @@ const TestCreateFile = "testing/output.TestCreateFile.sql"
 const TestDumpFile = "testing/output.TestDumpFile.sql"
 const TestGenerateSchemaFile = "testing/output.TestGenerateSchemaFile.sql"
 const TestMapOutputFile = "testing/output.TestMapperFile.json"
-const TestPreProcessFile = "testing/output.TestPreProcessFile.sql"
+const TestFileInjectorFile = "testing/output.TestFileInjectorFile.sql"
 const TestProcessDumpfile = "testing/output.TestProcessDumpFile.sql"
 
 // Test schemaPrefix
