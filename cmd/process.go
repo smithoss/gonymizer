@@ -59,16 +59,16 @@ func init() {
 	_ = viper.BindPFlag("process.processed-file", ProcessCmd.Flags().Lookup("processed-file"))
 
 	ProcessCmd.Flags().StringVar(
-		&postProcessFile,
-		"post-process-file",
+		&preProcessFile,
+		"pre-process-file",
 		"",
 		"SQL File to concatenate to the end of the processed dump file. Useful for adding static credentials to the database",
 	)
 
 	_ = viper.BindPFlag("process.pre-process-file", ProcessCmd.Flags().Lookup("pre-process-file"))
 	ProcessCmd.Flags().StringVar(
-		&preProcessFile,
-		"pre-process-file",
+		&postProcessFile,
+		"post-process-file",
 		"",
 		"SQL File to prepend to the processed dump file. Useful for importing plugins",
 	)
