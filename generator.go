@@ -180,6 +180,11 @@ func ProcessDumpFile(mapper *DBMapper,
 		}
 	}
 
+	// Always make sure we are in replication mode so we can import tables without constraints
+	if _, err := dstFile.WriteString("SET session_replication_role = replica;\n"); err != nil {
+		return err
+	}
+
 	allDone := false
 	state := new(LineState)
 
