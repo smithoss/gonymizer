@@ -69,6 +69,7 @@ var (
 	mapFile          string
 	dumpFile         string
 	postProcessFile  string
+	preProcessFile   string
 	procedures       bool
 	rowCountFile     string
 	schemaPrefix     string

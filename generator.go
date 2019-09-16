@@ -119,7 +119,14 @@ func CreateDumpFile(
 
 // ProcessDumpFile will process the supplied dump file according to the supplied database map file. GenerateSeed can
 // also be set to true which will inform the function to use Go's built-in random number generator.
-func ProcessDumpFile(mapper *DBMapper, src, dst, postProcessFile string, generateSeed bool) error {
+func ProcessDumpFile(mapper *DBMapper,
+	src,
+	dst,
+	preProcessFile,
+	postProcessFile string,
+	generateSeed bool,
+) error {
+
 	var (
 		inputLine  string
 		outputLine string
@@ -164,11 +171,13 @@ func ProcessDumpFile(mapper *DBMapper, src, dst, postProcessFile string, generat
 	}
 	defer dstFile.Close()
 
-	// Call the preprocessor to write any required configuration settings to the top of the processed dump file
-	err = preProcess(dstFile)
-	if err != nil {
-		log.Error("Unable to run preProcessor")
-		return err
+	// Call fileInjector to write any required configuration settings to the top of the
+	// processed dump file
+	if len(preProcessFile) > 0 {
+		if err = fileInjector(preProcessFile, dstFile); err != nil {
+			log.Error("Unable to run preProcessor")
+			return err
+		}
 	}
 
 	allDone := false
@@ -234,8 +243,7 @@ func ProcessDumpFile(mapper *DBMapper, src, dst, postProcessFile string, generat
 	}
 	// Add in SQL at the end of the dump file
 	if len(postProcessFile) > 0 {
-		err = postProcess(dstFile, postProcessFile)
-		if err != nil {
+		if err = fileInjector(postProcessFile, dstFile); err != nil {
 			return err
 		}
 	}
@@ -426,21 +434,50 @@ func (curLine *LineState) parseCopyLine(inputLine string) {
 	log.Debug(debugLine)
 }
 
-// preProcess writes data to the top of the processed file prior to anonymizing the dump file.
-func preProcess(dstFile *os.File) (err error) {
-	settings := `
+// fileInjector writes data to the current position in the destination file from the source file
+func fileInjector(srcFileName string, dstFile *os.File) error {
+	srcFile, err := os.Open(srcFileName)
+	if err != nil {
+		return err
+	}
+	defer srcFile.Close()
+	srcBuf := bufio.NewReader(srcFile)
+
+	// Add the start tag to the destination file to indicate we are injecting another file into this one
+	startTag := fmt.Sprintf(`
 --
--- Begin settings set by Gonymizer (pre-processor)
+-- Begin Gonymizer Injection from file: %s
 --
 
-SET session_replication_role = replica;   /* Used to import without getting FK check errors   */
-CREATE EXTENSION btree_gist;              /* BTree_Gist plugin required by some tables        */
+`, srcFileName)
+	if _, err := dstFile.WriteString(startTag); err != nil {
+		return err
+	}
 
+	for {
+		inputLine, err := srcBuf.ReadString('\n')
+		if err != nil {
+			if err == io.EOF {
+				break
+			} else {
+				return err
+			}
+		}
+		// Copy data from the source file into processed dump file
+		_, err = dstFile.WriteString(inputLine)
+		if err != nil {
+			return nil
+		}
+	}
+
+	// Add end tag to the destination file to indicate the injection is complete
+	endTag := fmt.Sprintf(`
 --
--- End settings set by Gonymizer (pre-processor)
+-- End Gonymizer File Injection from file: %s
 --
-`
-	_, err = dstFile.WriteString(settings)
+`, srcFileName)
+
+	_, err = dstFile.WriteString(endTag)
 	return err
 }
 
