@@ -481,51 +481,6 @@ func fileInjector(srcFileName string, dstFile *os.File) error {
 	return err
 }
 
-// postProcess writes data to the end of the processed file after anonymization of the dump file is complete
-func postProcess(dstFile *os.File, postProcessPath string) error {
-	_, err := dstFile.WriteString(`
---
--- Begin settings set by Gonymizer (post-processor)
---
-`)
-	if err != nil {
-		return err
-	}
-	postProcessFile, err := os.Open(postProcessPath)
-	if err != nil {
-		return err
-	}
-	defer postProcessFile.Close()
-
-	postFile := bufio.NewReader(postProcessFile)
-
-	for {
-		inputLine, err := postFile.ReadString('\n')
-		if err != nil {
-			if err == io.EOF {
-				break
-			} else {
-				return err
-			}
-		}
-		// Copy data from postProcessFile into processed dump file
-		_, err = dstFile.WriteString(inputLine)
-		if err != nil {
-			return nil
-		}
-	}
-	_, err = dstFile.WriteString(`
---
--- End settings set by Gonymizer (post-processor)
---
-`)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
 // writeDebugMap is used to store the reverse of the original data to the anonymized data.
 // WARNING: this is disabled by default and the programmer must add this function back in to use it. Only use this
 // function when debugging improvements to the map and process commands.
