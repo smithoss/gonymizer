@@ -62,7 +62,15 @@ func init() {
 		&postProcessFile,
 		"post-process-file",
 		"",
-		"File to concatenate to the end of the processed dump file. Useful for adding static credentials to the database",
+		"SQL File to concatenate to the end of the processed dump file. Useful for adding static credentials to the database",
+	)
+
+	_ = viper.BindPFlag("process.pre-process-file", ProcessCmd.Flags().Lookup("pre-process-file"))
+	ProcessCmd.Flags().StringVar(
+		&preProcessFile,
+		"pre-process-file",
+		"",
+		"SQL File to prepend to the processed dump file. Useful for importing plugins",
 	)
 	_ = viper.BindPFlag("process.post-process-file", ProcessCmd.Flags().Lookup("post-process-file"))
 
@@ -81,6 +89,8 @@ func cliCommandProcess(cmd *cobra.Command, args []string) {
 		viper.GetString("process.dump-file"),
 		viper.GetString("process.map-file"),
 		viper.GetString("process.processed-file"),
+		viper.GetString("process.pre-process-file"),
+		viper.GetString("process.post-process-file"),
 		viper.GetBool("process.generate-seed"),
 	)
 	if err != nil {
@@ -93,7 +103,7 @@ func cliCommandProcess(cmd *cobra.Command, args []string) {
 }
 
 // process is the entry point for processing a dump file according to the map file.
-func process(dumpFile, mapFile, processedDumpFile string, generateSeed bool) (err error) {
+func process(dumpFile, mapFile, processedDumpFile, preProcess, postProcess string, generateSeed bool) (err error) {
 	log.Info("Loading map file from: ", mapFile)
 	columnMap, err := gonymizer.LoadConfigSkeleton(mapFile)
 	if err != nil {
@@ -101,7 +111,8 @@ func process(dumpFile, mapFile, processedDumpFile string, generateSeed bool) (er
 	}
 
 	log.Info("Processing dump file: ", dumpFile)
-	err = gonymizer.ProcessDumpFile(columnMap, dumpFile, processedDumpFile, postProcessFile, generateSeed)
+	err = gonymizer.ProcessDumpFile(columnMap, dumpFile, processedDumpFile, preProcess,
+		postProcess, generateSeed)
 	if err != nil {
 		return err
 	}
