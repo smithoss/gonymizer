@@ -57,7 +57,6 @@ jobs:
     build:
       machine:
         enabled: true
-        image: ubuntu-1604:201903-01
         docker_layer_caching: true
     steps:
       - checkout
