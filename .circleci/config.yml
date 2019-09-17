@@ -56,19 +56,19 @@ jobs:
   deploy:
     build:
       machine:
+        enabled: true
         image: ubuntu-1604:201903-01
         docker_layer_caching: true
     steps:
       - checkout
       - run:
+          name: apt-get update
+          command: apt-get update
+      - run:
+          command: apt-get install --reinstall golang-go
+      - run:
           name: Go get
           command: go get -v -t -d ./...
-      - run: 
-          name: Go mod install
-          command: |
-              go version
-              go mod tidy
-              go mod vendor
       - run:
           name: Docker Login
           command: docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASS
