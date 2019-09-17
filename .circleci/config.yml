@@ -3,11 +3,17 @@
 # Check https://circleci.com/docs/2.0/language-go/ for more details
 version: 2
 jobs:
+  godeps:
+    docker:
+      - image: circleci/golang:1.13
+    steps:
+      - checkout
   test:
     docker:
       # specify the version
       - image: circleci/golang:1.13
         environment:
+          GO111MODULE: "on"
           PGUSER: circleci
           PGDATABASE: circleci
           PGPASSWORD: circleci
@@ -20,7 +26,19 @@ jobs:
     working_directory: /go/src/github.com/smithoss/gonymizer
     steps:
       - checkout
-      - run: go get -v -t -d ./...
+      - restore_cache:
+          keys:
+            - go-mod-v1-{{ checksum "go.sum" }}
+      - run:
+          name: Download dependencies
+          command: |
+            go mod download
+      - save_cache:
+          key: go-mod-v1-{{ checksum "go.sum" }}
+          paths:
+            - "/go/src/github.com/smithoss/gonymizer/vendor"
+            - "/go/src/pkg/dep"
+            - /go/pkg/mod
       - run:
           name: Install PSQL client
           command: sudo apt install -y postgresql-client curl || true
@@ -52,7 +70,6 @@ jobs:
               /bin/bash <(curl -s https://codecov.io/bash) -f profile.out
               exit 0
             fi
-
   deploy:
     machine:
         enabled: true
@@ -60,14 +77,19 @@ jobs:
         docker_layer_caching: true
     steps:
       - checkout
+      - restore_cache:
+          keys:
+            - go-mod-v1-{{ checksum "go.sum" }}
       - run:
-          name: apt-get update
-          command: sudo apt-get update
-      - run:
-          command: sudo apt-get install --reinstall golang-1.13-go
-      - run:
-          name: Go get
-          command: go get -v -t -d ./...
+          name: Download dependencies
+          command: |
+            go mod download
+      - save_cache:
+          key: go-mod-v1-{{ checksum "go.sum" }}
+          paths:
+            - "/go/src/github.com/smithoss/gonymizer/vendor"
+            - "/go/src/pkg/dep"
+            - /go/pkg/mod
       - run:
           name: Docker Login
           command: docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASS
