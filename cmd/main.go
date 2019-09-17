@@ -142,7 +142,7 @@ func init() {
 		"/tmp/gonymizer.log",
 		"If log-type=file, the /path/to/logfile; ignored otherwise",
 	)
-	_ = viper.BindPFlag("log.file", rootCmd.PersistentFlags().Lookup("log-file"))
+	_ = viper.BindPFlag("log-file", rootCmd.PersistentFlags().Lookup("log-file"))
 
 	rootCmd.PersistentFlags().StringVarP(
 		&logLevel,
@@ -151,7 +151,7 @@ func init() {
 		"info",
 		"Output level of logs (TRACE, DEBUG, INFO, WARN, ERROR, FATAL)",
 	)
-	_ = viper.BindPFlag("log.level", rootCmd.PersistentFlags().Lookup("log-level"))
+	_ = viper.BindPFlag("log-level", rootCmd.PersistentFlags().Lookup("log-level"))
 
 	rootCmd.PersistentFlags().StringVarP(
 		&logFormat,
@@ -160,7 +160,7 @@ func init() {
 		"clean",
 		"Type of output, one of: json, text, clean",
 	)
-	_ = viper.BindPFlag("log.format", rootCmd.PersistentFlags().Lookup("log-format"))
+	_ = viper.BindPFlag("log-format", rootCmd.PersistentFlags().Lookup("log-format"))
 
 	// Bind commands to root
 	rootCmd.AddCommand(
@@ -238,11 +238,12 @@ func setupLogging() {
 			mw := io.MultiWriter(os.Stdout, f)
 			log.SetOutput(mw)
 		}
+
 	}
 
 	// Setup Log Formatter
 
-	switch strings.ToLower(viper.GetString("log.format")) {
+	switch strings.ToLower(viper.GetString("log-format")) {
 	case "json":
 		formatter := new(log.JSONFormatter)
 		formatter.TimestampFormat = "2006-01-02 15:04:05.000"
@@ -260,7 +261,7 @@ func setupLogging() {
 	}
 
 	// Setup Log level
-	switch strings.ToLower(viper.GetString("log.level")) {
+	switch strings.ToLower(viper.GetString("log-level")) {
 	case "debug":
 		log.SetLevel(log.DebugLevel)
 	case "info":

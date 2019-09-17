@@ -181,7 +181,7 @@ func ProcessDumpFile(mapper *DBMapper,
 	}
 
 	// Always make sure we are in replication mode so we can import tables without constraints
-	if _, err := dstFile.WriteString("SET session_replication_role = replica;\n"); err != nil {
+	if _, err := dstFile.WriteString("SET session_replication_role = 'replica';\n"); err != nil {
 		return err
 	}
 
@@ -251,6 +251,11 @@ func ProcessDumpFile(mapper *DBMapper,
 		if err = fileInjector(postProcessFile, dstFile); err != nil {
 			return err
 		}
+	}
+
+	// Enable constraints (they were disabled earlier
+	if _, err := dstFile.WriteString("SET session_replication_role = 'origin';\n"); err != nil {
+		return err
 	}
 	return nil
 }
