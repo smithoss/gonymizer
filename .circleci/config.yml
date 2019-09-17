@@ -54,9 +54,9 @@ jobs:
             fi
 
   deploy:
-    build:
-      machine:
+    machine:
         enabled: true
+        image: circleci/classic:edge
         docker_layer_caching: true
     steps:
       - checkout
@@ -64,7 +64,7 @@ jobs:
           name: apt-get update
           command: apt-get update
       - run:
-          command: apt-get install --reinstall golang-go
+          command: apt-get install --reinstall golang-1.13-go
       - run:
           name: Go get
           command: go get -v -t -d ./...
