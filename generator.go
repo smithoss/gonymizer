@@ -253,7 +253,7 @@ func ProcessDumpFile(mapper *DBMapper,
 		}
 	}
 
-	// Enable constraints (they were disabled earlier
+	// Enable constraints (they were disabled earlier)
 	if _, err := dstFile.WriteString("SET session_replication_role = 'origin';\n"); err != nil {
 		return err
 	}
