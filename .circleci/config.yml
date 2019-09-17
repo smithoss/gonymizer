@@ -62,9 +62,9 @@ jobs:
       - checkout
       - run:
           name: apt-get update
-          command: apt-get update
+          command: sudo apt-get update
       - run:
-          command: apt-get install --reinstall golang-1.13-go
+          command: sudo apt-get install --reinstall golang-1.13-go
       - run:
           name: Go get
           command: go get -v -t -d ./...
