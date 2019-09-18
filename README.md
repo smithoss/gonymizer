@@ -6,7 +6,7 @@
 
 -----        
 
-[![CircleCI](https://circleci.com/gh/smithoss/gonymizer.svg?style=svg)](https://circleci.com/gh/smithoss/gonymizer)[![Slack](https://slackin.junkert.now.sh/badge.svg)](https://slackin.junkert.now.sh)[![codecov](https://codecov.io/gh/smithoss/gonymizer/branch/master/graph/badge.svg)](https://codecov.io/gh/smithoss/gonymizer)[![Go Report Card](https://goreportcard.com/badge/github.com/smithoss/gonymizer)](https://goreportcard.com/report/github.com/smithoss/gonymizer)[![GoDoc](https://godoc.org/github.com/smithoss/gonymizer?status.svg)](https://godoc.org/github.com/smithoss/gonymizer)
+[![CircleCI](https://circleci.com/gh/smithoss/gonymizer.svg?style=svg)](https://circleci.com/gh/smithoss/gonymizer)[![Slack](https://slackin.junkert.now.sh/badge.svg)](https://slackin.junkert.now.sh)[![Coverage Status](https://coveralls.io/repos/github/smithoss/gonymizer/badge.svg?branch=master)](https://coveralls.io/github/smithoss/gonymizer?branch=master)[![Go Report Card](https://goreportcard.com/badge/github.com/smithoss/gonymizer)](https://goreportcard.com/report/github.com/smithoss/gonymizer)[![GoDoc](https://godoc.org/github.com/smithoss/gonymizer?status.svg)](https://godoc.org/github.com/smithoss/gonymizer)
 
 ## Weird name, what does it do?
 The Gonymizer project (Go + Anonymizer) is a project that was built at [SmithRx](https://www.smithrx.com) in hope to simplify the QA process. Gonymizer is 

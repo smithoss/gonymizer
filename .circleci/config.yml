@@ -47,14 +47,14 @@ jobs:
       - run:
           name: Run TestStart Golang tests
           command: |
-            go test -v -covermode=atomic -coverprofile=profile.out -run TestStart
+            go test -v -cover -race -coverprofile=coverage.out -run TestStart
             if [[ $? -ne 0 ]]; then
               cat -n *.log
               cat -n testing/output.*
               exit 1
             else
-              /bin/bash <(curl -s https://codecov.io/bash) -f profile.out
-              exit 0
+              go get -v github.com/mattn/goveralls
+              /go/bin/goveralls -service=circle-ci -repotoken=$COVERALLS_REPO_TOKEN -coverprofile=coverage.out
             fi
 
   deploy:
