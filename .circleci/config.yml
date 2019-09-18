@@ -5,9 +5,9 @@ version: 2
 jobs:
   test:
     docker:
-      # specify the version
       - image: circleci/golang:1.13
         environment:
+          GO111MODULE: "on"
           PGUSER: circleci
           PGDATABASE: circleci
           PGPASSWORD: circleci
@@ -17,10 +17,14 @@ jobs:
           POSTGRES_PASSWORD: circleci
           POSTGRES_USER: circleci
           POSTGRES_DB: circleci
-    working_directory: /go/src/github.com/smithoss/gonymizer
+    working_directory: /tmp/gonymizer
     steps:
       - checkout
-      - run: go get -v -t -d ./...
+      - run:
+          name: Go Mod
+          command: |
+            go mod vendor
+            go mod download
       - run:
           name: Install PSQL client
           command: sudo apt install -y postgresql-client curl || true
@@ -54,21 +58,19 @@ jobs:
             fi
 
   deploy:
-    build:
-      machine:
-        image: ubuntu-1604:201903-01
-        docker_layer_caching: true
+    docker:
+      - image: circleci/golang:1.13
+        environment:
+          GO111MODULE: "on"
+    working_directory: /tmp/gonymizer
     steps:
       - checkout
+      - setup_remote_docker
       - run:
-          name: Go get
-          command: go get -v -t -d ./...
-      - run: 
-          name: Go mod install
+          name: Go Mod
           command: |
-              go version
-              go mod tidy
-              go mod vendor
+            go mod vendor
+            go mod download
       - run:
           name: Docker Login
           command: docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASS
