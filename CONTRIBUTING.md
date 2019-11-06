@@ -10,7 +10,7 @@
 
 Then please do not open an issue here yet - you should first try one of the following support forums:
 
- - irc: #gonymizer on freenode
+ - Slack: https://smith-oss.slack.com
 
 ## Reporting an issue properly
 
