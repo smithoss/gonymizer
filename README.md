@@ -227,6 +227,7 @@ Below is a list of fake data creators and scramblers. This table may not be up t
 | FakeLastName | Used to replace a person's last name with a fake last name
 | FakePhoneNumber | Used to replace a person's phone number with fake phone number
 | FakeState | Used to replace a state (full state name, non-abbreviated)
+| FakeStateAbbrev | Used to replace a state abbreviation
 | FakeUsername | Used to replace a username with a fake one
 | FakeZip | Used to replace a real zip code with another zip code
 | Identity | Used to notify Gonymizer **not** to anonymize the column (same as leaving the column out of the map file)
