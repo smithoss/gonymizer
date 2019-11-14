@@ -149,6 +149,17 @@ func TestProcessorState(t *testing.T) {
 	require.NotEqual(t, output, "")
 }
 
+func TestProcessorStateAbbrev(t *testing.T) {
+	output, err := ProcessorStateAbbrev(&cMap, "NY")
+	require.Nil(t, err)
+	require.NotEqual(t, output, "NY")
+
+	output, err = ProcessorStateAbbrev(&cMap, "")
+	require.Nil(t, err)
+	require.NotEqual(t, output, "")
+	require.Len(t, output, 2)
+}
+
 func TestProcessorUserName(t *testing.T) {
 	output, err := ProcessorUserName(&cMap, "Ricky and Julian")
 	require.Nil(t, err)

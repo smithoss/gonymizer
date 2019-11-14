@@ -66,6 +66,7 @@ func init() {
 		"FakeLastName":          ProcessorLastName,
 		"FakePhoneNumber":       ProcessorPhoneNumber,
 		"FakeState":             ProcessorState,
+		"FakeStateAbbrev":       ProcessorStateAbbrev,
 		"FakeUsername":          ProcessorUserName,
 		"FakeZip":               ProcessorZip,
 		"Identity":              ProcessorIdentity, // Default: Does not modify field
@@ -162,6 +163,11 @@ func ProcessorPhoneNumber(cmap *ColumnMapper, input string) (string, error) {
 // ProcessorState will return a state that is >= 0.4 Jaro-Winkler similar than the input.
 func ProcessorState(cmap *ColumnMapper, input string) (string, error) {
 	return fake.State(), nil
+}
+
+// ProcessorStateAbbrev will return a state abbreviation.
+func ProcessorStateAbbrev(cmap *ColumnMapper, input string) (string, error) {
+	return fake.StateAbbrev(), nil
 }
 
 // ProcessorUserName will return a username that is >= 0.4 Jaro-Winkler similar than the input.
