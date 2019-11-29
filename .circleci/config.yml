@@ -73,7 +73,7 @@ jobs:
             go mod download
       - run:
           name: Docker Login
-          command: docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASS
+          command: echo $DOCKER_HUB_PASS | docker login -u $DOCKER_HUB_USER --password-stdin
       - run:
           name: Build Gonymizer Image
           command: |
