@@ -1,8 +1,8 @@
 package gonymizer
 
 import (
-	"testing"
 	"regexp"
+	"testing"
 
 	"github.com/google/uuid"
 
