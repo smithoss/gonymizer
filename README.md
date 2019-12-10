@@ -222,6 +222,7 @@ Below is a list of fake data creators and scramblers. This table may not be up t
 | AlphaNumbericScrambler | Scrambles strings. If a number is in the string it will replace it with another random number
 | FakeStreetAddress | Used to replace a real US address with a fake one
 | FakeCity | Used to replace a city column
+| FakeCompanyName | Used to replace a company name
 | FakeEmailAddress | Used to replace e-mail with a fake one
 | FakeFirstName | Used to replace a person's first name with a fake first name (non-gender specific)
 | FakeLastName | Used to replace a person's last name with a fake last name
