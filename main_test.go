@@ -129,6 +129,7 @@ func seqUnitTests(t *testing.T) {
 	t.Run("ProcessorStateAbbrev", TestProcessorStateAbbrev)
 	t.Run("ProcessorUserName", TestProcessorUserName)
 	t.Run("ProcessorZip", TestProcessorZip)
+	t.Run("ProcessorCompanyName", TestProcessorCompanyName)
 	t.Run("ProcessorRandomDate", TestProcessorRandomDate)
 	t.Run("ProcessorRandomUUID", TestProcessorRandomUUID)
 	t.Run("ProcessorScrubString", TestProcessorScrubString)
