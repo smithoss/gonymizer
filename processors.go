@@ -64,6 +64,7 @@ func init() {
 		"FakeEmailAddress":      ProcessorEmailAddress,
 		"FakeFirstName":         ProcessorFirstName,
 		"FakeFullName":          ProcessorFullName,
+		"FakeIPv4":              ProcessorIPv4,
 		"FakeLastName":          ProcessorLastName,
 		"FakePhoneNumber":       ProcessorPhoneNumber,
 		"FakeState":             ProcessorState,
@@ -149,6 +150,10 @@ func ProcessorFullName(cmap *ColumnMapper, input string) (string, error) {
 // ProcessorIdentity will skip anonymization and leave output === input.
 func ProcessorIdentity(cmap *ColumnMapper, input string) (string, error) {
 	return input, nil
+}
+
+func ProcessorIPv4(cmap *ColumnMapper, input string) (string, error) {
+	return fake.IPv4(), nil
 }
 
 // ProcessorLastName will return a last name that is >= 0.4 Jaro-Winkler similar than the input.
