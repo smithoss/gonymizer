@@ -2,6 +2,7 @@ package gonymizer
 
 import (
 	"testing"
+	"regexp"
 
 	"github.com/google/uuid"
 
@@ -117,6 +118,19 @@ func TestProcessorIdentity(t *testing.T) {
 	output, err = ProcessorIdentity(&cMap, "")
 	require.Nil(t, err)
 	require.Equal(t, output, "")
+}
+
+func TestProcessorIPv4(t *testing.T) {
+	output, err := ProcessorIPv4(&cMap, "127.0.0.1")
+	require.Nil(t, err)
+	require.NotEqual(t, output, "127.0.0.1")
+	re, _ := regexp.Compile(`(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}`)
+	require.True(t, re.MatchString(output))
+
+	output, err = ProcessorIPv4(&cMap, "")
+	require.Nil(t, err)
+	require.NotEqual(t, output, "")
+	require.True(t, re.MatchString(output))
 }
 
 func TestProcessorLastName(t *testing.T) {

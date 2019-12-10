@@ -224,6 +224,7 @@ Below is a list of fake data creators and scramblers. This table may not be up t
 | FakeCity | Used to replace a city column
 | FakeEmailAddress | Used to replace e-mail with a fake one
 | FakeFirstName | Used to replace a person's first name with a fake first name (non-gender specific)
+| FakeIPv4 | Used to replace an IP with a fake one
 | FakeLastName | Used to replace a person's last name with a fake last name
 | FakePhoneNumber | Used to replace a person's phone number with fake phone number
 | FakeState | Used to replace a state (full state name, non-abbreviated)
