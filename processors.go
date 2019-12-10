@@ -60,6 +60,7 @@ func init() {
 		"AlphaNumericScrambler": ProcessorAlphaNumericScrambler,
 		"FakeStreetAddress":     ProcessorAddress,
 		"FakeCity":              ProcessorCity,
+		"FakeCompanyName":       ProcessorCompanyName,
 		"FakeEmailAddress":      ProcessorEmailAddress,
 		"FakeFirstName":         ProcessorFirstName,
 		"FakeFullName":          ProcessorFullName,
@@ -178,6 +179,11 @@ func ProcessorUserName(cmap *ColumnMapper, input string) (string, error) {
 // ProcessorZip will return a zip code that is >= 0.4 Jaro-Winkler similar than the input.
 func ProcessorZip(cmap *ColumnMapper, input string) (string, error) {
 	return fake.Zip(), nil
+}
+
+// ProcessorCompanyName will return a company name that is >= 0.4 Jaro-Winkler similar than the input.
+func ProcessorCompanyName(cmap *ColumnMapper, input string) (string, error) {
+	return fake.Company(), nil
 }
 
 // ProcessorRandomDate will return a random day and month, but keep year the same (See: HIPAA rules)

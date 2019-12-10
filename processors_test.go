@@ -180,6 +180,16 @@ func TestProcessorZip(t *testing.T) {
 	require.NotEqual(t, output, "")
 }
 
+func TestProcessorCompanyName(t *testing.T) {
+	output, err := ProcessorCompanyName(&cMap, "RickMortyRick")
+	require.Nil(t, err)
+	require.NotEqual(t, output, "RickMortyRick")
+
+	output, err = ProcessorCompanyName(&cMap, "")
+	require.Nil(t, err)
+	require.NotEqual(t, output, "")
+}
+
 func TestProcessorRandomDate(t *testing.T) {
 	var failBoats = []string{
 		"I AM THE FAIL BOAT!",
