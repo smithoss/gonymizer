@@ -123,6 +123,7 @@ func seqUnitTests(t *testing.T) {
 	t.Run("ProcessorFirstName", TestProcessorFirstName)
 	t.Run("ProcessorFakeFullName", TestProcessorFullName)
 	t.Run("ProcessorIdentity", TestProcessorIdentity)
+	t.Run("ProcessorIPv4", TestProcessorIPv4)
 	t.Run("ProcessorLastName", TestProcessorLastName)
 	t.Run("ProcessorPhoneNumber", TestProcessorPhoneNumber)
 	t.Run("ProcessorState", TestProcessorState)
