@@ -447,6 +447,27 @@ Also check out our slides from [Percona Live 2019](https://www.percona.com/live/
         ./gonymizer -c config/staging-conf.json --load-file=s3://my-bucket-name.s3.us-west-2.amazonaws.com/db-dump-processed.sql load
         
 
+## Building Tests
+Testing for gonymizer is different than expected for typical projects. When adding a test to the project one will
+need to make sure the test is called from the `main_test.go` test harness file in the root directory of the project.
+
+All tests should be added to the `seqUnitTests` function in the proper position in the test sequence. This sequence
+creates, imports, modifies, and drops the database in the local test database.
+
+To run tests you will want to use the command (in the root directory of the project)
+
+```
+go test -v -run TestStart
+```
+
+### Test Example
+Lets assume we created a new processor function for anonymizing IP addresses as seen in #64. In this case we create the
+test using normal methods, but will need to add the function to the `main_test.go` by adding the following line:
+
+```
+	t.Run("ProcessorIPV4", TestProcessorIPv4)
+```
+
 ## Notices and License
 
 Please make sure to read our license agreement here [LICENSE.txt](https://github.com/smithoss/gonymizer/blob/master/LICENSE.txt). We may state throughout our documentation that we are using this 
