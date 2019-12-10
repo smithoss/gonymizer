@@ -487,7 +487,7 @@ Lets assume we created a new processor function for anonymizing IP addresses as 
 test using normal methods, but will need to add the function to the `main_test.go` by adding the following line:
 
 ```
-	t.Run("ProcessorIPV4", TestProcessorIPv4)
+t.Run("ProcessorIPV4", TestProcessorIPv4)
 ```
 
 ## Notices and License
