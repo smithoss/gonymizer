@@ -8,9 +8,31 @@
 
 [![CircleCI](https://circleci.com/gh/smithoss/gonymizer.svg?style=svg)](https://circleci.com/gh/smithoss/gonymizer)[![Slack](https://slackin.junkert.now.sh/badge.svg)](https://slackin.junkert.now.sh)[![Coverage Status](https://coveralls.io/repos/github/smithoss/gonymizer/badge.svg?branch=master)](https://coveralls.io/github/smithoss/gonymizer?branch=master)[![Go Report Card](https://goreportcard.com/badge/github.com/smithoss/gonymizer)](https://goreportcard.com/report/github.com/smithoss/gonymizer)[![GoDoc](https://godoc.org/github.com/smithoss/gonymizer?status.svg)](https://godoc.org/github.com/smithoss/gonymizer)
 
+* [Weird name, what does it do?](#weird-name-what-does-it-do)
+* [Supported RDBMS](#supported-rdbms)
+* [Abbreviations and Definitions](#abbreviations-and-definitions)
+* [Getting Started](#getting-started)
+	 * [OSX](#osx)
+	 * [Debian 9.x / Ubuntu 18.04](#debian-9x--ubuntu-1804)
+* [Configuration](#configuration)
+	 * [CLI Configuration](#cli-configuration)
+	 * [Map File Configuration](#map-file-configuration)
+			* [Available Fakers and Scramblers](#available-fakers-and-scramblers)
+			* [Inclusive Map Files](#inclusive-map-files)
+			* [Exclusive Map Files](#exclusive-map-files)
+			* [Relationship Mapping](#relationship-mapping)
+			* [Grouping and Schema Prefix Matching (sharding)](#grouping-and-schema-prefix-matching-sharding)
+* [Running Gonymizer](#running-gonymizer)
+	 * [TL;DR Steps to anonymization (that's a word right?)](#tldr-steps-to-anonymization-thats-a-word-right)
+	 * [Detailed Steps](#detailed-steps)
+* [Creating Tests](#creating-tests)
+	 * [Test Example](#test-example)
+* [Notices and License](#notices-and-license)
+	 * [Go Logo and Graphics](#go-logo-and-graphics)
+
 ## Weird name, what does it do?
 The Gonymizer project (Go + Anonymizer) is a project that was built at [SmithRx](https://www.smithrx.com) in hope to simplify the QA process. Gonymizer is 
-written in Go lang and is meant to help database administrators and infrastructure folks easily anonymize production
+written in Golang and is meant to help database administrators and infrastructure folks easily anonymize production
 database dumps before loading this data into a QA environment.
 
 We have built in support, and examples, for:
@@ -33,7 +55,7 @@ Currently Gonymizer only supports **PostgreSQL 9.x-11.x**. We have not tested Go
 but plan to in the near future. If you would like to help by adding support for other database management systems, new
 processors, or general questions please join by checking the CONTRIBUTING.md file in this repository.
 
-## Abbreviations and Definitions:
+## Abbreviations and Definitions
 
 - **HIPAA**: Health Insurance Portability and Accountability Act of 1996
 - **PCI DSS**: Payment Card Industry Data Security Standard 
@@ -80,7 +102,7 @@ map file using our JSON configuration:
 ./gonymizer-darwin -c ~/conf/gonymizer-config-file.json dump
 ```
 
-## Debian 9.x / Ubuntu 18.04
+### Debian 9.x / Ubuntu 18.04
 Use the following steps to get up and going. Commands should be similar for Debian 9.x and Ubuntu 18.04.
 1. Install Golang and Git
 ```
@@ -447,8 +469,8 @@ Also check out our slides from [Percona Live 2019](https://www.percona.com/live/
         ./gonymizer -c config/staging-conf.json --load-file=s3://my-bucket-name.s3.us-west-2.amazonaws.com/db-dump-processed.sql load
         
 
-## Building Tests
-Testing for gonymizer is different than expected for typical projects. When adding a test to the project one will
+## Creating Tests
+Testing for Gonymizer is different than expected for typical projects. When adding a test to the project one will
 need to make sure the test is called from the `main_test.go` test harness file in the root directory of the project.
 
 All tests should be added to the `seqUnitTests` function in the proper position in the test sequence. This sequence
