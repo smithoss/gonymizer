@@ -57,8 +57,13 @@ var (
 
 // GetTestDbConf will return a PGConfig for the specified localhost testing database.
 func GetTestDbConf(dbName string) PGConfig {
+	host, ok := os.LookupEnv("POSTGRES_HOST")
+	if !ok {
+		host = "localhost"
+	}
 	conf := PGConfig{}
-	conf.Host = "localhost"
+	conf.Username = os.Getenv("POSTGRES_USER")
+	conf.Host = host
 	conf.DefaultDBName = dbName
 	conf.SSLMode = "disable"
 	return conf

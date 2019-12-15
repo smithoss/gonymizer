@@ -1,0 +1,49 @@
+version: "3.7"
+
+services:
+  bin:
+    build:
+      context: .
+      target: gonymizer
+    volumes:
+      - type: bind
+        source: ./testing
+        target: /go/testing
+    depends_on:
+      - db
+
+  test:
+    build:
+      context: .
+      target: build
+    command:
+      - go
+      - test
+      - -v
+      - -cover
+      - -coverprofile=coverage.out
+      - -run
+      - TestStart
+    environment:
+      POSTGRES_HOST: db
+      POSTGRES_USER: gonymizer
+    volumes:
+      - type: bind
+        source: ./testing
+        target: /tmp/gonymizer/testing
+    depends_on:
+      - db
+
+  db:
+    image: postgres:11-alpine
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: gonymizer
+    volumes:
+      - type: volume
+        source: dbdata
+        target: /var/lib/postgresql/data
+
+volumes:
+  dbdata:
