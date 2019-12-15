@@ -11,6 +11,10 @@ docs/demos/dellstore2/dellstore2-normal-1.0
 
 # Test files
 db_test_*.log
+output.Test*
+
+# Test coverage
+coverage.out
 
 # IntelliJ Idea
 .idea
@@ -18,4 +22,3 @@ db_test_*.log
 # Demo SQL/Log files
 docs/demos/dellstore2/*.sql
 docs/demos/dellstore2/*.log
-
