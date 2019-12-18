@@ -73,6 +73,7 @@ func init() {
 		"FakeZip":               ProcessorZip,
 		"Identity":              ProcessorIdentity, // Default: Does not modify field
 		"RandomDate":            ProcessorRandomDate,
+		"RandomDigits":          ProcessorRandomDigits,
 		"RandomUUID":            ProcessorRandomUUID,
 		"ScrubString":           ProcessorScrubString,
 	}
@@ -209,6 +210,12 @@ func ProcessorRandomDate(cmap *ColumnMapper, input string) (string, error) {
 	// NOTE: HIPAA only requires we scramble month and day, not year
 	scrambledDate := randomizeDate(year)
 	return scrambledDate, nil
+}
+
+// ProcessorRandomDigits will return a random string of digit(s) that is >= 0.4 Jaro-Winkler similar than the input but
+// keeps the same length.
+func ProcessorRandomDigits(cmap *ColumnMapper, input string) (string, error) {
+	return fake.DigitsN(len(input)), nil
 }
 
 // ProcessorRandomUUID will generate a random UUID and replace the input with the new UUID. The input however will be

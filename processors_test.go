@@ -225,6 +225,20 @@ func TestProcessorRandomDate(t *testing.T) {
 	}
 }
 
+func TestProcessorRandomDigits(t *testing.T) {
+	digits := []string{"12345", "123456", "1234567", "12345678"}
+	for _, d := range digits {
+		output, err := ProcessorRandomDigits(&cMap, d)
+		require.Nil(t, err)
+		require.NotEqual(t, d, output)
+		require.Equal(t, len(d), len(output))
+	}
+
+	output, err := ProcessorRandomDigits(&cMap, "")
+	require.Nil(t, err)
+	require.Equal(t, "", output)
+}
+
 func TestProcessorRandomUUID(t *testing.T) {
 	var testUUID uuid.UUID
 
