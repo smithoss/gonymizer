@@ -212,8 +212,7 @@ func ProcessorRandomDate(cmap *ColumnMapper, input string) (string, error) {
 	return scrambledDate, nil
 }
 
-// ProcessorRandomDigits will return a random string of digit(s) that is >= 0.4 Jaro-Winkler similar than the input but
-// keeps the same length.
+// ProcessorRandomDigits will return a random string of digit(s) keeping the same length of the input.
 func ProcessorRandomDigits(cmap *ColumnMapper, input string) (string, error) {
 	return fake.DigitsN(len(input)), nil
 }
