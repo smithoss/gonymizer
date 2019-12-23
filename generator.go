@@ -67,10 +67,7 @@ func CreateDumpFile(
 		"--no-owner",
 	}
 
-	if len(schemas) < 1 {
-		args = append(args, fmt.Sprintf("--schema=public"))
-		log.Info("Dumping the following schemas: [public]")
-	} else {
+	if len(schemas) >= 1 {
 		// Add all schemas that match schemaPrefix to the dump list
 		for _, s := range schemas {
 			if strings.HasPrefix(schemaPrefix, s) {
