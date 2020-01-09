@@ -242,6 +242,7 @@ Below is a list of fake data creators and scramblers. This table may not be up t
 | Processor Name | Use |
 | -------------- |:----|
 | AlphaNumbericScrambler | Scrambles strings. If a number is in the string it will replace it with another random number
+| EmptyJson | Replaces a JSON with an empty one (`{}`)
 | FakeStreetAddress | Used to replace a real US address with a fake one
 | FakeCity | Used to replace a city column
 | FakeCompanyName | Used to replace a company name
