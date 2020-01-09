@@ -125,6 +125,7 @@ func seqUnitTests(t *testing.T) {
 	t.Run("ProcessorAddress", TestProcessorAddress)
 	t.Run("ProcessorCity", TestProcessorCity)
 	t.Run("ProcessorEmailAddress", TestProcessorEmailAddress)
+	t.Run("ProcessorEmptyJson", TestProcessorEmptyJson)
 	t.Run("ProcessorFirstName", TestProcessorFirstName)
 	t.Run("ProcessorFakeFullName", TestProcessorFullName)
 	t.Run("ProcessorIdentity", TestProcessorIdentity)
