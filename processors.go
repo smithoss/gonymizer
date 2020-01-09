@@ -58,6 +58,7 @@ var UUIDMap = map[uuid.UUID]uuid.UUID{}
 func init() {
 	ProcessorCatalog = map[string]ProcessorFunc{
 		"AlphaNumericScrambler": ProcessorAlphaNumericScrambler,
+		"EmptyJson":             ProcessorEmptyJson,
 		"FakeStreetAddress":     ProcessorAddress,
 		"FakeCity":              ProcessorCity,
 		"FakeCompanyName":       ProcessorCompanyName,
@@ -160,6 +161,11 @@ func ProcessorIPv4(cmap *ColumnMapper, input string) (string, error) {
 // ProcessorLastName will return a last name that is >= 0.4 Jaro-Winkler similar than the input.
 func ProcessorLastName(cmap *ColumnMapper, input string) (string, error) {
 	return fake.LastName(), nil
+}
+
+// ProcessorEmptyJson will return an empty JSON no matter what is the input.
+func ProcessorEmptyJson(cmap *ColumnMapper, input string) (string, error) {
+	return "{}", nil
 }
 
 // ProcessorPhoneNumber will return a phone number that is >= 0.4 Jaro-Winkler similar than the input.
