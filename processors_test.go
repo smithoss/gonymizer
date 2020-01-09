@@ -281,7 +281,6 @@ func TestProcessorEmptyJson(t *testing.T) {
 	require.Equal(t, output, "{}")
 }
 
-
 func TestRandomizeUUID(t *testing.T) {
 	tempUUID := uuid.New().String()
 	output, err := ProcessorRandomUUID(&cMap, tempUUID)
