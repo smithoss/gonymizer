@@ -274,7 +274,7 @@ func TestProcessorScrubString(t *testing.T) {
 func TestProcessorEmptyJson(t *testing.T) {
 	output, err := ProcessorEmptyJson(&cMap, "Pickle Rick!")
 	require.Nil(t, err)
-	require.Equal(t, output, "{}") 
+	require.Equal(t, output, "{}")
 
 	output, err = ProcessorEmptyJson(&cMap, "{\"name\": \"Pickle Rick!\"}")
 	require.Nil(t, err)
