@@ -41,7 +41,8 @@ CREATE TABLE public.distributors (
     id integer NOT NULL,
     company_name character varying(255) NOT NULL,
     email character varying(255) NOT NULL,
-    last_shipment timestamp without time zone
+    last_shipment timestamp without time zone,
+    has_physical_store boolean NOT NULL
 );
 
 
@@ -83,10 +84,10 @@ fac2b15c-7c99-4447-8130-285b5d3bf7f1	2018-07-29 17:00:00-07	2018-07-29 17:00:00-
 -- Data for Name: distributors; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY public.distributors (id, company_name, email, last_shipment) FROM stdin;
-1	Books-R-Us	books-r-us@example.com	2018-10-17 12:08:39.390863
-2	You Need Books, We Got Books Inc.	pawnee@example.com	2018-10-17 12:08:39.403764
-3	Banned Books LLC	bannd-books@example.com	2018-10-17 12:08:40.264615
+COPY public.distributors (id, company_name, email, last_shipment, has_physical_store) FROM stdin;
+1	Books-R-Us	books-r-us@example.com	2018-10-17 12:08:39.390863	TRUE
+2	You Need Books, We Got Books Inc.	pawnee@example.com	2018-10-17 12:08:39.403764	FALSE
+3	Banned Books LLC	bannd-books@example.com	2018-10-17 12:08:40.264615	FALSE
 \.
 
 
