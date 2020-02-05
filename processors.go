@@ -73,6 +73,7 @@ func init() {
 		"FakeUsername":          ProcessorUserName,
 		"FakeZip":               ProcessorZip,
 		"Identity":              ProcessorIdentity, // Default: Does not modify field
+		"RandomBoolean":         ProcessorRandomBoolean,
 		"RandomDate":            ProcessorRandomDate,
 		"RandomDigits":          ProcessorRandomDigits,
 		"RandomUUID":            ProcessorRandomUUID,
@@ -196,6 +197,15 @@ func ProcessorZip(cmap *ColumnMapper, input string) (string, error) {
 // ProcessorCompanyName will return a company name that is >= 0.4 Jaro-Winkler similar than the input.
 func ProcessorCompanyName(cmap *ColumnMapper, input string) (string, error) {
 	return fake.Company(), nil
+}
+
+// ProcessorRandomBoolean will return a random boolean value with.
+func ProcessorRandomBoolean(cmap *ColumnMapper, input string) (string, error) {
+	var randomBoolean string = "FALSE"
+	if rand.Intn(2) == 0 {
+		randomBoolean = "TRUE"
+	}
+	return randomBoolean, nil
 }
 
 // ProcessorRandomDate will return a random day and month, but keep year the same (See: HIPAA rules)
