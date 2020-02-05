@@ -137,6 +137,7 @@ func seqUnitTests(t *testing.T) {
 	t.Run("ProcessorUserName", TestProcessorUserName)
 	t.Run("ProcessorZip", TestProcessorZip)
 	t.Run("ProcessorCompanyName", TestProcessorCompanyName)
+	t.Run("ProcessorRandomBoolean", TestProcessorRandomBoolean)
 	t.Run("ProcessorRandomDate", TestProcessorRandomDate)
 	t.Run("ProcessorRandomDigits", TestProcessorRandomDigits)
 	t.Run("ProcessorRandomUUID", TestProcessorRandomUUID)

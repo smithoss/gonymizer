@@ -204,6 +204,12 @@ func TestProcessorCompanyName(t *testing.T) {
 	require.NotEqual(t, output, "")
 }
 
+func TestProcessorRandomBoolean(t *testing.T) {
+	output, err := ProcessorRandomBoolean(&cMap, "FALSE")
+	require.Nil(t, err)
+	require.Contains(t, []string{"TRUE", "FALSE"}, output)
+}
+
 func TestProcessorRandomDate(t *testing.T) {
 	var failBoats = []string{
 		"I AM THE FAIL BOAT!",
