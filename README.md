@@ -256,6 +256,7 @@ Below is a list of fake data creators and scramblers. This table may not be up t
 | FakeUsername | Used to replace a username with a fake one
 | FakeZip | Used to replace a real zip code with another zip code
 | Identity | Used to notify Gonymizer **not** to anonymize the column (same as leaving the column out of the map file)
+| RandomBoolean | Randomizes boolean fields
 | RandomDate | Randomizes Day and Month, but keeps year the same (HIPAA only requires month and day be changed)
 | RandomDigits | Randomizes a string of digit(s), but keeps the same length
 | RandomUUID | Randomizes a UUID string, but keep a mapping of the old UUID and map it to the new UUID. If the old is found elsewhere in the database the new UUID will be used instead of creating another one. Useful for UUID primary key mapping (relationships).
