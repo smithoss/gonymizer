@@ -199,7 +199,7 @@ func ProcessorCompanyName(cmap *ColumnMapper, input string) (string, error) {
 	return fake.Company(), nil
 }
 
-// ProcessorRandomBoolean will return a random boolean value with.
+// ProcessorRandomBoolean will return a random boolean value.
 func ProcessorRandomBoolean(cmap *ColumnMapper, input string) (string, error) {
 	var randomBoolean string = "FALSE"
 	if rand.Intn(2) == 0 {
