@@ -327,6 +327,25 @@
         },
         {
             "TableSchema": "public",
+            "TableName": "distributors",
+            "ShardName": "",
+            "ColumnName": "has_physical_store",
+            "DataType": "boolean",
+            "OrdinalPosition": 5,
+            "IsNullable": false,
+            "Processors": [
+                {
+                    "Name": "RandomBoolean",
+                    "Max": 0,
+                    "Min": 0,
+                    "Variance": 0,
+                    "Comment": ""
+                }
+            ],
+            "Comment": ""
+        },
+        {
+            "TableSchema": "public",
             "TableName": "purchasers",
             "ShardName": "",
             "ColumnName": "id",
