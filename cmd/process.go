@@ -50,6 +50,15 @@ func init() {
 	)
 	_ = viper.BindPFlag("process.dump-file", ProcessCmd.Flags().Lookup("dump-file"))
 
+	ProcessCmd.Flags().BoolVarP(
+		&inclusive,
+		"inclusive",
+		"",
+		false,
+		"Use inclusive map file. Exit when column is missing from map file",
+	)
+	_ = viper.BindPFlag("process.inclusive", ProcessCmd.Flags().Lookup("inclusive"))
+
 	ProcessCmd.Flags().StringVar(
 		&processedFile,
 		"processed-file",
@@ -64,8 +73,8 @@ func init() {
 		"",
 		"SQL File to concatenate to the end of the processed dump file. Useful for adding static credentials to the database",
 	)
-
 	_ = viper.BindPFlag("process.pre-process-file", ProcessCmd.Flags().Lookup("pre-process-file"))
+
 	ProcessCmd.Flags().StringVar(
 		&postProcessFile,
 		"post-process-file",
