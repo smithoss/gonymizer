@@ -341,6 +341,10 @@ func processRow(mapper *DBMapper, state *LineState, inputLine string) (*LineStat
 		)
 
 		cmap := mapper.ColumnMapper(state.SchemaName, state.TableName, columnName)
+		if cmap == nil && viper.GetBool("process.inclusive") {
+			log.Fatal("Column '%s' does not exist. Please add to map file", columnName)
+			os.Exit(1)
+		}
 		val := rowVals[i]
 
 		// Check to see if the column has an escape char at the end of it.

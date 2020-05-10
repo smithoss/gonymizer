@@ -61,6 +61,7 @@ var (
 	excludeTable     []string
 	excludeTableData []string
 	generateSeed     bool
+	inclusive        bool
 	loadFile         string
 	localFile        string
 	logFile          string
