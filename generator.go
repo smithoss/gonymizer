@@ -345,7 +345,8 @@ func processRow(mapper *DBMapper, state *LineState, inputLine string) (*LineStat
 
 		cmap := mapper.ColumnMapper(state.SchemaName, state.TableName, columnName)
 		if cmap == nil && viper.GetBool("process.inclusive") {
-			log.Fatal("Column '%s' does not exist. Please add to map file", columnName)
+			log.Fatalf("Column '%s.%s.%s' does not exist. Please add to Map file",
+				state.SchemaName, state.TableName, columnName)
 			os.Exit(1)
 		}
 		val := rowVals[i]
