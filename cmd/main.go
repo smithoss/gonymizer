@@ -185,7 +185,7 @@ func initConfig() {
 
 	if err := viper.ReadInConfig(); err == nil {
 		fmt.Println("Using config file:", viper.ConfigFileUsed())
-	} else if err != nil && viper.ConfigFileUsed() != "" {
+	} else if viper.ConfigFileUsed() != "" {
 		fmt.Println("Failed to open config file:", err.Error())
 		os.Exit(1)
 	}
