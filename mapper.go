@@ -84,6 +84,15 @@ func (dbMap *DBMapper) Validate() error {
 	if len(dbMap.DBName) == 0 {
 		return errors.New("Expected non-empty DBName")
 	}
+	// Ensure that each processor is defined
+	for _, columnMap := range dbMap.ColumnMaps {
+		for _, processor := range columnMap.Processors {
+			if _, ok := ProcessorCatalog[processor.Name]; !ok {
+				return fmt.Errorf("Unrecognized Processor %s", processor.Name)
+			}
+		}
+	}
+
 	return nil
 }
 
