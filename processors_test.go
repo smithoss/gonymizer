@@ -255,12 +255,9 @@ func TestProcessorRandomUUID(t *testing.T) {
 	require.Nil(t, err)
 	require.NotEqual(t, output, testUUID)
 
-	if val, found := UUIDMap[testUUID]; found {
-		if val == testUUID {
-			t.Fatalf("UUIDs match\t%s <=> %s", testUUID.String(), val.String())
-		}
-	} else {
-		t.Fatalf("Unable to find UUID '%s' in the UUID map!", output)
+	val, _ := UUIDMap.Get(testUUID)
+	if val == testUUID.String() {
+		t.Fatalf("UUIDs match\t%s <=> %s", testUUID.String(), val)
 	}
 	output, err = ProcessorRandomUUID(&cMap, "")
 	require.NotNil(t, err)

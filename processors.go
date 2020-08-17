@@ -5,6 +5,7 @@ import (
 	"math/rand"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 	"unicode/utf8"
 
@@ -40,6 +41,56 @@ const lowercaseSetLen = 26
 const uppercaseSetLen = 26
 const numericSetLen = 10
 
+// safeAlphaNumericMap is a concurrency-safe map[string]map[string][string]
+type safeAlphaNumericMap struct {
+	v   map[string]map[string]string
+	mux sync.Mutex
+}
+
+// Get returns a string that an input is mapped to under a parentKey.
+func (c *safeAlphaNumericMap) Get(parentKey, input string) (string, error) {
+	c.mux.Lock()
+	defer c.mux.Unlock()
+
+	anMap, ok := c.v[parentKey]
+	if !ok {
+		anMap = map[string]string{}
+		c.v[parentKey] = anMap
+	}
+
+	result, ok := anMap[input]
+	if !ok {
+		result = scrambleString(input)
+		anMap[input] = result
+	}
+
+	return result, nil
+}
+
+// safeUUIDMap is a concurrency-safe map[uuid.UUID]uuid.UUID
+type safeUUIDMap struct {
+	v   map[uuid.UUID]uuid.UUID
+	mux sync.Mutex
+}
+
+// Get returns a mapped uuid for a given UUID if it has already previously been anonymized and a new UUID otherwise.
+func (c *safeUUIDMap) Get(key uuid.UUID) (string, error) {
+	c.mux.Lock()
+	defer c.mux.Unlock()
+
+	result, ok := c.v[key]
+	if !ok {
+		result, err := uuid.NewRandom()
+		if err != nil {
+			return "", err
+		}
+
+		c.v[key] = result
+	}
+
+	return result.String(), nil
+}
+
 // ProcessorCatalog is the function map that points to each Processor to it's entry function. All Processors are listed
 // in this map.
 var ProcessorCatalog map[string]ProcessorFunc
@@ -47,12 +98,16 @@ var ProcessorCatalog map[string]ProcessorFunc
 // AlphaNumericMap is used to keep consistency with scrambled alpha numeric strings.
 // For example, if we need to scramble things such as Social Security Numbers, but it is nice to keep track of these
 // changes so if we run across the same SSN again we can scramble it to what we already have.
-var AlphaNumericMap = map[string]map[string]string{}
+var AlphaNumericMap = safeAlphaNumericMap{
+	v: make(map[string]map[string]string),
+}
 
 // UUIDMap is the Global UUID map for all UUIDs that we anonymize. Similar to AlphaNumericMap this map contains all
 // UUIDs and what they are changed to. Some tables use UUIDs as the primary key and this allows us to keep consistency
 // in the data set when anonymizing it.
-var UUIDMap = map[uuid.UUID]uuid.UUID{}
+var UUIDMap = safeUUIDMap{
+	v: make(map[uuid.UUID]uuid.UUID),
+}
 
 // init initializes the ProcessorCatalog map for all processors. A processor must be listed here to be accessible.
 func init() {
@@ -96,33 +151,12 @@ type ProcessorFunc func(*ColumnMapper, string) (string, error)
 // Example:
 // "PUI-7x9vY" = ProcessorAlphaNumericScrambler("ABC-1a2bC")
 func ProcessorAlphaNumericScrambler(cmap *ColumnMapper, input string) (string, error) {
-	var (
-		err       error
-		scramble  string
-		parentKey string
-	)
-
-	// Build the parent key which will be used for mapping columns to each other. Useful for PK/FK relationships
-	parentKey = fmt.Sprintf("%s.%s.%s", cmap.ParentSchema, cmap.ParentTable, cmap.ParentColumn)
-
-	// Check to see if we are working on a mapped column
 	if cmap.ParentSchema != "" && cmap.ParentTable != "" && cmap.ParentColumn != "" {
-		// Check to see if value already exists in AlphaNumericMap
-		if len(AlphaNumericMap[parentKey]) < 1 {
-			AlphaNumericMap[parentKey] = map[string]string{}
-		}
-		if len(AlphaNumericMap[parentKey][input]) < 1 {
-			scramble = scrambleString(input)
-			AlphaNumericMap[parentKey][input] = scramble
-		} else {
-			// Key already exists so use consistent value
-			scramble = AlphaNumericMap[parentKey][input]
-		}
+		parentKey := fmt.Sprintf("%s.%s.%s", cmap.ParentSchema, cmap.ParentTable, cmap.ParentColumn)
+		return AlphaNumericMap.Get(parentKey, input)
 	} else {
-		scramble = scrambleString(input)
+		return scrambleString(input), nil
 	}
-
-	return scramble, err
 }
 
 // ProcessorAddress will return a fake address string that is compiled from the fake library
@@ -271,21 +305,7 @@ func jaroWinkler(input string, jwDistance float64, faker fakeFuncPtr) (output st
 // randomizeUUID creates a random UUID and adds it to the map of input->output. If input already exists it returns
 // the output that was previously calculated for input.
 func randomizeUUID(input uuid.UUID) (string, error) {
-	var (
-		finalUUID uuid.UUID
-		err       error
-	)
-
-	if _, ok := UUIDMap[input]; !ok {
-		finalUUID, err = uuid.NewRandom()
-		if err != nil {
-			return "", err
-		}
-		UUIDMap[input] = finalUUID
-	} else {
-		finalUUID = UUIDMap[input]
-	}
-	return finalUUID.String(), nil
+	return UUIDMap.Get(input)
 }
 
 // randomizeDate randomizes a day and month for a given year. This function is leap year compatible.
