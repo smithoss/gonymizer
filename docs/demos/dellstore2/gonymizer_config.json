@@ -3,6 +3,7 @@
         "This is a configuration for the demo Dell Store database 2",
         "This database can be found at: http://pgfoundry.org/projects/dbsamples/"
     ],
+    "num-workers":              2,
     "dump":     {
         "database":             "store",
         "disable-ssl":          true,

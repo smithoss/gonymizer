@@ -114,20 +114,8 @@ func CreateDumpFile(
 	return err
 }
 
-// ProcessDumpFile will process the supplied dump file according to the supplied database map file. GenerateSeed can
-// also be set to true which will inform the function to use Go's built-in random number generator.
-func ProcessDumpFile(mapper *DBMapper,
-	src,
-	dst,
-	preProcessFile,
-	postProcessFile string,
-	generateSeed bool,
-) error {
-
-	var (
-		inputLine  string
-		outputLine string
-	)
+// seedRNG seeds the RNG based on user-specified config.
+func seedRNG(mapper *DBMapper, generateSeed bool) error {
 	if generateSeed {
 		for {
 			randVal, err := generateRandomInt64()
@@ -147,31 +135,46 @@ func ProcessDumpFile(mapper *DBMapper,
 		log.Debugf("Using map file for seed value: %d", randVal)
 		mathRand.Seed(mapper.Seed)
 	}
+	return nil
+}
 
-	srcFile, err := os.Open(src)
+// ProcessDumpFile will process the supplied dump file according to the supplied database map file. GenerateSeed can
+// also be set to true which will inform the function to use Go's built-in random number generator.
+func ProcessDumpFile(config ProcessConfig) error {
+
+	var (
+		inputLine  string
+		outputLine string
+	)
+	err2 := seedRNG(config.DBMapper, config.GenerateSeed)
+	if err2 != nil {
+		return err2
+	}
+
+	srcFile, err := os.Open(config.SourceFilename)
 	if err != nil {
 		log.Error(err)
-		log.Debug("src: ", src)
-		log.Debug("dst: ", dst)
+		log.Debug("src: ", config.SourceFilename)
+		log.Debug("dst: ", config.DestinationFilename)
 		return err
 	}
 	defer srcFile.Close()
 
 	fileReader := bufio.NewReader(srcFile)
 
-	dstFile, err := os.Create(dst)
+	dstFile, err := os.Create(config.DestinationFilename)
 	if err != nil {
 		log.Error(err)
-		log.Debug("src: ", src)
-		log.Debug("dst: ", dst)
+		log.Debug("src: ", config.SourceFilename)
+		log.Debug("dst: ", config.DestinationFilename)
 		return err
 	}
 	defer dstFile.Close()
 
 	// Call fileInjector to write any required configuration settings to the top of the
 	// processed dump file
-	if len(preProcessFile) > 0 {
-		if err = fileInjector(preProcessFile, dstFile); err != nil {
+	if len(config.PreprocessFilename) > 0 {
+		if err = fileInjector(config.PreprocessFilename, dstFile); err != nil {
 			log.Error("Unable to run preProcessor")
 			return err
 		}
@@ -198,20 +201,20 @@ func ProcessDumpFile(mapper *DBMapper,
 				allDone = true
 			} else {
 				log.Error(err)
-				log.Debug("src: ", src)
-				log.Debug("dst: ", dst)
+				log.Debug("src: ", config.SourceFilename)
+				log.Debug("dst: ", config.DestinationFilename)
 				log.Debug("lineCount: ", lineCount)
 				log.Debug("inputLine: ", inputLine)
 				return err
 			}
 		}
 
-		state, outputLine, err = processLine(mapper, state, inputLine)
+		state, outputLine, err = processLine(config.DBMapper, state, inputLine)
 
 		if err != nil {
 			log.Error("processLine failure: ", err)
-			log.Debug("src: ", src)
-			log.Debug("dst: ", dst)
+			log.Debug("src: ", config.SourceFilename)
+			log.Debug("dst: ", config.DestinationFilename)
 			log.Debug("lineCount", lineCount)
 			log.Debug("inputLine", inputLine)
 			log.Debug("outputLine", outputLine)
@@ -221,8 +224,8 @@ func ProcessDumpFile(mapper *DBMapper,
 		bytesWritten, err := dstFile.WriteString(outputLine)
 		if err != nil {
 			log.Error(err)
-			log.Debug("src: ", src)
-			log.Debug("dst: ", dst)
+			log.Debug("src: ", config.SourceFilename)
+			log.Debug("dst: ", config.DestinationFilename)
 			log.Debug("lineCount", lineCount)
 			log.Debug("inputLine", inputLine)
 			log.Debug("bytesWritten", bytesWritten)
@@ -244,8 +247,8 @@ func ProcessDumpFile(mapper *DBMapper,
 		}
 	}
 	// Add in SQL at the end of the dump file
-	if len(postProcessFile) > 0 {
-		if err = fileInjector(postProcessFile, dstFile); err != nil {
+	if len(config.PostprocessFilename) > 0 {
+		if err = fileInjector(config.PostprocessFilename, dstFile); err != nil {
 			return err
 		}
 	}
@@ -505,13 +508,13 @@ func writeDebugMap() (err error) {
 	}
 	defer outputFile.Close()
 
-	for k, v := range UUIDMap {
+	for k, v := range UUIDMap.v {
 		_, err = outputFile.WriteString(fmt.Sprintf("%s => %s\n", k, v))
 		if err != nil {
 			return err
 		}
 	}
-	for k1, v1 := range AlphaNumericMap {
+	for k1, v1 := range AlphaNumericMap.v {
 		_, err = outputFile.WriteString(fmt.Sprintf("\n=================\n%s\n=================\n", k1))
 		if err != nil {
 			return err

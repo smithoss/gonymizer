@@ -119,9 +119,24 @@ func process(dumpFile, mapFile, processedDumpFile, preProcess, postProcess strin
 		return err
 	}
 
+	config := gonymizer.ProcessConfig{
+		DBMapper:            columnMap,
+		SourceFilename:      dumpFile,
+		DestinationFilename: processedDumpFile,
+		PreprocessFilename:  preProcess,
+		PostprocessFilename: postProcess,
+		GenerateSeed:        generateSeed,
+		NumWorkers:          viper.GetInt("num-workers"),
+		Inclusive:           viper.GetBool("process.inclusive"),
+	}
+
 	log.Info("Processing dump file: ", dumpFile)
-	err = gonymizer.ProcessDumpFile(columnMap, dumpFile, processedDumpFile, preProcess,
-		postProcess, generateSeed)
+	if config.NumWorkers > 1 {
+		err = gonymizer.ProcessConcurrently(config)
+	} else {
+		err = gonymizer.ProcessDumpFile(config)
+	}
+
 	if err != nil {
 		return err
 	}

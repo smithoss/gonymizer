@@ -56,14 +56,16 @@ func TestProcessDumpFile(t *testing.T) {
 
 	// Generate a processed dump file
 	columnMap, err := LoadConfigSkeleton(TestMapFile)
+	config := ProcessConfig{
+		DBMapper:            columnMap,
+		SourceFilename:      TestDumpFile,
+		DestinationFilename: TestProcessDumpfile,
+		PreprocessFilename:  TestPreProcessFile,
+		PostprocessFilename: TestPostProcessFile,
+		GenerateSeed:        true,
+	}
 	require.Nil(t, err)
-	require.Nil(t, ProcessDumpFile(
-		columnMap,
-		TestDumpFile,
-		TestProcessDumpfile,
-		TestPreProcessFile,
-		TestPostProcessFile,
-		true))
+	require.Nil(t, ProcessDumpFile(config))
 
 	// Load processed/anonymized dump file
 	conf.DefaultDBName = TestPostLocalDb

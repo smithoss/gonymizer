@@ -152,16 +152,17 @@ It is recommended that one run `gonymizer --help` or `gonymizer CMD --help` wher
 Below we give examples of both the CLI configuration as well as examples on how to create your map file.
 
 ### CLI Configuration
-Gonymizer was built using the Cobra + Viper Golang libraries to allow for easy configuration however you like it. We 
+Gonymizer was built using the Cobra + Viper Golang libraries to allow for easy configuration however you like it. We
 recommend using a JSON, YAML, or TOML file to configure Gonymizer. Below we will go over an example configuration for
 running Gonymizer.
 
-For an example of how to set up a CLI configuration check our Dell Store 2 example in 
+For an example of how to set up a CLI configuration check our Dell Store 2 example in
 docs/demo/dellstore2/gonymizer_config.json
 
 ```
 {
-    comment: "This example is viewable under docs/demo/dellstore2"
+    "comment": "This example is viewable under docs/demo/dellstore2",
+    "num-workers": 2,
     "dump":     {
         "database":             "store",
         "disable-ssl":          true,
