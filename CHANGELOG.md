@@ -1,5 +1,8 @@
 # Changelog
 =======
+## [v2.0.0)(https://github.com/smithoss/gonymizer/releases/tag/v1.2.0) 9/04/2020
+* Multithreaded processing is now available. Please see the updated --help flag for new cli arguments.
+
 ## [v1.2.0](https://github.com/smithoss/gonymizer/releases/tag/v1.2.0) 7/31/2019
 * Create the upload command for S3 uploading
   * was a part of the process command but found that separating uploads to its own command allows for a clear separation of duties
