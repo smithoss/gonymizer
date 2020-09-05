@@ -52,9 +52,6 @@ jobs:
               cat -n *.log
               cat -n testing/output.*
               exit 1
-            else
-              go get -v github.com/mattn/goveralls
-              /go/bin/goveralls -service=circle-ci -repotoken=$COVERALLS_REPO_TOKEN -coverprofile=coverage.out
             fi
 
   deploy:
