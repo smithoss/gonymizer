@@ -2,6 +2,7 @@ package gonymizer
 
 import (
 	"regexp"
+	"strings"
 	"testing"
 
 	"github.com/google/uuid"
@@ -59,10 +60,23 @@ func TestProcessorAlphaNumericScrambler(t *testing.T) {
 	// outputA === outputC
 	require.Equal(t, outputA, outputC)
 
-	const escapeSequences = "\\\\\\t\\n\\f\\b\\1\\21\\337\\x1\\xF2\\u4AE1\\UDEADBEEF"
-	outputEscapes, err := ProcessorAlphaNumericScrambler(&alphaTest, escapeSequences)
-	require.Nil(t, err)
-	require.Equal(t, outputEscapes, escapeSequences)
+	escapeSequences := [...]string{"\\\\", "\\t", "\\n", "\\f", "\\b", "\\1", "\\21", "\\337", "\\x1", "\\xF2", "\\u4AE1", "\\UDEAFBEEF"}
+	for i := 0; i < len(escapeSequences); i++ {
+		outputEscaped, err := ProcessorAlphaNumericScrambler(&alphaTest, escapeSequences[i])
+		require.Nil(t, err)
+		require.Equal(t, escapeSequences[i], outputEscaped)
+	}
+
+	completeEscapeSequences := [...]string{"\\\\", "\\t", "\\n", "\\f", "\\b", "\\337", "\\xF2", "\\u4AE1", "\\UDEAFBEEF"}
+	const suffix = "12345"
+	for i := 0; i < len(completeEscapeSequences); i++ {
+		input := completeEscapeSequences[i] + suffix
+		outputEscaped, err := ProcessorAlphaNumericScrambler(&alphaTest, input)
+		require.Nil(t, err)
+		require.Equal(t, len(outputEscaped), len(input))
+		require.True(t, strings.HasPrefix(outputEscaped, completeEscapeSequences[i]))
+		require.False(t, strings.HasSuffix(outputEscaped, suffix))
+	}
 }
 
 func TestProcessorAddress(t *testing.T) {
