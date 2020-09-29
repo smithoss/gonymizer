@@ -58,6 +58,11 @@ func TestProcessorAlphaNumericScrambler(t *testing.T) {
 	require.NotEqual(t, outputA, outputB)
 	// outputA === outputC
 	require.Equal(t, outputA, outputC)
+
+	const escapeSequences = "\\\\\\t\\n\\f\\b\\1\\21\\337\\x1\\xF2\\u4AE1\\UDEADBEEF"
+	outputEscapes, err := ProcessorAlphaNumericScrambler(&alphaTest, escapeSequences)
+	require.Nil(t, err)
+	require.Equal(t, outputEscapes, escapeSequences)
 }
 
 func TestProcessorAddress(t *testing.T) {
