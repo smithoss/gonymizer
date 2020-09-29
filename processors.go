@@ -334,6 +334,9 @@ func scrambleString(input string) string {
 
 	for i := 0; i < len(input); i++ {
 		switch c := input[i]; {
+		case c == '\\':
+			b.WriteByte(c)
+			i = passEscapeSequence(b, input, i+1)
 		case c >= 'a' && c <= 'z':
 			b.WriteString(randomLowercase())
 		case c >= 'A' && c <= 'Z':
@@ -346,6 +349,47 @@ func scrambleString(input string) string {
 	}
 
 	return b.String()
+}
+
+// Retain escapes sequences such as \n, \xHH as they are.
+// See https://www.postgresql.org/docs/current/sql-syntax-lexical.html
+// We liberally accept
+// - any escaped character as is
+// - numeric sequences of lengths shorter than expected
+// as more of a responsibility of the producer and consumer.
+// We return index of the last consumed input character.
+func passEscapeSequence(b strings.Builder, input string, i int) int {
+	c := input[i]
+	b.WriteByte(c)
+	switch {
+	case c >= '0' && c <= '7':
+		i = passOctalSequence(b, input, i+1)
+	case c == 'x':
+		i = passHexadecimalSequence(b, input, i, 2)
+	case c == 'u':
+		i = passHexadecimalSequence(b, input, i, 4)
+	case c == 'U':
+		i = passHexadecimalSequence(b, input, i, 8)
+	}
+	return i
+}
+
+func passOctalSequence(b strings.Builder, input string, i int) int {
+	for endAt := i + 2; i < endAt && i < len(input) && input[i] >= '0' && input[i] <= '7'; i++ {
+		b.WriteByte(input[i])
+	}
+	return i - 1
+}
+
+func passHexadecimalSequence(b strings.Builder, input string, i int, maxlen int) int {
+	for endAt := i + maxlen; i < endAt && i < len(input) && isHexadecimalCharacter(input[i]); i++ {
+		b.WriteByte(input[i])
+	}
+	return i - 1
+}
+
+func isHexadecimalCharacter(c byte) bool {
+	return (c >= '0' && c <= '9') || (c >= 'A' && c <= 'F')
 }
 
 // scrubString replaces the input string with asterisks (*) and returns it as the output.
