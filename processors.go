@@ -360,7 +360,11 @@ func scrambleString(input string) string {
 // We return index of the last consumed input character.
 func passEscapeSequence(write func(c byte) error, input string, i int) int {
 	c := input[i]
-	write(c)
+
+	if write(c) != nil {
+		return i
+	}
+
 	switch {
 	case c >= '0' && c <= '7':
 		i = passOctalSequence(write, input, i+1)
@@ -377,22 +381,32 @@ func passEscapeSequence(write func(c byte) error, input string, i int) int {
 func passOctalSequence(write func(c byte) error, input string, i int) int {
 	for endAt := i + 2; i < endAt && i < len(input); i++ {
 		c := input[i]
+
 		if c < '0' || c > '7' {
 			break
 		}
-		write(c)
+
+		if write(c) != nil {
+			break
+		}
 	}
+
 	return i - 1
 }
 
 func passHexadecimalSequence(write func(c byte) error, input string, i int, maxlen int) int {
 	for endAt := i + maxlen; i < endAt && i < len(input); i++ {
 		c := input[i]
+
 		if !isHexadecimalCharacter(c) {
 			break
 		}
-		write(c)
+
+		if write(c) != nil {
+			break
+		}
 	}
+
 	return i - 1
 }
 
