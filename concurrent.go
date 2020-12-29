@@ -160,7 +160,7 @@ func createChunks(chunks chan<- Chunk, reader *bufio.Reader, wg *sync.WaitGroup,
 
 			trimmedInput := strings.TrimLeftFunc(input, unicode.IsSpace)
 			if strings.HasPrefix(trimmedInput, StateChangeTokenBeginCopy) {
-				pattern := `^COPY (?P<Schema>[a-zA-Z_]+)\.(?P<TableName>\w+) \((?P<Columns>.*)\) .*`
+				pattern := `^COPY (?P<Schema>[a-zA-Z_]+)\."?(?P<TableName>\w+)"? \((?P<Columns>.*)\) .*`
 				r := regexp.MustCompile(pattern)
 				submatch := r.FindStringSubmatch(trimmedInput)
 				if len(submatch) == 0 {
