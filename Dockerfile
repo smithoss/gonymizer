@@ -14,7 +14,7 @@ RUN GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -v -ldflags '-w -extldflags "
 ##########################
 ### Gonymizer Runtime  ###
 ##########################
-FROM golang:1.15-alpine as gonymizer
+FROM alpine:latest as gonymizer
 RUN apk update && apk upgrade && apk add --no-cache postgresql
 
 COPY --from=build /tmp/gonymizer/bin/gonymizer /usr/bin/gonymizer
