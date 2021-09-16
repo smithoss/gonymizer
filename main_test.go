@@ -39,6 +39,8 @@ const TestProcessDumpfile = "testing/output.TestProcessDumpFile.sql"
 // Test schemaPrefix
 const TestSchemaPrefix = ""
 
+const TestOIDSEnabled = false
+
 // Test tables, exclude tables, and schemas
 var (
 	TestExcludeTable     = []string{"distributors"}
@@ -63,6 +65,7 @@ func GetTestDbConf(dbName string) PGConfig {
 	}
 	conf := PGConfig{}
 	conf.Username = os.Getenv("POSTGRES_USER")
+	conf.Pass = os.Getenv("POSTGRES_PASSWORD")
 	conf.Host = host
 	conf.DefaultDBName = dbName
 	conf.SSLMode = "disable"
@@ -112,6 +115,15 @@ func TestStart(t *testing.T) {
 // For example: CREATE/DROP DB should follow each other
 // NOTE: ORDER MATTERS HERE FOR TESTS
 func seqUnitTests(t *testing.T) {
+	//args_builder.go
+	t.Run("MinimalDumpArgs", TestMinimalDumpArgs)
+	t.Run("CanExcludeSchemas", TestCanExcludeSchemas)
+	t.Run("CanProvideSchema", TestCanProvideSchemas)
+	t.Run("SchemaPrefixAddsWildcard", TestSchemaPrefixAddsWildcard)
+	t.Run("CanExcludeTables", TestCanExcludeTables)
+	t.Run("CanExcludeTableData", TestCanExcludeTableData)
+	t.Run("CanAddOIDSFlag", TestCanAddOIDSFlag)
+
 	t.Run("DSN", TestDSN)
 	t.Run("BaseDSN", TestBaseDSN)
 	t.Run("URI", TestURI)
@@ -175,6 +187,7 @@ func seqUnitTests(t *testing.T) {
 	t.Run("ProcessDumpFile", TestProcessDumpFile)
 	t.Run("PostProcess", TestPostProcess)
 	t.Run("Clear", TestClear)
+
 
 	// Test loader.go
 	t.Run("LoadFile", TestLoadFile)

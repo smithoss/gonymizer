@@ -76,6 +76,7 @@ var (
 	schemaPrefix     string
 	s3File           string
 	schema           []string
+	enableOIDS       bool
 
 	rootCmd = &cobra.Command{
 		Use:              "gonymizer",
