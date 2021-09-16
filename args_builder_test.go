@@ -44,7 +44,7 @@ func TestCanProvideSchemas(t *testing.T) {
 		no_oids_flag,
 	)
 	expected_args := []string{
-  	"--no-owner",
+		"--no-owner",
 		"--schema=schema1.*",
 		"--schema=schema2.*",
 		"-f", "testing/output.TestCreateFile.sql",
@@ -67,7 +67,7 @@ func TestSchemaPrefixAddsWildcard(t *testing.T) {
 		no_oids_flag,
 	)
 	expected_args := []string{
-  	"--no-owner",
+		"--no-owner",
 		"--schema=company_*.*",
 		"-f", "testing/output.TestCreateFile.sql",
 		"postgres://postgres:postgres@localhost/gon_test_db?sslmode=disable",
@@ -89,7 +89,7 @@ func TestCanExcludeSchemas(t *testing.T) {
 		no_oids_flag,
 	)
 	expected_args := []string{
-  	"--no-owner",
+	 	"--no-owner",
 		"--exclude-schema=bad-schema1",
 		"--exclude-schema=bad-schema2",
 		"--exclude-schema=bad-schema3",
@@ -113,7 +113,7 @@ func TestCanExcludeTables(t *testing.T) {
 		no_oids_flag,
 	)
 	expected_args := []string{
-  	"--no-owner",
+		"--no-owner",
 		"--exclude-table=bad-table1",
 		"--exclude-table=bad-table2",
 		"-f", "testing/output.TestCreateFile.sql",
@@ -136,7 +136,7 @@ func TestCanExcludeTableData(t *testing.T) {
 		no_oids_flag,
 	)
 	expected_args := []string{
-  	"--no-owner",
+		"--no-owner",
 		"--exclude-table-data=bad-table1",
 		"--exclude-table-data=bad-table2",
 		"-f", "testing/output.TestCreateFile.sql",
@@ -156,10 +156,10 @@ func TestCanAddOIDSFlag(t *testing.T) {
 		emptyList,
 		emptyList,
 		emptyList,
-	  oids_flag_present,
+		oids_flag_present,
 	)
 	expected_args := []string{
-  	"--no-owner",
+		"--no-owner",
 		"--oids",
 		"-f", "testing/output.TestCreateFile.sql",
 		"postgres://postgres:postgres@localhost/gon_test_db?sslmode=disable",
