@@ -23,7 +23,7 @@ func TestCreateDumpFile(t *testing.T) {
 		  TestExcludeSchemas,
 		  TestSchemas,
 		  TestOIDSEnabled,
-  	),
+	),
   )
 
 	// Check dump file size
@@ -54,7 +54,7 @@ func TestProcessDumpFile(t *testing.T) {
 		  TestExcludeSchemas,
 		  TestSchemas,
 		  TestOIDSEnabled,
- 	  ),
+		),
   )
 
 	// Generate a processed dump file

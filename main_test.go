@@ -188,7 +188,6 @@ func seqUnitTests(t *testing.T) {
 	t.Run("PostProcess", TestPostProcess)
 	t.Run("Clear", TestClear)
 
-
 	// Test loader.go
 	t.Run("LoadFile", TestLoadFile)
 	t.Run("TempDbCreate", TestLoaderTempDbCreation)

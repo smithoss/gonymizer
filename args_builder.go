@@ -10,7 +10,7 @@ func CreateDumpArgs(
 	conf PGConfig,
 	dumpfilePath,
 	schemaPrefix string,
-  excludeTables,
+	excludeTables,
 	excludeDataTables,
 	excludeCreateSchemas,
 	schemas []string,
@@ -20,7 +20,7 @@ func CreateDumpArgs(
 	args := []string{"--no-owner"}
 
 	if oids {
-    args = append(args, "--oids")
+		args = append(args, "--oids")
 	}
 
 	if len(schemas) >= 1 {
