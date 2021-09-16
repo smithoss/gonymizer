@@ -5,7 +5,6 @@ import (
 	"strings"
 )
 
-
 func CreateDumpArgs(
 	conf PGConfig,
 	dumpfilePath,
@@ -15,7 +14,7 @@ func CreateDumpArgs(
 	excludeCreateSchemas,
 	schemas []string,
 	oids bool,
-) [] string {
+) []string {
 
 	args := []string{"--no-owner"}
 

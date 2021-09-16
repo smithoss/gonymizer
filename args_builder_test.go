@@ -1,11 +1,12 @@
 package gonymizer
 
 import (
-	"testing"
 	"github.com/stretchr/testify/assert"
+	"testing"
 )
 
 var emptyList = []string{}
+
 const no_oids_flag = false
 const oids_flag_present = true
 
@@ -27,9 +28,8 @@ func TestMinimalDumpArgs(t *testing.T) {
 		"postgres://postgres:postgres@localhost/gon_test_db?sslmode=disable",
 	}
 
-  assert.Equal(t, expected_args, args, "they should be equal")
+	assert.Equal(t, expected_args, args, "they should be equal")
 }
-
 
 func TestCanProvideSchemas(t *testing.T) {
 	conf := GetTestDbConf(TestDb)
@@ -51,7 +51,7 @@ func TestCanProvideSchemas(t *testing.T) {
 		"postgres://postgres:postgres@localhost/gon_test_db?sslmode=disable",
 	}
 
-  assert.Equal(t, expected_args, args, "they should be equal")
+	assert.Equal(t, expected_args, args, "they should be equal")
 }
 
 func TestSchemaPrefixAddsWildcard(t *testing.T) {
@@ -73,7 +73,7 @@ func TestSchemaPrefixAddsWildcard(t *testing.T) {
 		"postgres://postgres:postgres@localhost/gon_test_db?sslmode=disable",
 	}
 
-  assert.Equal(t, expected_args, args, "they should be equal")
+	assert.Equal(t, expected_args, args, "they should be equal")
 }
 
 func TestCanExcludeSchemas(t *testing.T) {
@@ -89,7 +89,7 @@ func TestCanExcludeSchemas(t *testing.T) {
 		no_oids_flag,
 	)
 	expected_args := []string{
-	 	"--no-owner",
+		"--no-owner",
 		"--exclude-schema=bad-schema1",
 		"--exclude-schema=bad-schema2",
 		"--exclude-schema=bad-schema3",
@@ -97,7 +97,7 @@ func TestCanExcludeSchemas(t *testing.T) {
 		"postgres://postgres:postgres@localhost/gon_test_db?sslmode=disable",
 	}
 
-  assert.Equal(t, expected_args, args, "they should be equal")
+	assert.Equal(t, expected_args, args, "they should be equal")
 }
 
 func TestCanExcludeTables(t *testing.T) {
@@ -120,7 +120,7 @@ func TestCanExcludeTables(t *testing.T) {
 		"postgres://postgres:postgres@localhost/gon_test_db?sslmode=disable",
 	}
 
-  assert.Equal(t, expected_args, args, "they should be equal")
+	assert.Equal(t, expected_args, args, "they should be equal")
 }
 
 func TestCanExcludeTableData(t *testing.T) {
@@ -143,7 +143,7 @@ func TestCanExcludeTableData(t *testing.T) {
 		"postgres://postgres:postgres@localhost/gon_test_db?sslmode=disable",
 	}
 
-  assert.Equal(t, expected_args, args, "they should be equal")
+	assert.Equal(t, expected_args, args, "they should be equal")
 }
 
 func TestCanAddOIDSFlag(t *testing.T) {
@@ -165,5 +165,5 @@ func TestCanAddOIDSFlag(t *testing.T) {
 		"postgres://postgres:postgres@localhost/gon_test_db?sslmode=disable",
 	}
 
-  assert.Equal(t, expected_args, args, "they should be equal")
+	assert.Equal(t, expected_args, args, "they should be equal")
 }

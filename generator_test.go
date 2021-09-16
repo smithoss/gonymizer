@@ -12,19 +12,18 @@ import (
 func TestCreateDumpFile(t *testing.T) {
 	conf := GetTestDbConf(TestDb)
 
-
 	require.Nil(t,
-	  CreateDumpFile(
-		  conf,
-		  TestCreateFile,
-		  TestSchemaPrefix,
-		  TestExcludeTable,
-		  TestExcludeTableData,
-		  TestExcludeSchemas,
-		  TestSchemas,
-		  TestOIDSEnabled,
-	),
-  )
+		CreateDumpFile(
+			conf,
+			TestCreateFile,
+			TestSchemaPrefix,
+			TestExcludeTable,
+			TestExcludeTableData,
+			TestExcludeSchemas,
+			TestSchemas,
+			TestOIDSEnabled,
+		),
+	)
 
 	// Check dump file size
 	size, err := ioutil.ReadFile(TestCreateFile)
@@ -45,17 +44,17 @@ func TestProcessDumpFile(t *testing.T) {
 
 	// Create a dump file from our test database
 	require.Nil(t,
-	  CreateDumpFile(
-		  conf,
-		  TestCreateFile,
-		  TestSchemaPrefix,
-		  TestExcludeTable,
-		  TestExcludeTableData,
-		  TestExcludeSchemas,
-		  TestSchemas,
-		  TestOIDSEnabled,
+		CreateDumpFile(
+			conf,
+			TestCreateFile,
+			TestSchemaPrefix,
+			TestExcludeTable,
+			TestExcludeTableData,
+			TestExcludeSchemas,
+			TestSchemas,
+			TestOIDSEnabled,
 		),
-  )
+	)
 
 	// Generate a processed dump file
 	columnMap, err := LoadConfigSkeleton(TestMapFile)
