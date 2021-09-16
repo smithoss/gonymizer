@@ -144,6 +144,15 @@ func init() {
 	)
 	_ = viper.BindPFlag("dump.username", DumpCmd.Flags().Lookup("username"))
 
+	DumpCmd.Flags().BoolVarP(
+		&enableOIDS,
+		"oids",
+		"o",
+		false,
+		"Enable --oids option for older versions of pg_dump",
+	)
+	_ = viper.BindPFlag("dump.oids", DumpCmd.Flags().Lookup("oids"))
+
 }
 
 // cliCommandDump verifies that the supplied configuration is correct and starts the Dump process. If there is an error
@@ -217,6 +226,7 @@ func cliCommandDump(cmd *cobra.Command, args []string) {
 		viper.GetStringSlice("dump.exclude-table-data"),
 		viper.GetStringSlice("dump.exclude-schema"),
 		viper.GetStringSlice("dump.schema"),
+		viper.GetBool("dump.oids"),
 	)
 
 	if err != nil {
@@ -237,6 +247,7 @@ func dump(
 	excludeTableData,
 	excludeSchemas,
 	schema []string,
+	oids bool,
 ) (err error) {
 	return gonymizer.CreateDumpFile(
 		conf,
@@ -246,6 +257,7 @@ func dump(
 		excludeTableData,
 		excludeSchemas,
 		schema,
+		oids,
 	)
 }
 
