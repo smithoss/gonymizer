@@ -4,7 +4,7 @@
 
 
 
------        
+-----
 
 [![CircleCI](https://circleci.com/gh/smithoss/gonymizer.svg?style=svg)](https://circleci.com/gh/smithoss/gonymizer)[![Slack](https://slackin.junkert.now.sh/badge.svg)](https://slackin.junkert.now.sh)[![Coverage Status](https://coveralls.io/repos/github/smithoss/gonymizer/badge.svg?branch=master)](https://coveralls.io/github/smithoss/gonymizer?branch=master)[![Go Report Card](https://goreportcard.com/badge/github.com/smithoss/gonymizer)](https://goreportcard.com/report/github.com/smithoss/gonymizer)[![GoDoc](https://godoc.org/github.com/smithoss/gonymizer?status.svg)](https://godoc.org/github.com/smithoss/gonymizer)
 
@@ -31,13 +31,13 @@
     * [Go Logo and Graphics](#go-logo-and-graphics)
 
 ## Weird name, what does it do?
-The Gonymizer project (Go + Anonymizer) is a project that was built at [SmithRx](https://www.smithrx.com) in hope to simplify the QA process. Gonymizer is 
+The Gonymizer project (Go + Anonymizer) is a project that was built at [SmithRx](https://www.smithrx.com) in hope to simplify the QA process. Gonymizer is
 written in Golang and is meant to help database administrators and infrastructure folks easily anonymize production
 database dumps before loading this data into a QA environment.
 
 We have built in support, and examples, for:
 * Kubernetes CRONJOB scheduling
-* AWS-S3 Storage processing and loading 
+* AWS-S3 Storage processing and loading
 
 We plan to have built-in:
 * CRONJOB BASH scripts to use local disk as storage (see tasks, we need help!)
@@ -58,7 +58,7 @@ processors, or general questions please join by checking the CONTRIBUTING.md fil
 ## Abbreviations and Definitions
 
 - **HIPAA**: Health Insurance Portability and Accountability Act of 1996
-- **PCI DSS**: Payment Card Industry Data Security Standard 
+- **PCI DSS**: Payment Card Industry Data Security Standard
 - **PHI**: Protected Health Information
 - **PII**: Personally identifiable information
 
@@ -66,7 +66,7 @@ In this document/codebase, we use them interchangeably.
 
 
 ## Getting Started
-If you are a seasoned Go veteran or already have an environment which contains Go>= 1.11 then you can skip to 
+If you are a seasoned Go veteran or already have an environment which contains Go>= 1.11 then you can skip to
 the next section.
 
 
@@ -77,7 +77,7 @@ Gonymizer requires that one has complete install of Go >= 1.11. To install Go on
 brew install go
 ```
 
-Once this is complete we will need to make sure our Go paths are set correctly in our BASH profile. **NOTE**: You may 
+Once this is complete we will need to make sure our Go paths are set correctly in our BASH profile. **NOTE**: You may
 need to change the directories below to match your setup.
 ```
 echo "
@@ -95,7 +95,7 @@ cd ~/go/src/github.com/smithoss/gonymizer/scripts
 ```
 
 The build script will build two binaries. One for MacOS on the amd64 architecture as well as a Linux amd64 binary. These
-binaries are stored under the Gonymizer/bin directory. Now that we have a built binary we can attempt to download a 
+binaries are stored under the Gonymizer/bin directory. Now that we have a built binary we can attempt to download a
 map file using our JSON configuration:
 
 ```
@@ -109,7 +109,7 @@ Use the following steps to get up and going. Commands should be similar for Debi
 sudo apt-get install go git
 ```
 
-2. Add go path to profile 
+2. Add go path to profile
 ```
 echo "
 export GOPATH=~/go
@@ -127,20 +127,14 @@ git clone https://github.com/smithoss/Gonymizer.git gonymizer
 
 4. Build the project
 ```
-cd gonymizer/scripts
-bash build.sh
-```
-or
-
-```
 cd gonymizer/cmd/
-go build . -o ../bin/gonymizer
+go build -o ../bin/gonymizer .
 ```
 
 5. Run the binary
 ```
 cd ../bin
-./gonymizer-linux --help
+./gonymizer --help
 ```
 
 ## Configuration
@@ -183,8 +177,8 @@ docs/demo/dellstore2/gonymizer_config.json
 
 `comment`: is used to leave for comments for the reader and is not used by the application.
 
-`log-level`: is the level the application uses to know what should be displayed to the screen. Choices are: FATAL, 
-ERROR, WARN, INFO, DEBUG. We use the Logrus Golang library for logging so please read the documentation 
+`log-level`: is the level the application uses to know what should be displayed to the screen. Choices are: FATAL,
+ERROR, WARN, INFO, DEBUG. We use the Logrus Golang library for logging so please read the documentation
 [here](https://github.com/sirupsen/logrus) for more information.
 
 `database`: is the master database with PHI and PII that will be used for dumping a SQL dump file from.
@@ -201,43 +195,45 @@ ERROR, WARN, INFO, DEBUG. We use the Logrus Golang library for logging so please
 
 `dump-file`: is where Gonymizer will store the SQL statements from the `dump` command.
 
-`map-file`: is the file that gonymizer uses to map out which columns need to be anonymized and how. When using the 
-`map` command in conjunction with `--map-file`, or in the configuration above, a file is named similarly to the 
+`map-file`: is the file that gonymizer uses to map out which columns need to be anonymized and how. When using the
+`map` command in conjunction with `--map-file`, or in the configuration above, a file is named similarly to the
 `map-file`, but with `skeleton` in the name instead. More on this below in the map section.
 
-`exclude-table`: is list of tables that are not to be included during the pg_dump step of the extraction process. 
-This allows us to only focus on tables that are needed for our base application to work. Using this option minimizes 
-the size of our dump file and in return decreases the amount of time needed for dumping, processing, and 
+`exclude-table`: is list of tables that are not to be included during the pg_dump step of the extraction process.
+This allows us to only focus on tables that are needed for our base application to work. Using this option minimizes
+the size of our dump file and in return decreases the amount of time needed for dumping, processing, and
 reloading. This option operates in the same fashion as pg_dump's `--exclude-table` option.
 
-`exclude-table-data`: allows you to create a list of tables we would like to include in the pg_dump process but do not 
-want to include any of the data (table schema only). The usage and advantages are the same as the `exclude-table` 
+`exclude-table-data`: allows you to create a list of tables we would like to include in the pg_dump process but do not
+want to include any of the data (table schema only). The usage and advantages are the same as the `exclude-table`
 feature explained above and is identical to pg_dump's `--exclude-table-data` option.
 
 `schema`: is a list of schemas the Gonymizer should dump from the master database. This option must be in the form
 of a list if you are using the configuration methods mentioned above.
 
-`exclude-schema`: is a list of system level schemas that Gonymizer should ignore when adding CREATE SCHEMA statements 
+`exclude-schema`: is a list of system level schemas that Gonymizer should ignore when adding CREATE SCHEMA statements
 to the dump file. These schemas may still be included in the `--schema` option, for example the `public` schema.
 
-`schema-prefix`: is the prefix used for a schema environment where there is a prefix that matches other schemas. This 
+`schema-prefix`: is the prefix used for a schema environment where there is a prefix that matches other schemas. This
 is same as a sharded architecture design which is outside the scope of this article and it is recommended to read
-[here](https://en.wikipedia.org/wiki/Shard_(database_architecture)) if you are unfamiliar with this design paradigm. 
-For example: *[company_1, company2, company_..., company_n-1, company_n]* would be 
+[here](https://en.wikipedia.org/wiki/Shard_(database_architecture)) if you are unfamiliar with this design paradigm.
+For example: *[company_1, company2, company_..., company_n-1, company_n]* would be
 `--schema-prefix=company_ --schemas=company`
 
-*NOTE:* Some arguments are not included here. It is recommended to use `gonymizer --help` and 
+`--oids`: allows you to provide the `--oids` option for older versions of pg_dump (prior to version 12)
+
+*NOTE:* Some arguments are not included here. It is recommended to use `gonymizer --help` and
 `gonymizer [COMMAND] --help` for more information and configuration options.
 
 ### Map File Configuration
-Once one has created a skeleton map file it is recommended to create a new *true* map file which will be used to let 
+Once one has created a skeleton map file it is recommended to create a new *true* map file which will be used to let
 gonymizer know which columns need to be anonymized in the database and which columns do not. There are two methods in
 which gonymizer map files work (inclusive and exclusive).
 
-**NOTE:** Currently SmithRx is using an *exclusive dump file* which can be found under `map_files/prod_map.json` 
+**NOTE:** Currently SmithRx is using an *exclusive dump file* which can be found under `map_files/prod_map.json`
 
 #### Available Fakers and Scramblers
-Below is a list of fake data creators and scramblers. This table may not be up to date so please make sure to check 
+Below is a list of fake data creators and scramblers. This table may not be up to date so please make sure to check
 `processor.go` for a full list.
 
 | Processor Name | Use |
@@ -264,13 +260,13 @@ Below is a list of fake data creators and scramblers. This table may not be up t
 | ScrubString | Replaces a string with \*'s. Useful for password hashes.
 
 #### Inclusive Map Files
-An *inclusive* map file is a map file which includes every column in every table that is contained in a list of schemas 
-that is configurable by using the `--schemas` option. If you are using a sharded/group configuration only one copy of 
+An *inclusive* map file is a map file which includes every column in every table that is contained in a list of schemas
+that is configurable by using the `--schemas` option. If you are using a sharded/group configuration only one copy of
 the column will be added to the file. An example map file can be found in `map_files/example_db_map.json`.
 
 Once there is an up to date skeleton file one can then walk through the file and modify the "Processors"."Name" field
-for any column that needs to be anonymized. This can be done by simply replacing the "Identity" processor with one 
-listed in the table above. For example to pick a fake first name for a column labeled `first_name` one would add the 
+for any column that needs to be anonymized. This can be done by simply replacing the "Identity" processor with one
+listed in the table above. For example to pick a fake first name for a column labeled `first_name` one would add the
 `FakeFirstName` to the "Processors"."Name" field like so:
 
 ```
@@ -298,23 +294,23 @@ listed in the table above. For example to pick a fake first name for a column la
 ```
 
 #### Exclusive Map Files
-An **exclusive** map file is a map file that contains only the columns that need to be anonymized. This is the only 
-difference from the **inclusive** map file method and should make map files smaller and simpler to navigate since they 
-will not contain any columns using the "Identity" processor. **It is assumed that all columns that are not listed in 
-the map file are considered to be OK to add to the dump file WITHOUT any scrambling or anonymization.** This means that 
+An **exclusive** map file is a map file that contains only the columns that need to be anonymized. This is the only
+difference from the **inclusive** map file method and should make map files smaller and simpler to navigate since they
+will not contain any columns using the "Identity" processor. **It is assumed that all columns that are not listed in
+the map file are considered to be OK to add to the dump file WITHOUT any scrambling or anonymization.** This means that
 the user must add column definitions for every schema change that requires anonymization.
 
-**Pro Tip:** An east way to handle schema changes is to run the `map` command to create a new map file and copy/paste 
+**Pro Tip:** An east way to handle schema changes is to run the `map` command to create a new map file and copy/paste
 the new columns into your map file while adding the proper processors at the same time.
 
 #### Relationship Mapping
-Relationship mapping allows the user to define columns that should remain congruent during the processing/anonymization 
-step. For example if a user is identified by a unique UUID that is used across multiple tables in the database one may 
-select the `RandomUUID` processor which keeps a global hash map of `OLD-UUID => NEW-UUID`. The 
-global hash map then can be used by the processor and can also be stored to disk for back-tracing values to 
-debug the application. The only way to enable this type of logging is to edit the generator.go file and add the 
-function call the *writeDebugMap* function. Adding this to your run-time is outside of the scope of this documentation 
-and it is recommended to **NEVER** use this option when working with real PHI and PII data. If this file is compromised 
+Relationship mapping allows the user to define columns that should remain congruent during the processing/anonymization
+step. For example if a user is identified by a unique UUID that is used across multiple tables in the database one may
+select the `RandomUUID` processor which keeps a global hash map of `OLD-UUID => NEW-UUID`. The
+global hash map then can be used by the processor and can also be stored to disk for back-tracing values to
+debug the application. The only way to enable this type of logging is to edit the generator.go file and add the
+function call the *writeDebugMap* function. Adding this to your run-time is outside of the scope of this documentation
+and it is recommended to **NEVER** use this option when working with real PHI and PII data. If this file is compromised
 and stolen, an attacker will gain full access of the mapping of `(PHI, PII) => (Non-PHI, Non-PII)`.
 
 Currently we only allow for global mapping of the following processors (more may be added later):
@@ -329,7 +325,7 @@ var AlphaNumericMap = map[string]map[string]string{}
 
 There are plans to add more globally aware processors in the future, but at this time only 2 are available.
 
-To map a relationship one can do this quite easily by notifying Gonymizer that there is a parent table and column that 
+To map a relationship one can do this quite easily by notifying Gonymizer that there is a parent table and column that
 exist that the column should be mapped to. Below is an example where we identify the parent schema, table, and column:
 
 ```
@@ -356,15 +352,15 @@ exist that the column should be mapped to. Below is an example where we identify
 }
 ```
 
-In the example above we are mapping the social security number (SSN) from the `credit_scores` table to the `users` 
-table by simply notifying gonymizer that there exists a map for ssn that is tied to the `users.ssn` table and column. 
-Gonymizer will see this and look the value up in the global **AlphaNumericMap** variable mentioned earlier. If the 
-original SSN key does not exist in the map the Gonymizer will automatically scramble the SSN and add an entry in the 
- map such that: 
- 
+In the example above we are mapping the social security number (SSN) from the `credit_scores` table to the `users`
+table by simply notifying gonymizer that there exists a map for ssn that is tied to the `users.ssn` table and column.
+Gonymizer will see this and look the value up in the global **AlphaNumericMap** variable mentioned earlier. If the
+original SSN key does not exist in the map the Gonymizer will automatically scramble the SSN and add an entry in the
+ map such that:
+
  `map["old SSN"]: "new value (new SSN)"`
- 
-Every time gonymizer checks a value in the SSN column it will look up this value and replace it with the previously 
+
+Every time gonymizer checks a value in the SSN column it will look up this value and replace it with the previously
 anonymized SSN. This allows us to map keys between tables.
 
 Also make sure to add the parent table itself as a parent when creating a relationship mapping. From the example
@@ -393,22 +389,22 @@ above the same would be true:
     "Comment": ""
 }
 ```
-Notice that we added the column as a parent of itself. If this step is missing all other columns will be mapped to the 
+Notice that we added the column as a parent of itself. If this step is missing all other columns will be mapped to the
 correct value, but the parent column will not be mapped to the same hash map so it will contain different values
 than expected.
 
-**Note 1:** Multiple tables can link back to the user table by simply adding the schema, table, and column names to the 
+**Note 1:** Multiple tables can link back to the user table by simply adding the schema, table, and column names to the
 parent fields in the map file for the specified column.
 
 
 #### Grouping and Schema Prefix Matching (sharding)
-Sharding is a type of database partitioning that separates very large databases the into smaller, faster, more easily 
-managed parts called data shards. The word shard means a small part of a whole. Explanation is outside the scope of 
-this READ.me and more information can be found at this 
+Sharding is a type of database partitioning that separates very large databases the into smaller, faster, more easily
+managed parts called data shards. The word shard means a small part of a whole. Explanation is outside the scope of
+this READ.me and more information can be found at this
 [Wikipedia article](https://en.wikipedia.org/wiki/Shard_(database_architecture\)).
 
-**NOTE:** When working with a database that contains many schemas matching the schema-prefix (shards), one will need to 
-make sure that all tables and columns are **identical** across each schema. Manging the DDL for each schema is outside 
+**NOTE:** When working with a database that contains many schemas matching the schema-prefix (shards), one will need to
+make sure that all tables and columns are **identical** across each schema. Manging the DDL for each schema is outside
 the scope of Gonymizer project and should be done by external database administration tools.
 
 ## Running Gonymizer
@@ -433,24 +429,24 @@ Also check out our slides from [Percona Live 2019](https://www.percona.com/live/
         ./gonymizer -c config/prod-conf.json map
 
     If you already have a map file and just need to due to migrations, schema changes, etc (2nd -> nth runs) change
-    the path to the real map file. The map command will NOT overwrite your map file, instead it will create a new 
+    the path to the real map file. The map command will NOT overwrite your map file, instead it will create a new
     file with _"skeleton"_ in the name. This will also append new columns to the bottom:
 
         ./gonymizer -c config/prod-conf.json --map-file=db_mapper.prod_map.json map
 
     Will output a file named:
-        
+
         db_mapper.prod_map.json.skeleton.json
-        
+
 
 - Step 2: Copy the newly created skeleton file to a new production map file
-    
-    **Pro Tip:** It is recommended to leave OUT column definitions from your map file that are to be skipped by the 
-    gonymizer. This is to keep the map file simple and clean. The gonymizer will skip any column that is not in the 
-    map file and continue on. The purpose of the skeleton file is to use it as a base line and to copy/paste your 
-    anonymized columns from the skeleton file into your true map file. This map file will be used in the processing 
+
+    **Pro Tip:** It is recommended to leave OUT column definitions from your map file that are to be skipped by the
+    gonymizer. This is to keep the map file simple and clean. The gonymizer will skip any column that is not in the
+    map file and continue on. The purpose of the skeleton file is to use it as a base line and to copy/paste your
+    anonymized columns from the skeleton file into your true map file. This map file will be used in the processing
     step later. See Map Configuration above for more information.
-    
+
         mv db_mapper.prod_map.json.skeleton.json db_mapper.prod_map.json
 
     Edit every field (removing unneeded columns if going Pro Tip route).  Add processors or Min/Max as necessary.
@@ -471,9 +467,9 @@ Also check out our slides from [Percona Live 2019](https://www.percona.com/live/
 - Step 5. Use the Load command to load the data into the database to verify that the data is correctly scrambled
 
     The processed SQL file can simply be imported using PSQL.
-    
+
         ./gonymizer -c config/staging-conf.json --load-file=s3://my-bucket-name.s3.us-west-2.amazonaws.com/db-dump-processed.sql load
-        
+
 
 ## Creating Tests
 Testing for Gonymizer is different than expected for typical projects. When adding a test to the project one will
@@ -498,11 +494,11 @@ t.Run("ProcessorIPV4", TestProcessorIPv4)
 
 ## Notices and License
 
-Please make sure to read our license agreement here [LICENSE.txt](https://github.com/smithoss/gonymizer/blob/master/LICENSE.txt). We may state throughout our documentation that we are using this 
+Please make sure to read our license agreement here [LICENSE.txt](https://github.com/smithoss/gonymizer/blob/master/LICENSE.txt). We may state throughout our documentation that we are using this
 application to anonymize data for HIPAA requirements, but this is in our own environment and we give NO guarantee this
-will be the same for other's uses. Considering everyone's data set is completely different and the configuration of 
+will be the same for other's uses. Considering everyone's data set is completely different and the configuration of
 this application is very involved we cannot guarantee that this application will guarantee any compliance of any type.
-This is the application users responsibility to verify with council that the dataset that is processed by the 
+This is the application users responsibility to verify with council that the dataset that is processed by the
 application is indeed HIPAA/PCI/PHI/PII compliant.
 
 **THERE IS ABSOLUTELY NO GUARANTEE THAT USING THIS SOFTWARE WILL COMPLETE A CORRECT ANONYMIZATION OF YOUR DATA SET
