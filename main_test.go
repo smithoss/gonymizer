@@ -65,7 +65,6 @@ func GetTestDbConf(dbName string) PGConfig {
 	}
 	conf := PGConfig{}
 	conf.Username = os.Getenv("POSTGRES_USER")
-	conf.Pass = os.Getenv("POSTGRES_PASSWORD")
 	conf.Host = host
 	conf.DefaultDBName = dbName
 	conf.SSLMode = "disable"
