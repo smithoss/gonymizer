@@ -484,6 +484,13 @@ To run tests you will want to use the command (in the root directory of the proj
 go test -v -run TestStart
 ```
 
+To specify username /  password you can use the following environment variables:
+```
+PGUSER
+PGDATABASE
+PGPASSWORD
+```
+
 ### Test Example
 Lets assume we created a new processor function for anonymizing IP addresses as seen in #64. In this case we create the
 test using normal methods, but will need to add the function to the `main_test.go` by adding the following line:
