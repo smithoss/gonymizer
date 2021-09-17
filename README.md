@@ -488,7 +488,6 @@ To specify username /  password you can use the following environment variables:
 ```
 PGUSER
 PGDATABASE
-PGPASSWORD
 ```
 
 ### Test Example
