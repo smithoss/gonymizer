@@ -51,7 +51,7 @@ to get started.
 
 ## Supported RDBMS
 
-Currently Gonymizer only supports **PostgreSQL 9.x-11.x**. We have not tested Gonymizer on versions 12+,
+Currently Gonymizer only supports **PostgreSQL 9.x-13.x**. We have not tested Gonymizer on versions 12+,
 but plan to in the near future. If you would like to help by adding support for other database management systems, new
 processors, or general questions please join by checking the CONTRIBUTING.md file in this repository.
 
