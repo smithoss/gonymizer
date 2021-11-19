@@ -283,8 +283,8 @@ func setupLogging() {
 
 	if log.GetLevel() == log.DebugLevel {
 		log.Debugf("os.Args: %v", os.Args)
-		log.Debugf("🐍 %s 👇", aurora.Bold(aurora.Green(fmt.Sprintf(" configuration "))))
+		log.Debugf("🐍 %s 👇", aurora.Bold(aurora.Green(" configuration ")))
 		viper.Debug()
-		log.Debugf("🐍 %s ☝️", aurora.Bold(aurora.Green(fmt.Sprintf(" configuration "))))
+		log.Debugf("🐍 %s ☝️", aurora.Bold(aurora.Green(" configuration ")))
 	}
 }

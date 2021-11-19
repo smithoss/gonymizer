@@ -5,7 +5,7 @@ version: 2
 jobs:
   test:
     docker:
-      - image: circleci/golang:1.13
+      - image: cimg/go:1.13
         environment:
           GO111MODULE: "on"
           PGUSER: circleci
@@ -27,7 +27,13 @@ jobs:
             go mod download
       - run:
           name: Install PSQL client
-          command: sudo apt install -y postgresql-client curl || true
+          command: |
+            sudo apt update
+            sudo apt -y install gnupg2
+            wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+            echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" | sudo tee  /etc/apt/sources.list.d/pgdg.list
+            sudo apt update
+            sudo apt install -y postgresql-client-13 curl
       - run:
           name: Waiting for Postgres to be ready
           command: |
@@ -41,9 +47,9 @@ jobs:
       - run:
           name: Go Linter
           command: |
-            sudo chown -R circleci:circleci /go/bin
-            curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b $(go env GOPATH)/bin v1.18.0
-            golangci-lint run --enable gofmt
+            export BINDIR=.
+            curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s v1.43.0
+            ./golangci-lint run --enable gofmt
       - run:
           name: Run TestStart Golang tests
           command: |

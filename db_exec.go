@@ -162,7 +162,7 @@ func ExecPostgresCommandOutErr(stdOut, stdErr io.Writer, name string, arg ...str
 		name = filepath.Join(pgBinDir, name)
 	}
 	cmd := exec.Command(name, arg...)
-	cmd.Env = append(os.Environ())
+	cmd.Env = os.Environ()
 
 	// we use buffers cause we want the output to go to two places...
 	var outBuffer bytes.Buffer
