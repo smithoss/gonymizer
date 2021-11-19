@@ -46,7 +46,7 @@ func TestProcessDumpFile(t *testing.T) {
 	require.Nil(t,
 		CreateDumpFile(
 			conf,
-			TestCreateFile,
+			TestDumpFile,
 			TestSchemaPrefix,
 			TestExcludeTable,
 			TestExcludeTableData,

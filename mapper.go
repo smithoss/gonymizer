@@ -56,15 +56,10 @@ func (dbMap DBMapper) ColumnMapper(schemaName, tableName, columnName string) *Co
 	// Some names may contain quotes if the name is a reserved word. For example tableName public.order would be a
 	// conflict with ORDER BY so PSQL will add quotes to the name. I.E. public."order". Remove the quotes so we can match
 	// whatever is in the map file.
-	if strings.Contains(schemaName, "\"") {
-		schemaName = strings.Replace(schemaName, "\"", "", -1)
-	}
-	if strings.Contains(tableName, "\"") {
-		tableName = strings.Replace(tableName, "\"", "", -1)
-	}
-	if strings.Contains(columnName, "\"") {
-		columnName = strings.Replace(columnName, "\"", "", -1)
-	}
+	schemaName = strings.Replace(schemaName, "\"", "", -1)
+	tableName = strings.Replace(tableName, "\"", "", -1)
+	columnName = strings.Replace(columnName, "\"", "", -1)
+
 	for _, cmap := range dbMap.ColumnMaps {
 		//log.Infoln("dbMap.SchemaPrefix-> ", dbMap.SchemaPrefix)
 		//log.Infoln("schemaName-> ", schemaName)
