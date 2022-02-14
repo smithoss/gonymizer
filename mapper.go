@@ -20,6 +20,9 @@ type ProcessorDefinition struct {
 	Min      float64
 	Variance float64
 
+	// values that match this regex will not be anonymized
+	Exemptions string
+
 	Comment string
 }
 

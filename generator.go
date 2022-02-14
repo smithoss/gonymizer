@@ -10,6 +10,7 @@ import (
 	"io"
 	mathRand "math/rand"
 	"os"
+	"regexp"
 	"strings"
 	"unicode"
 
@@ -367,7 +368,24 @@ func processValue(cmap *ColumnMapper, input string) (string, error) {
 
 		}
 
+		if procDef.Exemptions != "" {
+			expression, err := regexp.Compile(procDef.Exemptions)
+			if err != nil {
+				log.Error(err)
+				log.Error("Invalid Exemptions expression: ", procDef.Name)
+				log.Debug("i: ", i)
+				log.Debug("cmap: ", cmap)
+				log.Debug("input: ", input)
+				return "", err
+			}
+
+			if expression.MatchString(input) {
+				return input, nil
+			}
+		}
+
 		output, err = pfunc(cmap, input)
+
 		if err != nil {
 			log.Error(err)
 			log.Debug("i: ", i)
