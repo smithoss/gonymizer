@@ -26,9 +26,9 @@ func CreateDumpArgs(
 		// Add all schemas that match schemaPrefix to the dump list
 		for _, s := range schemas {
 			if strings.HasPrefix(schemaPrefix, s) {
-				args = append(args, fmt.Sprintf("--schema=%s*.*", schemaPrefix))
+				args = append(args, fmt.Sprintf("--schema=%s*", schemaPrefix))
 			} else {
-				args = append(args, fmt.Sprintf("--schema=%s.*", s))
+				args = append(args, fmt.Sprintf("--schema=%s", s))
 			}
 		}
 	}
