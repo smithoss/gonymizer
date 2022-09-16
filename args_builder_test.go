@@ -45,8 +45,8 @@ func TestCanProvideSchemas(t *testing.T) {
 	)
 	expected_args := []string{
 		"--no-owner",
-		"--schema=schema1.*",
-		"--schema=schema2.*",
+		"--schema=schema1",
+		"--schema=schema2",
 		"-f", "testing/output.TestCreateFile.sql",
 		"postgres://user:password@test_host/db_name?sslmode=disable",
 	}
@@ -68,7 +68,7 @@ func TestSchemaPrefixAddsWildcard(t *testing.T) {
 	)
 	expected_args := []string{
 		"--no-owner",
-		"--schema=company_*.*",
+		"--schema=company_*",
 		"-f", "testing/output.TestCreateFile.sql",
 		"postgres://user:password@test_host/db_name?sslmode=disable",
 	}
