@@ -8,7 +8,7 @@ require (
 	github.com/google/uuid v1.3.0
 	github.com/icrowley/fake v0.0.0-20180203215853-4178557ae428
 	github.com/lib/pq v1.1.1
-	github.com/logrusorgru/aurora v0.0.0-20190428105938-cea283e61946
+	github.com/logrusorgru/aurora v2.0.3+incompatible
 	github.com/mgutz/ansi v0.0.0-20170206155736-9520e82c474b // indirect
 	github.com/onsi/ginkgo v1.10.1 // indirect
 	github.com/onsi/gomega v1.7.0 // indirect
