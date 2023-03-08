@@ -12,10 +12,11 @@ require (
 	github.com/mgutz/ansi v0.0.0-20170206155736-9520e82c474b // indirect
 	github.com/onsi/ginkgo v1.10.1 // indirect
 	github.com/onsi/gomega v1.7.0 // indirect
-	github.com/sirupsen/logrus v1.6.0
-	github.com/spf13/cobra v0.0.5
+	github.com/sirupsen/logrus v1.9.0
+	github.com/spf13/cobra v1.6.1
 	github.com/spf13/viper v1.15.0
 	github.com/stretchr/testify v1.8.2
 	github.com/x-cray/logrus-prefixed-formatter v0.5.2
-	golang.org/x/crypto v0.7.0
+	golang.org/x/crypto v0.7.0 // indirect
+	golang.org/x/term v0.6.0
 )

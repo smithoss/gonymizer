@@ -11,7 +11,7 @@ import (
 
 	log "github.com/sirupsen/logrus"
 	prefixed "github.com/x-cray/logrus-prefixed-formatter"
-	"golang.org/x/crypto/ssh/terminal"
+	"golang.org/x/term"
 
 	"github.com/logrusorgru/aurora"
 	"github.com/smithoss/gonymizer"
@@ -108,8 +108,8 @@ func GetDb(host, username, password, database string, port int32, disableSSL boo
 // configuration. Returns the password as a string.
 func GetPassword() string {
 	fmt.Print("Database Password: ")
-	bytePassword, err := terminal.ReadPassword(syscall.Stdin)
-	fmt.Println() // terminal.ReadPassword does not add a new line after receiving the password
+	bytePassword, err := term.ReadPassword(syscall.Stdin)
+	fmt.Println() // term.ReadPassword does not add a new line after receiving the password
 	if err != nil {
 		log.Error("Unable to read password")
 		os.Exit(1)
