@@ -3,8 +3,10 @@ gonymizer
 gonymizer_*
 gonymizer-*
 bin/
+golangci-lint
 
-export_*
+# Go packages
+vendor
 
 # Test Databases
 docs/demos/dellstore2/dellstore2-normal-1.0
@@ -12,12 +14,18 @@ docs/demos/dellstore2/dellstore2-normal-1.0
 # Test files
 db_test_*.log
 output.Test*
+export_*
 
 # Test coverage
 coverage.out
+coverage.html
 
-# IntelliJ Idea
+# IDE
+.vscode
 .idea
+
+# Mac garbage
+.DS_Store
 
 # Demo SQL/Log files
 docs/demos/dellstore2/*.sql
