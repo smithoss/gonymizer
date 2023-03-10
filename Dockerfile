@@ -1,7 +1,7 @@
 #############
 ### BUILD ###
 #############
-FROM golang:1.15-alpine as build
+FROM golang:1.20.2-alpine as build
 RUN apk update && apk upgrade && apk add --no-cache gcc musl-dev postgresql
 RUN mkdir -p /tmp/gonymizer/bin
 WORKDIR /tmp/gonymizer/
