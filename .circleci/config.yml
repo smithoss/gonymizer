@@ -62,7 +62,7 @@ jobs:
 
   deploy:
     docker:
-      - image: circleci/golang:1.20.2
+      - image: cimg/go:1.20.2
         environment:
           GO111MODULE: "on"
     working_directory: /tmp/gonymizer
