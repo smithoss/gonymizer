@@ -118,7 +118,6 @@ func OpenDB(conf PGConfig) (*sql.DB, error) {
 	db, err := sql.Open("postgres", dburl)
 	if err != nil {
 		log.Error(err)
-		log.Debug("dburl: ", dburl)
 		return nil, err
 	}
 	return db, nil

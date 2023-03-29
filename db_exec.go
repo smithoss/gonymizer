@@ -89,7 +89,6 @@ func CreateDatabase(conf PGConfig) error {
 	err := ExecPostgresCmd(cmd, args...)
 	if err != nil {
 		log.Error(err)
-		log.Debug("dburl: ", dburl)
 		return err
 	}
 	return nil
@@ -117,7 +116,6 @@ func SQLCommandFile(conf PGConfig, filepath string, ignoreErrors bool) error {
 	err := ExecPostgresCmd(cmd, args...)
 	if err != nil {
 		log.Error(err)
-		log.Debug("dburl: ", dburl)
 		return err
 	}
 	return nil
@@ -134,7 +132,6 @@ func ExecPostgresCmd(name string, args ...string) error {
 		log.Error(err)
 		log.Debug("outputFile: ", outLog)
 		log.Debug("name: ", name)
-		log.Debug("args: ", args)
 		return err
 	}
 	defer outputFile.Close()
@@ -145,7 +142,6 @@ func ExecPostgresCmd(name string, args ...string) error {
 		log.Error(err)
 		log.Debug("errorFile: ", errLog)
 		log.Debug("name: ", name)
-		log.Debug("args: ", args)
 		return err
 	}
 	defer errorFile.Close()
@@ -171,8 +167,6 @@ func ExecPostgresCommandOutErr(stdOut, stdErr io.Writer, name string, arg ...str
 	cmd.Stdout = &outBuffer
 	cmd.Stderr = &errBuffer
 
-	log.Debugf("Running command: %s %s", name, strings.Join(arg, " "))
-
 	err = cmd.Run()
 	outBytes := outBuffer.Bytes()
 	errBytes := errBuffer.Bytes()
@@ -182,8 +176,6 @@ func ExecPostgresCommandOutErr(stdOut, stdErr io.Writer, name string, arg ...str
 
 	if err != nil {
 		log.Error(err)
-		log.Debug("name: ", name)
-		log.Debug("arg: ", arg)
 		if len(errBytes) > 0 {
 			log.Debugf("errBytes: \n=====================\n%s\n=====================\n", string(errBytes))
 			log.Debugf("errBytes: \n=====================\n%s\n=====================\n", string(errBytes))
