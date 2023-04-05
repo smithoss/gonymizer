@@ -18,5 +18,5 @@ require (
 	github.com/stretchr/testify v1.8.2
 	github.com/x-cray/logrus-prefixed-formatter v0.5.2
 	golang.org/x/crypto v0.7.0 // indirect
-	golang.org/x/term v0.6.0
+	golang.org/x/term v0.7.0
 )
