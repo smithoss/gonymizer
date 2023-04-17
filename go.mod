@@ -7,7 +7,7 @@ require (
 	github.com/corpix/uarand v0.1.0 // indirect
 	github.com/google/uuid v1.3.0
 	github.com/icrowley/fake v0.0.0-20180203215853-4178557ae428
-	github.com/lib/pq v1.10.7
+	github.com/lib/pq v1.10.8
 	github.com/logrusorgru/aurora v2.0.3+incompatible
 	github.com/mgutz/ansi v0.0.0-20170206155736-9520e82c474b // indirect
 	github.com/onsi/ginkgo v1.10.1 // indirect
