@@ -279,8 +279,8 @@ func TestProcessorRandomUUID(t *testing.T) {
 		t.Fatalf("UUIDs match\t%s <=> %s", testUUID.String(), val)
 	}
 	output, err = ProcessorRandomUUID(&cMap, "")
-	require.NotNil(t, err)
-	require.NotEqual(t, output, uuid.Nil)
+	require.Nil(t, err)
+	require.NotEqual(t, output, uuid.Nil.String())
 }
 
 func TestProcessorScrubString(t *testing.T) {
@@ -310,6 +310,6 @@ func TestRandomizeUUID(t *testing.T) {
 	require.NotEqual(t, output, tempUUID)
 
 	output, err = ProcessorRandomUUID(&cMap, "")
-	require.NotNil(t, err)
-	require.Equal(t, output, "")
+	require.Nil(t, err)
+	require.NotEqual(t, output, uuid.Nil.String())
 }
