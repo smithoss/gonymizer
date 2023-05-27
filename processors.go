@@ -77,10 +77,7 @@ type safeUUIDMap struct {
 }
 
 // Get returns a mapped uuid for a given UUID if it has already previously been anonymized and a new UUID otherwise.
-func (c safeUUIDMap) Get(key uuid.UUID) (uuid.UUID, error) {
-	c.mux.Lock()
-	defer c.mux.Unlock()
-
+func (c *safeUUIDMap) Get(key uuid.UUID) (uuid.UUID, error) {
 	result, ok := c.v[key]
 	if !ok {
 		result, err := uuid.NewRandom()
@@ -95,8 +92,9 @@ func (c safeUUIDMap) Get(key uuid.UUID) (uuid.UUID, error) {
 			log.Errorf("Error generating UUID: %s", err)
 			return uuid.Nil, err
 		}
-
+		c.mux.Lock()
 		c.v[key] = result
+		c.mux.Unlock()
 	}
 
 	return result, nil

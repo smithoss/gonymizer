@@ -275,7 +275,7 @@ func TestProcessorRandomUUID(t *testing.T) {
 	require.NotEqual(t, output, testUUID)
 
 	val, _ := UUIDMap.Get(testUUID)
-	if val == testUUID.String() {
+	if val == testUUID {
 		t.Fatalf("UUIDs match\t%s <=> %s", testUUID.String(), val)
 	}
 	output, err = ProcessorRandomUUID(&cMap, "")
