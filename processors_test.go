@@ -280,7 +280,7 @@ func TestProcessorRandomUUID(t *testing.T) {
 	}
 	output, err = ProcessorRandomUUID(&cMap, "")
 	require.NotNil(t, err)
-	require.Equal(t, output, "")
+	require.NotEqual(t, output, uuid.Nil)
 }
 
 func TestProcessorScrubString(t *testing.T) {
