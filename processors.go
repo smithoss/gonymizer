@@ -1,6 +1,7 @@
 package gonymizer
 
 import (
+	"errors"
 	"fmt"
 	"math/rand"
 	"strconv"
@@ -11,6 +12,8 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/icrowley/fake"
+
+	log "github.com/sirupsen/logrus"
 )
 
 // All processors are designed to work "unseeded"
@@ -74,21 +77,29 @@ type safeUUIDMap struct {
 }
 
 // Get returns a mapped uuid for a given UUID if it has already previously been anonymized and a new UUID otherwise.
-func (c *safeUUIDMap) Get(key uuid.UUID) (string, error) {
+func (c safeUUIDMap) Get(key uuid.UUID) (uuid.UUID, error) {
 	c.mux.Lock()
 	defer c.mux.Unlock()
 
 	result, ok := c.v[key]
 	if !ok {
 		result, err := uuid.NewRandom()
+		for count := 0; count < 10; count++ {
+			result, err = uuid.NewRandom()
+			if result != uuid.Nil {
+				break
+			}
+			count++
+		}
 		if err != nil {
-			return "", err
+			log.Errorf("Error generating UUID: %s", err)
+			return uuid.Nil, err
 		}
 
 		c.v[key] = result
 	}
 
-	return result.String(), nil
+	return result, nil
 }
 
 // ProcessorCatalog is the function map that points to each Processor to it's entry function. All Processors are listed
@@ -271,17 +282,30 @@ func ProcessorRandomDigits(cmap *ColumnMapper, input string) (string, error) {
 // mapped to the output so every occurrence of the input UUID will replace it with the same output UUID that was
 // originally created during the first occurrence of the input UUID.
 func ProcessorRandomUUID(cmap *ColumnMapper, input string) (string, error) {
-	var scrambledUUID string
-
+	var scrambledUUID uuid.UUID = uuid.Nil
 	inputID, err := uuid.Parse(input)
-
 	if err != nil {
-		scrambledUUID = ""
-	} else {
-		scrambledUUID, err = randomizeUUID(inputID)
+		log.Errorf("Unable to parse UUID: %s", inputID)
+		log.Errorf("Error: %s", err)
 	}
 
-	return scrambledUUID, err
+	// For some reasons UUID will return UUID.nil. :shrug: needs more investigation.
+	count := 0
+	for scrambledUUID, err = randomizeUUID(inputID); scrambledUUID == uuid.Nil; scrambledUUID, err = randomizeUUID(inputID) {
+		if count > 10 {
+			return uuid.Nil.String(), errors.New("Unable to generate a random UUID after 10 attempts and failed. Keep getting nil.")
+		}
+		count += 10
+	}
+
+	if scrambledUUID == uuid.Nil {
+		return "", fmt.Errorf("Unable to generate a random UUID after 10 attempts and failed. Keep getting nil.")
+	}
+
+	if err != nil {
+		log.Errorf("%s", err)
+	}
+	return scrambledUUID.String(), err
 }
 
 // ProcessorScrubString will replace the input string with asterisks (*). Useful for blanking out password fields.
@@ -304,7 +328,7 @@ func jaroWinkler(input string, jwDistance float64, faker fakeFuncPtr) (output st
 
 // randomizeUUID creates a random UUID and adds it to the map of input->output. If input already exists it returns
 // the output that was previously calculated for input.
-func randomizeUUID(input uuid.UUID) (string, error) {
+func randomizeUUID(input uuid.UUID) (uuid.UUID, error) {
 	return UUIDMap.Get(input)
 }
 
