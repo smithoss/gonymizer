@@ -125,6 +125,8 @@ func init() {
 		"EmptyJson":             ProcessorEmptyJson,
 		"FakeStreetAddress":     ProcessorAddress,
 		"FakeCity":              ProcessorCity,
+		"FakeLatitude":          ProcessorLatitude,
+		"FakeLongitude":         ProcessorLongitude,
 		"FakeCompanyName":       ProcessorCompanyName,
 		"FakeEmailAddress":      ProcessorEmailAddress,
 		"FakeFirstName":         ProcessorFirstName,
@@ -176,6 +178,16 @@ func ProcessorAddress(cmap *ColumnMapper, input string) (string, error) {
 // ProcessorCity will return a real city name that is >= 0.4 Jaro-Winkler similar than the input.
 func ProcessorCity(cmap *ColumnMapper, input string) (string, error) {
 	return fake.City(), nil
+}
+
+// ProcessorLatitude will return a fake latitude string that is compiled from the fake library
+func ProcessorLatitude(cmap *ColumnMapper, input string) (string, error) {
+	return fmt.Sprintf("%f", fake.Latitude()), nil
+}
+
+// ProcessorLongitude will return a fake longitude string that is compiled from the fake library
+func ProcessorLongitude(cmap *ColumnMapper, input string) (string, error) {
+	return fmt.Sprintf("%f", fake.Longitude()), nil
 }
 
 // ProcessorEmailAddress will return an e-mail address that is >= 0.4 Jaro-Winkler similar than the input.

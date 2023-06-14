@@ -89,6 +89,18 @@ func TestProcessorAddress(t *testing.T) {
 	require.NotEqual(t, output, "")
 }
 
+func TestProcessorLatitude(t *testing.T) {
+	output, err := ProcessorLatitude(&cMap, "42.00")
+	require.Nil(t, err)
+	require.NotEqual(t, output, 42.00)
+}
+
+func TestProcessorLongitude(t *testing.T) {
+	output, err := ProcessorLongitude(&cMap, "142.00")
+	require.Nil(t, err)
+	require.NotEqual(t, output, 142.00)
+}
+
 func TestProcessorCity(t *testing.T) {
 	output, err := ProcessorCity(&cMap, "Rick and Morty Ville")
 	require.Nil(t, err)

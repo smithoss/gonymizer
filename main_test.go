@@ -134,6 +134,8 @@ func seqUnitTests(t *testing.T) {
 	t.Run("ProcessorFunc", TestProcessorFunc)
 	t.Run("ProcessorAlphaNumericScrambler", TestProcessorAlphaNumericScrambler)
 	t.Run("ProcessorAddress", TestProcessorAddress)
+	t.Run("ProcessorLatitude", TestProcessorLatitude)
+	t.Run("ProcessorLongitude", TestProcessorLongitude)
 	t.Run("ProcessorCity", TestProcessorCity)
 	t.Run("ProcessorEmailAddress", TestProcessorEmailAddress)
 	t.Run("ProcessorEmptyJson", TestProcessorEmptyJson)
