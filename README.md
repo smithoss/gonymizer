@@ -242,6 +242,8 @@ Below is a list of fake data creators and scramblers. This table may not be up t
 | EmptyJson | Replaces a JSON with an empty one (`{}`)
 | FakeStreetAddress | Used to replace a real US address with a fake one
 | FakeCity | Used to replace a city column
+| FakeLatitude | Used to replace a latitude column
+| FakeLongitude | Used to replace a longitude column
 | FakeCompanyName | Used to replace a company name
 | FakeEmailAddress | Used to replace e-mail with a fake one
 | FakeFirstName | Used to replace a person's first name with a fake first name (non-gender specific)
