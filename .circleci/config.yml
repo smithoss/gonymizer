@@ -5,7 +5,7 @@ version: 2
 jobs:
   test:
     docker:
-      - image: cimg/go:1.20.2
+      - image: cimg/go:1.20.6
         environment:
           GO111MODULE: "on"
           PGUSER: circleci
@@ -50,7 +50,7 @@ jobs:
             export BINDIR=.
             wget -O- -nv https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s v1.53.3
             # curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s v1.53.3
-            ./golangci-lint run --enable gofmt
+            ./bin/golangci-lint run --enable gofmt
       - run:
           name: Run TestStart Golang tests
           command: |
