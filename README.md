@@ -239,7 +239,6 @@ Below is a list of fake data creators and scramblers. This table may not be up t
 | Processor Name | Use |
 | -------------- |:----|
 | AlphaNumericScrambler | Scrambles strings. If a number is in the string it will replace it with another random number
-| UniqueAlphaNumericScrambler | Similar to AlphaNumericScrambler but that all scrambled strings in the table column will be unique.
 | EmptyJson | Replaces a JSON with an empty one (`{}`)
 | FakeStreetAddress | Used to replace a real US address with a fake one
 | FakeCity | Used to replace a city column
@@ -261,6 +260,7 @@ Below is a list of fake data creators and scramblers. This table may not be up t
 | RandomDigits | Randomizes a string of digit(s), but keeps the same length
 | RandomUUID | Randomizes a UUID string, but keep a mapping of the old UUID and map it to the new UUID. If the old is found elsewhere in the database the new UUID will be used instead of creating another one. Useful for UUID primary key mapping (relationships).
 | ScrubString | Replaces a string with \*'s. Useful for password hashes.
+| UniqueAlphaNumericScrambler | Similar to AlphaNumericScrambler but that all scrambled strings in the table column will be unique.
 
 #### Inclusive Map Files
 An *inclusive* map file is a map file which includes every column in every table that is contained in a list of schemas
