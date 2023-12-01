@@ -1,6 +1,8 @@
 package gonymizer
 
 import (
+	"fmt"
+	"math/rand"
 	"regexp"
 	"strings"
 	"testing"
@@ -77,6 +79,142 @@ func TestProcessorAlphaNumericScrambler(t *testing.T) {
 		require.True(t, strings.HasPrefix(outputEscaped, completeEscapeSequences[i]))
 		require.False(t, strings.HasSuffix(outputEscaped, suffix))
 	}
+}
+
+func TestProcessorUniqueAlphaNumericScramblerBehavesLikeProcessorAlphaNumericScrambler(t *testing.T) {
+	var alphaTest ColumnMapper
+
+	output, err := ProcessorUniqueAlphaNumericScrambler(&cMap, "AsDfG10*&")
+	require.Nil(t, err)
+	require.NotEqual(t, output, "AsDfG0*&")
+
+	alphaTest.ParentSchema = "test_schema"
+	alphaTest.ParentTable = "test_table"
+	alphaTest.ParentColumn = "test_column"
+
+	outputA, err := ProcessorUniqueAlphaNumericScrambler(&alphaTest, "My name is Mud - Pr1mUs")
+	require.Nil(t, err)
+	outputB, err := ProcessorUniqueAlphaNumericScrambler(&alphaTest, "My name is Mud - 111111")
+	require.Nil(t, err)
+	outputC, err := ProcessorUniqueAlphaNumericScrambler(&alphaTest, "My name is Mud - Pr1mUs")
+	require.Nil(t, err)
+
+	// outputA != outputB
+	require.NotEqual(t, outputA, outputB)
+	// outputA === outputC
+	require.Equal(t, outputA, outputC)
+
+	escapeSequences := [...]string{"\\\\", "\\t", "\\n", "\\f", "\\b", "\\1", "\\21", "\\337", "\\x1", "\\xF2", "\\u4AE1", "\\UDEAFBEEF"}
+	for i := 0; i < len(escapeSequences); i++ {
+		outputEscaped, err := ProcessorUniqueAlphaNumericScrambler(&alphaTest, escapeSequences[i])
+		require.Nil(t, err)
+		require.Equal(t, escapeSequences[i], outputEscaped)
+	}
+
+	completeEscapeSequences := [...]string{"\\\\", "\\t", "\\n", "\\f", "\\b", "\\337", "\\xF2", "\\u4AE1", "\\UDEAFBEEF"}
+	const suffix = "12345"
+	for i := 0; i < len(completeEscapeSequences); i++ {
+		input := completeEscapeSequences[i] + suffix
+		outputEscaped, err := ProcessorUniqueAlphaNumericScrambler(&alphaTest, input)
+		require.Nil(t, err)
+		require.Equal(t, len(outputEscaped), len(input))
+		require.True(t, strings.HasPrefix(outputEscaped, completeEscapeSequences[i]))
+		require.False(t, strings.HasSuffix(outputEscaped, suffix))
+	}
+}
+
+func TestProcessorUniqueAlphaNumericScramblerEnsuresUniqueness(t *testing.T) {
+	rand.Seed(5336)
+
+	// Use a fixed seed to pre-generate the scrambled strings
+	preGeneratedUniqueStrings := []string{
+		"Hdva nn ef lujjclagwxv mdtj",
+		"Wjpp vj nw idiicqtcaab yyoy",
+		"Whcg fx cz qdtmlhiyyse bmnn",
+		"Qneu ci nn uknqprmkygn oqic",
+		"Awsf mm ga gbafitnmqnv uats",
+		"Xvga jz fm ymbeyrhovce zfft",
+		"Jcev we tx yozybzwejug wcor",
+		"Pktc fh rg zblwnrixhel xddv",
+		"Mmfl iu ai lkarkpjxrcm gihj",
+		"Xatp qr ud jkwiapqpekp jvmy",
+		"Gvom pt zh qngneelcwne bqyk",
+		"Uegd el xu afeqhhkrrsg aocg",
+		"Vcbu om az wphtejtptqu wmvq",
+		"Vdto fu qx xvtchqlafpw vxcg",
+		"Zhjf nh sg umiyxwlwobn nwuk",
+		"Gnno uf if divtacntszp armf",
+		"Gvth xk ma nqpvrdtmylr tqje",
+		"Grqz ai tl amqkfzrhhca bjzh",
+		"Abzk jp bq nbhbdhtypbl gvxf",
+		"Xoxg sl uf dimoothtcqv iwtw",
+		"Aiya kb zg ljctcijzuyj fqze",
+	}
+	var found struct{}
+	tableKey := fmt.Sprintf("%s.%s.%s", cMap.TableSchema, cMap.TableName, cMap.ColumnName)
+
+	// Pre-populate the mapping to check that the scrambler only returns unique values
+	UniqueScrambledColumnValueMap.uniqueMap[tableKey] = safeStringMap{
+		v: make(map[string]struct{}),
+	}
+	for _, scrambledString := range preGeneratedUniqueStrings {
+		UniqueScrambledColumnValueMap.uniqueMap[tableKey].v[scrambledString] = found
+	}
+
+	output, err := ProcessorUniqueAlphaNumericScrambler(&cMap, "This is my unscrambled text")
+
+	require.NotNil(t, err)
+	require.Equal(t, output, "")
+}
+
+func TestProcessorUniqueAlphaNumericScramblerEnsuresUniquenessPerColumn(t *testing.T) {
+	rand.Seed(5336)
+
+	// Use a fixed seed to pre-generate the scrambled strings
+	preGeneratedUniqueStrings := []string{
+		"Hdva nn ef lujjclagwxv mdtj",
+		"Wjpp vj nw idiicqtcaab yyoy",
+		"Whcg fx cz qdtmlhiyyse bmnn",
+		"Qneu ci nn uknqprmkygn oqic",
+		"Awsf mm ga gbafitnmqnv uats",
+		"Xvga jz fm ymbeyrhovce zfft",
+		"Jcev we tx yozybzwejug wcor",
+		"Pktc fh rg zblwnrixhel xddv",
+		"Mmfl iu ai lkarkpjxrcm gihj",
+		"Xatp qr ud jkwiapqpekp jvmy",
+		"Gvom pt zh qngneelcwne bqyk",
+		"Uegd el xu afeqhhkrrsg aocg",
+		"Vcbu om az wphtejtptqu wmvq",
+		"Vdto fu qx xvtchqlafpw vxcg",
+		"Zhjf nh sg umiyxwlwobn nwuk",
+		"Gnno uf if divtacntszp armf",
+		"Gvth xk ma nqpvrdtmylr tqje",
+		"Grqz ai tl amqkfzrhhca bjzh",
+		"Abzk jp bq nbhbdhtypbl gvxf",
+		"Xoxg sl uf dimoothtcqv iwtw",
+		"Aiya kb zg ljctcijzuyj fqze",
+	}
+	var found struct{}
+	tableKey := fmt.Sprintf("%s.%s.%s", cMap.TableSchema, cMap.TableName, cMap.ColumnName)
+
+	// Pre-populate the mapping to check that the scrambler only returns unique values
+	UniqueScrambledColumnValueMap.uniqueMap[tableKey] = safeStringMap{
+		v: make(map[string]struct{}),
+	}
+	for _, scrambledString := range preGeneratedUniqueStrings {
+		UniqueScrambledColumnValueMap.uniqueMap[tableKey].v[scrambledString] = found
+	}
+
+	// Use a different column than what was pre-populated
+	var uniqueColumnTest ColumnMapper
+	uniqueColumnTest.TableSchema = "test_schema"
+	uniqueColumnTest.TableName = "test_table"
+	uniqueColumnTest.ColumnName = "test_column"
+
+	output, err := ProcessorUniqueAlphaNumericScrambler(&uniqueColumnTest, "This is my unscrambled text")
+
+	require.Nil(t, err)
+	require.Equal(t, output, "Hdva nn ef lujjclagwxv mdtj")
 }
 
 func TestProcessorAddress(t *testing.T) {

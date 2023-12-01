@@ -239,6 +239,7 @@ Below is a list of fake data creators and scramblers. This table may not be up t
 | Processor Name | Use |
 | -------------- |:----|
 | AlphaNumericScrambler | Scrambles strings. If a number is in the string it will replace it with another random number
+| UniqueAlphaNumericScrambler | Similar to AlphaNumericScrambler but that all scrambled strings in the table column will be unique.
 | EmptyJson | Replaces a JSON with an empty one (`{}`)
 | FakeStreetAddress | Used to replace a real US address with a fake one
 | FakeCity | Used to replace a city column
@@ -317,6 +318,7 @@ and stolen, an attacker will gain full access of the mapping of `(PHI, PII) => (
 
 Currently we only allow for global mapping of the following processors (more may be added later):
 * AlphaNumericScrambler
+* UniqueAlphaNumericScrambler
 * RandomUUID
 
 They can be found in the processor.go file:

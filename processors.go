@@ -50,8 +50,66 @@ type safeAlphaNumericMap struct {
 	mux sync.Mutex
 }
 
+// safeStringMap is a concurrency-safe map for storing unique values
+type safeStringMap struct {
+	v map[string]struct{}
+	mux sync.Mutex
+}
+// safeUniqueAlphaNumericMap is a concurrency-safe map for storing the unique value mappings for each column
+type safeUniqueAlphaNumericMap struct {
+	uniqueMap map[string]safeStringMap
+	mux sync.Mutex
+}
+var UniqueScrambledColumnValueMap = safeUniqueAlphaNumericMap{
+	uniqueMap: make(map[string]safeStringMap),
+}
+
+func (c *safeUniqueAlphaNumericMap) Get(parentKey, input string) (string, error) {
+	c.mux.Lock()
+	defer c.mux.Unlock()
+
+	uniqueMap, ok := c.uniqueMap[parentKey]
+
+	if !ok {
+		c.uniqueMap[parentKey] = safeStringMap{
+			v: make(map[string]struct{}),
+		}
+		uniqueMap = c.uniqueMap[parentKey]
+	}
+
+	uniqueMap.mux.Lock()
+	defer uniqueMap.mux.Unlock()
+
+	var uniqueString = ""
+	var found struct{}
+	count := 0
+
+	for count = 0; count < 20; count++ {
+		uniqueString, _ = scrambleString(input)
+		_, ok := uniqueMap.v[uniqueString]
+
+		log.Debug(parentKey + ": Checking if string '" + uniqueString + "' is unique")
+
+		if !ok {
+			uniqueMap.v[uniqueString] = found
+			break
+		}
+	}
+
+	if count < 20 {
+		log.Debug(parentKey + ": generated unique string '" + uniqueString + "'")
+		return uniqueString, nil
+	} else {
+		errorMessage := "Unable to generate a unique string after 20 attempts and failed."
+		log.Errorf("%s: %s", parentKey, errorMessage)
+		return "", errors.New(errorMessage)
+	}
+}
+
+type ScramblerFunction func(string) (string, error)
+
 // Get returns a string that an input is mapped to under a parentKey.
-func (c *safeAlphaNumericMap) Get(parentKey, input string) (string, error) {
+func (c *safeAlphaNumericMap) Get(parentKey, input string, generatorFn ScramblerFunction) (string, error) {
 	c.mux.Lock()
 	defer c.mux.Unlock()
 
@@ -62,12 +120,15 @@ func (c *safeAlphaNumericMap) Get(parentKey, input string) (string, error) {
 	}
 
 	result, ok := anMap[input]
-	if !ok {
-		result = scrambleString(input)
-		anMap[input] = result
+
+	if ok {
+		return result, nil
 	}
 
-	return result, nil
+	result, err := generatorFn(input)
+	anMap[input] = result
+
+	return result, err
 }
 
 // safeUUIDMap is a concurrency-safe map[uuid.UUID]uuid.UUID
@@ -75,6 +136,8 @@ type safeUUIDMap struct {
 	v   map[uuid.UUID]uuid.UUID
 	mux sync.Mutex
 }
+
+
 
 // Get returns a mapped uuid for a given UUID if it has already previously been anonymized and a new UUID otherwise.
 func (c *safeUUIDMap) Get(key uuid.UUID) (uuid.UUID, error) {
@@ -121,29 +184,30 @@ var UUIDMap = safeUUIDMap{
 // init initializes the ProcessorCatalog map for all processors. A processor must be listed here to be accessible.
 func init() {
 	ProcessorCatalog = map[string]ProcessorFunc{
-		"AlphaNumericScrambler": ProcessorAlphaNumericScrambler,
-		"EmptyJson":             ProcessorEmptyJson,
-		"FakeStreetAddress":     ProcessorAddress,
-		"FakeCity":              ProcessorCity,
-		"FakeLatitude":          ProcessorLatitude,
-		"FakeLongitude":         ProcessorLongitude,
-		"FakeCompanyName":       ProcessorCompanyName,
-		"FakeEmailAddress":      ProcessorEmailAddress,
-		"FakeFirstName":         ProcessorFirstName,
-		"FakeFullName":          ProcessorFullName,
-		"FakeIPv4":              ProcessorIPv4,
-		"FakeLastName":          ProcessorLastName,
-		"FakePhoneNumber":       ProcessorPhoneNumber,
-		"FakeState":             ProcessorState,
-		"FakeStateAbbrev":       ProcessorStateAbbrev,
-		"FakeUsername":          ProcessorUserName,
-		"FakeZip":               ProcessorZip,
-		"Identity":              ProcessorIdentity, // Default: Does not modify field
-		"RandomBoolean":         ProcessorRandomBoolean,
-		"RandomDate":            ProcessorRandomDate,
-		"RandomDigits":          ProcessorRandomDigits,
-		"RandomUUID":            ProcessorRandomUUID,
-		"ScrubString":           ProcessorScrubString,
+		"AlphaNumericScrambler":        ProcessorAlphaNumericScrambler,
+		"UniqueAlphaNumericScrambler":  ProcessorUniqueAlphaNumericScrambler,
+		"EmptyJson":                    ProcessorEmptyJson,
+		"FakeStreetAddress":            ProcessorAddress,
+		"FakeCity":                     ProcessorCity,
+		"FakeLatitude":                 ProcessorLatitude,
+		"FakeLongitude":                ProcessorLongitude,
+		"FakeCompanyName":              ProcessorCompanyName,
+		"FakeEmailAddress":             ProcessorEmailAddress,
+		"FakeFirstName":                ProcessorFirstName,
+		"FakeFullName":                 ProcessorFullName,
+		"FakeIPv4":                     ProcessorIPv4,
+		"FakeLastName":                 ProcessorLastName,
+		"FakePhoneNumber":              ProcessorPhoneNumber,
+		"FakeState":                    ProcessorState,
+		"FakeStateAbbrev":              ProcessorStateAbbrev,
+		"FakeUsername":                 ProcessorUserName,
+		"FakeZip":                      ProcessorZip,
+		"Identity":                     ProcessorIdentity, // Default: Does not modify field
+		"RandomBoolean":                ProcessorRandomBoolean,
+		"RandomDate":                   ProcessorRandomDate,
+		"RandomDigits":                 ProcessorRandomDigits,
+		"RandomUUID":                   ProcessorRandomUUID,
+		"ScrubString":                  ProcessorScrubString,
 	}
 
 }
@@ -164,9 +228,25 @@ type ProcessorFunc func(*ColumnMapper, string) (string, error)
 func ProcessorAlphaNumericScrambler(cmap *ColumnMapper, input string) (string, error) {
 	if cmap.ParentSchema != "" && cmap.ParentTable != "" && cmap.ParentColumn != "" {
 		parentKey := fmt.Sprintf("%s.%s.%s", cmap.ParentSchema, cmap.ParentTable, cmap.ParentColumn)
-		return AlphaNumericMap.Get(parentKey, input)
+		return AlphaNumericMap.Get(parentKey, input, scrambleString)
 	} else {
-		return scrambleString(input), nil
+		return scrambleString(input)
+	}
+}
+
+// ProcessorUniqueAlphaNumericScrambler behaves just like ProcessorAlphaNumericScrambler except it
+// ensures that it will return unique values.
+func ProcessorUniqueAlphaNumericScrambler(cmap *ColumnMapper, input string) (string, error) {
+    var scrambleStringUniquely = func(input string) (string, error) {
+        tableKey := fmt.Sprintf("%s.%s.%s", cmap.TableSchema, cmap.TableName, cmap.ColumnName)
+        return UniqueScrambledColumnValueMap.Get(tableKey, input)
+    }
+
+	if cmap.ParentSchema != "" && cmap.ParentTable != "" && cmap.ParentColumn != "" {
+		parentKey := fmt.Sprintf("%s.%s.%s", cmap.ParentSchema, cmap.ParentTable, cmap.ParentColumn)
+		return AlphaNumericMap.Get(parentKey, input, scrambleStringUniquely)
+	} else {
+		return scrambleStringUniquely(input)
 	}
 }
 
@@ -363,7 +443,7 @@ func date(year, month, day int) time.Time {
 // scrambleString will replace capital letters with a random capital letter, a lower-case letter with a random
 // lower-case letter, and numbers with a random number. String size will be the same length and non-alphanumerics will
 // be ignored in the input and output.
-func scrambleString(input string) string {
+func scrambleString(input string) (string, error) {
 	var b strings.Builder
 
 	for i := 0; i < len(input); i++ {
@@ -382,7 +462,7 @@ func scrambleString(input string) string {
 		}
 	}
 
-	return b.String()
+	return b.String(), nil
 }
 
 // Retain escapes sequences such as \n, \xHH as they are.
