@@ -36,6 +36,33 @@ var cMap = ColumnMapper{
 	Comment:         "",
 }
 
+// Pre-generated scrambled strings for the text "This is my unscrambled text" using a fixed rng seed
+const rngSeed = 5336
+var preGeneratedScrambledStrings = []string{
+	"Hdva nn ef lujjclagwxv mdtj",
+	"Wjpp vj nw idiicqtcaab yyoy",
+	"Whcg fx cz qdtmlhiyyse bmnn",
+	"Qneu ci nn uknqprmkygn oqic",
+	"Awsf mm ga gbafitnmqnv uats",
+	"Xvga jz fm ymbeyrhovce zfft",
+	"Jcev we tx yozybzwejug wcor",
+	"Pktc fh rg zblwnrixhel xddv",
+	"Mmfl iu ai lkarkpjxrcm gihj",
+	"Xatp qr ud jkwiapqpekp jvmy",
+	"Gvom pt zh qngneelcwne bqyk",
+	"Uegd el xu afeqhhkrrsg aocg",
+	"Vcbu om az wphtejtptqu wmvq",
+	"Vdto fu qx xvtchqlafpw vxcg",
+	"Zhjf nh sg umiyxwlwobn nwuk",
+	"Gnno uf if divtacntszp armf",
+	"Gvth xk ma nqpvrdtmylr tqje",
+	"Grqz ai tl amqkfzrhhca bjzh",
+	"Abzk jp bq nbhbdhtypbl gvxf",
+	"Xoxg sl uf dimoothtcqv iwtw",
+	"Aiya kb zg ljctcijzuyj fqze",
+}
+
+
 func TestProcessorFunc(t *testing.T) {
 }
 
@@ -124,32 +151,9 @@ func TestProcessorUniqueAlphaNumericScramblerBehavesLikeProcessorAlphaNumericScr
 }
 
 func TestProcessorUniqueAlphaNumericScramblerEnsuresUniqueness(t *testing.T) {
-	rand.Seed(5336)
+	// Set a fixed rng seed
+	rand.Seed(rngSeed)
 
-	// Use a fixed seed to pre-generate the scrambled strings
-	preGeneratedUniqueStrings := []string{
-		"Hdva nn ef lujjclagwxv mdtj",
-		"Wjpp vj nw idiicqtcaab yyoy",
-		"Whcg fx cz qdtmlhiyyse bmnn",
-		"Qneu ci nn uknqprmkygn oqic",
-		"Awsf mm ga gbafitnmqnv uats",
-		"Xvga jz fm ymbeyrhovce zfft",
-		"Jcev we tx yozybzwejug wcor",
-		"Pktc fh rg zblwnrixhel xddv",
-		"Mmfl iu ai lkarkpjxrcm gihj",
-		"Xatp qr ud jkwiapqpekp jvmy",
-		"Gvom pt zh qngneelcwne bqyk",
-		"Uegd el xu afeqhhkrrsg aocg",
-		"Vcbu om az wphtejtptqu wmvq",
-		"Vdto fu qx xvtchqlafpw vxcg",
-		"Zhjf nh sg umiyxwlwobn nwuk",
-		"Gnno uf if divtacntszp armf",
-		"Gvth xk ma nqpvrdtmylr tqje",
-		"Grqz ai tl amqkfzrhhca bjzh",
-		"Abzk jp bq nbhbdhtypbl gvxf",
-		"Xoxg sl uf dimoothtcqv iwtw",
-		"Aiya kb zg ljctcijzuyj fqze",
-	}
 	var found struct{}
 	tableKey := fmt.Sprintf("%s.%s.%s", cMap.TableSchema, cMap.TableName, cMap.ColumnName)
 
@@ -157,7 +161,7 @@ func TestProcessorUniqueAlphaNumericScramblerEnsuresUniqueness(t *testing.T) {
 	UniqueScrambledColumnValueMap.uniqueMap[tableKey] = safeStringMap{
 		v: make(map[string]struct{}),
 	}
-	for _, scrambledString := range preGeneratedUniqueStrings {
+	for _, scrambledString := range preGeneratedScrambledStrings {
 		UniqueScrambledColumnValueMap.uniqueMap[tableKey].v[scrambledString] = found
 	}
 
@@ -168,32 +172,9 @@ func TestProcessorUniqueAlphaNumericScramblerEnsuresUniqueness(t *testing.T) {
 }
 
 func TestProcessorUniqueAlphaNumericScramblerEnsuresUniquenessPerColumn(t *testing.T) {
-	rand.Seed(5336)
+	// Set a fixed rng seed
+	rand.Seed(rngSeed)
 
-	// Use a fixed seed to pre-generate the scrambled strings
-	preGeneratedUniqueStrings := []string{
-		"Hdva nn ef lujjclagwxv mdtj",
-		"Wjpp vj nw idiicqtcaab yyoy",
-		"Whcg fx cz qdtmlhiyyse bmnn",
-		"Qneu ci nn uknqprmkygn oqic",
-		"Awsf mm ga gbafitnmqnv uats",
-		"Xvga jz fm ymbeyrhovce zfft",
-		"Jcev we tx yozybzwejug wcor",
-		"Pktc fh rg zblwnrixhel xddv",
-		"Mmfl iu ai lkarkpjxrcm gihj",
-		"Xatp qr ud jkwiapqpekp jvmy",
-		"Gvom pt zh qngneelcwne bqyk",
-		"Uegd el xu afeqhhkrrsg aocg",
-		"Vcbu om az wphtejtptqu wmvq",
-		"Vdto fu qx xvtchqlafpw vxcg",
-		"Zhjf nh sg umiyxwlwobn nwuk",
-		"Gnno uf if divtacntszp armf",
-		"Gvth xk ma nqpvrdtmylr tqje",
-		"Grqz ai tl amqkfzrhhca bjzh",
-		"Abzk jp bq nbhbdhtypbl gvxf",
-		"Xoxg sl uf dimoothtcqv iwtw",
-		"Aiya kb zg ljctcijzuyj fqze",
-	}
 	var found struct{}
 	tableKey := fmt.Sprintf("%s.%s.%s", cMap.TableSchema, cMap.TableName, cMap.ColumnName)
 
@@ -201,7 +182,7 @@ func TestProcessorUniqueAlphaNumericScramblerEnsuresUniquenessPerColumn(t *testi
 	UniqueScrambledColumnValueMap.uniqueMap[tableKey] = safeStringMap{
 		v: make(map[string]struct{}),
 	}
-	for _, scrambledString := range preGeneratedUniqueStrings {
+	for _, scrambledString := range preGeneratedScrambledStrings {
 		UniqueScrambledColumnValueMap.uniqueMap[tableKey].v[scrambledString] = found
 	}
 

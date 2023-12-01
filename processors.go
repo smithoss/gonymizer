@@ -185,7 +185,6 @@ var UUIDMap = safeUUIDMap{
 func init() {
 	ProcessorCatalog = map[string]ProcessorFunc{
 		"AlphaNumericScrambler":        ProcessorAlphaNumericScrambler,
-		"UniqueAlphaNumericScrambler":  ProcessorUniqueAlphaNumericScrambler,
 		"EmptyJson":                    ProcessorEmptyJson,
 		"FakeStreetAddress":            ProcessorAddress,
 		"FakeCity":                     ProcessorCity,
@@ -208,6 +207,7 @@ func init() {
 		"RandomDigits":                 ProcessorRandomDigits,
 		"RandomUUID":                   ProcessorRandomUUID,
 		"ScrubString":                  ProcessorScrubString,
+		"UniqueAlphaNumericScrambler":  ProcessorUniqueAlphaNumericScrambler,
 	}
 
 }
