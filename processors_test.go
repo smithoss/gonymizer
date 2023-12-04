@@ -38,6 +38,7 @@ var cMap = ColumnMapper{
 
 // Pre-generated scrambled strings for the text "This is my unscrambled text" using a fixed rng seed
 const rngSeed = 5336
+
 var preGeneratedScrambledStrings = []string{
 	"Hdva nn ef lujjclagwxv mdtj",
 	"Wjpp vj nw idiicqtcaab yyoy",
@@ -61,7 +62,6 @@ var preGeneratedScrambledStrings = []string{
 	"Xoxg sl uf dimoothtcqv iwtw",
 	"Aiya kb zg ljctcijzuyj fqze",
 }
-
 
 func TestProcessorFunc(t *testing.T) {
 }
@@ -158,7 +158,7 @@ func TestProcessorUniqueAlphaNumericScramblerEnsuresUniqueness(t *testing.T) {
 	tableKey := fmt.Sprintf("%s.%s.%s", cMap.TableSchema, cMap.TableName, cMap.ColumnName)
 
 	// Pre-populate the mapping to check that the scrambler only returns unique values
-	UniqueScrambledColumnValueMap.uniqueMap[tableKey] = safeStringMap{
+	UniqueScrambledColumnValueMap.uniqueMap[tableKey] = &safeStringMap{
 		v: make(map[string]struct{}),
 	}
 	for _, scrambledString := range preGeneratedScrambledStrings {
@@ -179,7 +179,7 @@ func TestProcessorUniqueAlphaNumericScramblerEnsuresUniquenessPerColumn(t *testi
 	tableKey := fmt.Sprintf("%s.%s.%s", cMap.TableSchema, cMap.TableName, cMap.ColumnName)
 
 	// Pre-populate the mapping to check that the scrambler only returns unique values
-	UniqueScrambledColumnValueMap.uniqueMap[tableKey] = safeStringMap{
+	UniqueScrambledColumnValueMap.uniqueMap[tableKey] = &safeStringMap{
 		v: make(map[string]struct{}),
 	}
 	for _, scrambledString := range preGeneratedScrambledStrings {
