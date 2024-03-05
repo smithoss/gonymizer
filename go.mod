@@ -17,5 +17,5 @@ require (
 	github.com/spf13/viper v1.18.2
 	github.com/stretchr/testify v1.9.0
 	github.com/x-cray/logrus-prefixed-formatter v0.5.2
-	golang.org/x/term v0.17.0
+	golang.org/x/term v0.18.0
 )
