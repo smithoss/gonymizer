@@ -191,10 +191,15 @@ func init() {
 		"FakeLatitude":                ProcessorLatitude,
 		"FakeLongitude":               ProcessorLongitude,
 		"FakeCompanyName":             ProcessorCompanyName,
+		"FakeParagraph":               ProcessParagraph,
+		"FakeUserAgent":               ProcessUserAgent,
 		"FakeEmailAddress":            ProcessorEmailAddress,
 		"FakeFirstName":               ProcessorFirstName,
 		"FakeFullName":                ProcessorFullName,
 		"FakeIPv4":                    ProcessorIPv4,
+		"FakeIPv6":                    ProcessIPv6,
+		"FakeGender":                  ProcessGender,
+		"FakeCurrency":                ProcessCurrency,
 		"FakeLastName":                ProcessorLastName,
 		"FakePhoneNumber":             ProcessorPhoneNumber,
 		"FakeState":                   ProcessorState,
@@ -273,6 +278,31 @@ func ProcessorLongitude(cmap *ColumnMapper, input string) (string, error) {
 // ProcessorEmailAddress will return an e-mail address that is >= 0.4 Jaro-Winkler similar than the input.
 func ProcessorEmailAddress(cmap *ColumnMapper, input string) (string, error) {
 	return fake.EmailAddress(), nil
+}
+
+// ProcessParagraph will return a random paragraph.
+func ProcessParagraph(cmap *ColumnMapper, input string) (string, error) {
+	return fake.Paragraph(), nil
+}
+
+// ProcessUserAgent will return a random User Agent.
+func ProcessUserAgent(cmap *ColumnMapper, input string) (string, error) {
+	return fake.UserAgent(), nil
+}
+
+// ProcessIPv6 will return a random IPv6.
+func ProcessIPv6(cmap *ColumnMapper, input string) (string, error) {
+	return fake.IPv6(), nil
+}
+
+// ProcessGender will return a random gender.
+func ProcessGender(cmap *ColumnMapper, input string) (string, error) {
+	return fake.Gender(), nil
+}
+
+// ProcessCurrency will return a random currency.
+func ProcessCurrency(cmap *ColumnMapper, input string) (string, error) {
+	return fake.Currency(), nil
 }
 
 // ProcessorFirstName will return a first name that is >= 0.4 Jaro-Winkler similar than the input.
