@@ -204,6 +204,7 @@ func init() {
 		"FakePhoneNumber":             ProcessorPhoneNumber,
 		"FakeState":                   ProcessorState,
 		"FakeStateAbbrev":             ProcessorStateAbbrev,
+		"FakeLanguage":                ProcessorLanguage,
 		"FakeUsername":                ProcessorUserName,
 		"FakeZip":                     ProcessorZip,
 		"Identity":                    ProcessorIdentity, // Default: Does not modify field
