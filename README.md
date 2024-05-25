@@ -8,27 +8,28 @@
 
 [![CircleCI](https://circleci.com/gh/smithoss/gonymizer.svg?style=svg)](https://circleci.com/gh/smithoss/gonymizer)[![Slack](https://slackin.junkert.now.sh/badge.svg)](https://slackin.junkert.now.sh)[![Coverage Status](https://coveralls.io/repos/github/smithoss/gonymizer/badge.svg?branch=master)](https://coveralls.io/github/smithoss/gonymizer?branch=master)[![Go Report Card](https://goreportcard.com/badge/github.com/smithoss/gonymizer)](https://goreportcard.com/report/github.com/smithoss/gonymizer)[![GoDoc](https://godoc.org/github.com/smithoss/gonymizer?status.svg)](https://godoc.org/github.com/smithoss/gonymizer)
 
-* [Weird name, what does it do?](#weird-name-what-does-it-do)
-* [Supported RDBMS](#supported-rdbms)
-* [Abbreviations and Definitions](#abbreviations-and-definitions)
-* [Getting Started](#getting-started)
-    * [OSX](#osx)
-    * [Debian 9.x / Ubuntu 18.04](#debian-9x--ubuntu-1804)
-* [Configuration](#configuration)
-    * [CLI Configuration](#cli-configuration)
-    * [Map File Configuration](#map-file-configuration)
-        * [Available Fakers and Scramblers](#available-fakers-and-scramblers)
-        * [Inclusive Map Files](#inclusive-map-files)
-        * [Exclusive Map Files](#exclusive-map-files)
-        * [Relationship Mapping](#relationship-mapping)
-        * [Grouping and Schema Prefix Matching (sharding)](#grouping-and-schema-prefix-matching-sharding)
-* [Running Gonymizer](#running-gonymizer)
-    * [TL;DR Steps to anonymization (that's a word right?)](#tldr-steps-to-anonymization-thats-a-word-right)
-    * [Detailed Steps](#detailed-steps)
-* [Creating Tests](#creating-tests)
-    * [Test Example](#test-example)
-* [Notices and License](#notices-and-license)
-    * [Go Logo and Graphics](#go-logo-and-graphics)
+- [Gonymizer](#gonymizer)
+  - [Weird name, what does it do?](#weird-name-what-does-it-do)
+  - [Supported RDBMS](#supported-rdbms)
+  - [Abbreviations and Definitions](#abbreviations-and-definitions)
+  - [Getting Started](#getting-started)
+    - [OSX](#osx)
+    - [Debian 9.x / Ubuntu 18.04](#debian-9x--ubuntu-1804)
+  - [Configuration](#configuration)
+    - [CLI Configuration](#cli-configuration)
+    - [Map File Configuration](#map-file-configuration)
+      - [Available Fakers and Scramblers](#available-fakers-and-scramblers)
+      - [Inclusive Map Files](#inclusive-map-files)
+      - [Exclusive Map Files](#exclusive-map-files)
+      - [Relationship Mapping](#relationship-mapping)
+      - [Grouping and Schema Prefix Matching (sharding)](#grouping-and-schema-prefix-matching-sharding)
+  - [Running Gonymizer](#running-gonymizer)
+    - [TL;DR Steps to anonymization (that's a word right?)](#tldr-steps-to-anonymization-thats-a-word-right)
+    - [Detailed Steps](#detailed-steps)
+  - [Creating Tests](#creating-tests)
+    - [Test Example](#test-example)
+  - [Notices and License](#notices-and-license)
+    - [Go Logo and Graphics](#go-logo-and-graphics)
 
 ## Weird name, what does it do?
 The Gonymizer project (Go + Anonymizer) is a project that was built at [SmithRx](https://www.smithrx.com) in hope to simplify the QA process. Gonymizer is
@@ -245,10 +246,16 @@ Below is a list of fake data creators and scramblers. This table may not be up t
 | FakeLatitude | Used to replace a latitude column
 | FakeLongitude | Used to replace a longitude column
 | FakeCompanyName | Used to replace a company name
+| FakeParagraph | Used to generate a random paragraph
+| FakeUserAgent | Used to replace user agent with fake one
 | FakeEmailAddress | Used to replace e-mail with a fake one
+| FakeGender | Used to replace gender with a fake one
 | FakeFirstName | Used to replace a person's first name with a fake first name (non-gender specific)
-| FakeIPv4 | Used to replace an IP with a fake one
+| FakeIPv4 | Used to replace an IPv4 with a fake one
+| FakeIPv6 | Used to replace IPv6 with a fake one
+| FakeCurrency | Used to replace currency with a fake one
 | FakeLastName | Used to replace a person's last name with a fake last name
+| ProcessorFullName | Used to replace a person's full name with fake one
 | FakePhoneNumber | Used to replace a person's phone number with fake phone number
 | FakeState | Used to replace a state (full state name, non-abbreviated)
 | FakeStateAbbrev | Used to replace a state abbreviation
