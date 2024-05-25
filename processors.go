@@ -339,6 +339,11 @@ func ProcessorPhoneNumber(cmap *ColumnMapper, input string) (string, error) {
 	return fake.Phone(), nil
 }
 
+// ProcessorLanguage will return a random human language.
+func ProcessorLanguage(cmap *ColumnMapper, input string) (string, error) {
+	return fake.Language(), nil
+}
+
 // ProcessorState will return a state that is >= 0.4 Jaro-Winkler similar than the input.
 func ProcessorState(cmap *ColumnMapper, input string) (string, error) {
 	return fake.State(), nil
