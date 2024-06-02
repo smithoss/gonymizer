@@ -214,7 +214,7 @@ func addColumn(columnName, tableName, schema, dataType string, ordinalPosition i
 	col := ColumnMapper{}
 
 	for _, value := range relationRows {
-		if value["table_name"] == tableName && value["column_name"] == columnName {
+		if value["table_name"] == tableName && value["column_name"] == columnName && value["table_schema"] == schema {
 			col.ParentTable = value["foreign_table_name"].(string)
 			col.ParentColumn = value["foreign_column_name"].(string)
 			col.ParentSchema = value["table_schema"].(string)
