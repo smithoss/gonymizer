@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"time"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -209,8 +210,16 @@ func findColumn(columns []ColumnMapper, columnName, tableName, schemaPrefix, sch
 
 // addColumn creates a ColumnMapper structure based on the input parameters.
 func addColumn(columnName, tableName, schema, dataType string, ordinalPosition int,
-	isNullable bool) ColumnMapper {
+	isNullable bool, relationRows []map[string]interface{}) ColumnMapper {
 	col := ColumnMapper{}
+
+	for _, value := range relationRows {
+		if value["table_name"] == tableName && value["column_name"] == columnName && value["table_schema"] == schema {
+			col.ParentTable = value["foreign_table_name"].(string)
+			col.ParentColumn = value["foreign_column_name"].(string)
+			col.ParentSchema = value["table_schema"].(string)
+		}
+	}
 
 	col.Processors = []ProcessorDefinition{
 		{
@@ -225,6 +234,55 @@ func addColumn(columnName, tableName, schema, dataType string, ordinalPosition i
 	col.TableSchema = schema
 
 	return col
+}
+
+func ProcessRowToMap(rows *sql.Rows) []map[string]interface{} {
+	returnedColumns, err := rows.Columns()
+
+	scanArgs := make([]interface{}, len(returnedColumns))
+	values := make([]interface{}, len(returnedColumns))
+
+	results := make([]map[string]interface{}, 0)
+
+	for i := range values {
+		scanArgs[i] = &values[i]
+	}
+
+	for rows.Next() {
+		err = rows.Scan(scanArgs...)
+		if err != nil {
+			panic(err)
+		}
+
+		record := make(map[string]interface{})
+
+		for i, col := range values {
+			if col != nil {
+				switch col.(type) {
+				case bool:
+					record[returnedColumns[i]] = col.(bool)
+				case int:
+					record[returnedColumns[i]] = col.(int)
+				case int64:
+					record[returnedColumns[i]] = col.(int64)
+				case float64:
+					record[returnedColumns[i]] = col.(float64)
+				case string:
+					record[returnedColumns[i]] = col.(string)
+				case time.Time:
+					record[returnedColumns[i]] = col.(time.Time)
+				case []byte:
+					record[returnedColumns[i]] = string(col.([]byte))
+				default:
+					record[returnedColumns[i]] = col
+				}
+			}
+		}
+
+		results = append(results, record)
+	}
+
+	return results
 }
 
 // mapColumns
@@ -284,6 +342,27 @@ func mapColumns(db *sql.DB, columns []ColumnMapper, schemaPrefix, schema string,
 	}
 	defer rows.Close()
 
+	tablesNameRow, err := GetTablesName(db)
+
+	var tableName string
+	tableCollectionString := ""
+
+	for tablesNameRow.Next() {
+		err = tablesNameRow.Scan(
+			&tableName,
+		)
+
+		tableCollectionString = tableCollectionString + "'" + tableName + "',"
+	}
+
+	tableCollectionString = "(" + tableCollectionString[:len(tableCollectionString)-1] + ")"
+	defer tablesNameRow.Close()
+
+	relationRows, err := GetRelationalColumns(db, tableCollectionString)
+
+	defer relationRows.Close()
+
+	processedRowToMap := ProcessRowToMap(relationRows)
 	log.Debug("Iterating through rows and creating skeleton map")
 	for {
 		var (
@@ -334,7 +413,7 @@ func mapColumns(db *sql.DB, columns []ColumnMapper, schemaPrefix, schema string,
 			// add to the column map
 			col = findColumn(columns, columnName, tableName, schemaPrefix, schema, dataType)
 			if col.TableSchema == "" && col.ColumnName == "" {
-				col = addColumn(columnName, tableName, schema, dataType, ordinalPosition, isNullable)
+				col = addColumn(columnName, tableName, schema, dataType, ordinalPosition, isNullable, processedRowToMap)
 				// Continuously append into the column map (old and new together)
 				columns = append(columns, col)
 			}
