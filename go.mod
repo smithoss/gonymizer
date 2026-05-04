@@ -1,6 +1,7 @@
 module github.com/smithoss/gonymizer
 
-go 1.13
+go 1.23.0
+
 toolchain go1.24.1
 
 require (
@@ -9,7 +10,7 @@ require (
 	github.com/icrowley/fake v0.0.0-20180203215853-4178557ae428
 	github.com/lib/pq v1.10.9
 	github.com/logrusorgru/aurora v2.0.3+incompatible
-	github.com/sirupsen/logrus v1.9.3
+	github.com/sirupsen/logrus v1.9.4
 	github.com/spf13/cobra v1.9.1
 	github.com/spf13/viper v1.20.0
 	github.com/stretchr/testify v1.10.0
