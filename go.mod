@@ -1,7 +1,6 @@
 module github.com/smithoss/gonymizer
 
-go 1.13
-toolchain go1.24.1
+go 1.25.0
 
 require (
 	github.com/aws/aws-sdk-go v1.55.6
@@ -14,7 +13,7 @@ require (
 	github.com/spf13/viper v1.20.0
 	github.com/stretchr/testify v1.10.0
 	github.com/x-cray/logrus-prefixed-formatter v0.5.2
-	golang.org/x/term v0.30.0
+	golang.org/x/term v0.42.0
 )
 
 require (
@@ -41,7 +40,7 @@ require (
 	go.uber.org/atomic v1.9.0 // indirect
 	go.uber.org/multierr v1.9.0 // indirect
 	golang.org/x/crypto v0.32.0 // indirect
-	golang.org/x/sys v0.31.0 // indirect
+	golang.org/x/sys v0.43.0 // indirect
 	golang.org/x/text v0.21.0 // indirect
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
