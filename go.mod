@@ -1,10 +1,11 @@
 module github.com/smithoss/gonymizer
 
-go 1.13
+go 1.23.0
+
 toolchain go1.24.1
 
 require (
-	github.com/aws/aws-sdk-go v1.55.6
+	github.com/aws/aws-sdk-go v1.55.8
 	github.com/google/uuid v1.6.0
 	github.com/icrowley/fake v0.0.0-20180203215853-4178557ae428
 	github.com/lib/pq v1.10.9
