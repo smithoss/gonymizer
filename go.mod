@@ -1,6 +1,7 @@
 module github.com/smithoss/gonymizer
 
-go 1.13
+go 1.23.0
+
 toolchain go1.24.1
 
 require (
@@ -12,7 +13,7 @@ require (
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/cobra v1.9.1
 	github.com/spf13/viper v1.20.0
-	github.com/stretchr/testify v1.10.0
+	github.com/stretchr/testify v1.11.1
 	github.com/x-cray/logrus-prefixed-formatter v0.5.2
 	golang.org/x/term v0.30.0
 )
