@@ -147,6 +147,28 @@ COPY public.bar_bar (id, name) FROM stdin;
 	}
 }
 
+func Test_createChunksWithDoubleQuotedSchema(t *testing.T) {
+	reader := bufio.NewReader(strings.NewReader(`COPY "test_schema"."foo_foo" ("id", "name") FROM stdin;
+1	A
+\.
+`))
+	chunks := make(chan Chunk, 2)
+	var wg sync.WaitGroup
+
+	createChunks(chunks, reader, &wg, true, 10)
+
+	for chunk := range chunks {
+		if chunk.SubChunkNumber > 0 {
+			require.Equal(t, "test_schema", chunk.SchemaName)
+			require.Equal(t, "foo_foo", chunk.TableName)
+			require.Equal(t, []string{"id", "name"}, chunk.ColumnNames)
+			return
+		}
+	}
+
+	t.Fatal("expected a chunk for the COPY statement")
+}
+
 func Test_getColumnMappers(t *testing.T) {
 	type args struct {
 		mapper ColumnMapperContainer
